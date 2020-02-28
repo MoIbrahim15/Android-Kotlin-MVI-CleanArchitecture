@@ -1,7 +1,8 @@
-package com.mi.mvi
+package com.mi.mvi.ui.auth
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.mi.mvi.R
 
 class AuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
