@@ -1,15 +1,20 @@
 package com.mi.mvi.ui.auth
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
 import kotlinx.android.synthetic.main.fragment_login.*
+import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
+
+    private val authViewModel: AuthViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,10 +27,12 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.i("loginFragment", authViewModel.hashCode().toString())
 
-        btnForget.setOnClickListener { navForgetPassword() }
+        btnForget.setOnClickListener {
+            navForgetPassword()
+        }
         btnRegister.setOnClickListener { navRegistration() }
-
     }
 
     private fun navRegistration() {
