@@ -12,7 +12,7 @@ import retrofit2.Retrofit
 
 val authModule = module {
     factory { provideAPIService(get()) }
-    factory { AuthRepository(get(), get(), get(), get()) }
+    factory { AuthRepository(get(), get(), get(), get(), get()) }
     factory { LoginUseCase(get()) }
     factory { RegisterUseCase(get()) }
     factory { ForgetUseCase(get()) }
