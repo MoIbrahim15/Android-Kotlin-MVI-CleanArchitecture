@@ -1,6 +1,7 @@
 package com.mi.mvi.koin
 
-import com.mi.mvi.data.network.ResponseHandler
+import com.mi.mvi.data.response_handler.ResponseHandler
+import com.mi.mvi.data.response_handler.ResponseHandlerImpl
 import com.mi.mvi.utils.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 val networkModule = module {
 
-    factory { ResponseHandler() }
+    factory<ResponseHandler> { ResponseHandlerImpl() }
 
     single {
         val logging = HttpLoggingInterceptor()

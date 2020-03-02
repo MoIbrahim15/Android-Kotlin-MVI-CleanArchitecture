@@ -3,11 +3,11 @@ package com.mi.mvi.data.repository.auth
 import androidx.lifecycle.liveData
 import com.mi.mvi.data.database.AccountDao
 import com.mi.mvi.data.database.AuthTokenDao
-import com.mi.mvi.data.network.ResponseHandler
+import com.mi.mvi.data.response_handler.ResponseHandler
 import com.mi.mvi.data.network.auth.AuthApiService
 import com.mi.mvi.data.network.responses.RegistrationResponse
 import com.mi.mvi.data.session.SessionManager
-import com.mi.mvi.utils.Resource
+import com.mi.mvi.data.response_handler.DataState
 import kotlinx.coroutines.Dispatchers
 
 class AuthRepository(
@@ -19,12 +19,12 @@ class AuthRepository(
 ) {
 
     fun login(email: String, password: String) = liveData(Dispatchers.IO) {
-        emit(Resource.LOADING(true))
+        emit(DataState.LOADING(true))
         try {
             val response = apiService.login(email, password)
             emit(responseHandler.handleSuccess(response))
         } catch (e: Exception) {
-            emit(responseHandler.handleException(e))
+            emit(responseHandler.handleError(e))
         }
     }
 

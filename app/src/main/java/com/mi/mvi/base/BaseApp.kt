@@ -1,4 +1,4 @@
-package com.mi
+package com.mi.mvi.base
 
 import android.app.Application
 import com.mi.mvi.koin.koinModules

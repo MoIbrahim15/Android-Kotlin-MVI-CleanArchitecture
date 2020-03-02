@@ -9,12 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
+import com.mi.mvi.ui.auth.state.LoginFields
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class LoginFragment : Fragment() {
 
-    private val authViewModel: AuthViewModel by sharedViewModel()
+    private val viewModel: AuthViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,19 +27,37 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.i("loginFragment", authViewModel.hashCode().toString())
+//        Log.i("loginFragment", viewmodel.hashCode().toString())
 
         btnForget.setOnClickListener {
             navForgetPassword()
         }
         btnRegister.setOnClickListener { navRegistration() }
 
+
         btnLogin.setOnClickListener {
-            authViewModel.login(input_email.text.toString(), input_password.text.toString())
-                .observe(this, Observer {
-                    Log.v("NetworkResponse", it.toString())
-                })
+            //            viewModel.setAuthToken(AuthToken(2,"sdsdsdsad"))
+//            viewModel.login(input_email.text.toString(), input_password.text.toString())
+//                .observe(this, Observer {
+//                    Log.v("NetworkResponseData", it.data?.getContentIfNotHandled().toString())
+//                    Log.v("NetworkResponseError", it.error?.getContentIfNotHandled().toString())
+//                    Log.v("NetworkResponseError", it.loading.toString())
+//                    Log.v("NetworkResponse-------", "--------------")
+//                })
+
+
         }
+
+        subscribeObservers()
+    }
+
+    private fun subscribeObservers() {
+        viewModel.viewState.observe(viewLifecycleOwner, Observer {
+            it.loginFields?.let { loginFields ->
+                loginFields.email?.let { email -> input_email.setText(email) }
+                loginFields.password?.let { password -> input_password.setText(password) }
+            }
+        })
     }
 
     private fun navRegistration() {
@@ -47,5 +66,15 @@ class LoginFragment : Fragment() {
 
     private fun navForgetPassword() {
         findNavController().navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.setLoginFields(
+            LoginFields(
+                input_email.text.toString(),
+                input_password.text.toString()
+            )
+        )
     }
 }
