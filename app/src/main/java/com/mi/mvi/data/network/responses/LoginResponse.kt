@@ -4,14 +4,6 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
-    @SerializedName("response")
-    @Expose
-    var response: String,
-
-    @SerializedName("error_message")
-    @Expose
-    var errorMessage: String,
-
     @SerializedName("token")
     @Expose
     var token: String,
@@ -23,4 +15,4 @@ data class LoginResponse(
     @SerializedName("email")
     @Expose
     var email: String
-)
+) : BaseResponse()

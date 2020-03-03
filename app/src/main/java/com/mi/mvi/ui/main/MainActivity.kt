@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import com.mi.mvi.R
 import com.mi.mvi.base.BaseActivity
 import com.mi.mvi.ui.auth.AuthActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : BaseActivity() {
@@ -13,6 +14,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        tool_bar.setOnClickListener { sessionManager.logout() }
         subscriberObservers()
     }
 

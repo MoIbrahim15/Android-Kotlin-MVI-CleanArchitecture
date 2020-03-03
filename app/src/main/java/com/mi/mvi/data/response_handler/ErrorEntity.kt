@@ -3,6 +3,7 @@ package com.mi.mvi.data.response_handler
 sealed class ErrorEntity {
 
     abstract val originalException: Throwable
+    data class Business(override val originalException: Throwable) : ErrorEntity()
     data class Network(override val originalException: Throwable) : ErrorEntity()
     data class NotFound(override val originalException: Throwable) : ErrorEntity()
     data class AccessDenied(override val originalException: Throwable) : ErrorEntity()

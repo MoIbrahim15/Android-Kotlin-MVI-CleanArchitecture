@@ -1,7 +1,6 @@
 package com.mi.mvi.ui.auth
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
+import com.mi.mvi.ui.auth.state.AuthEventState
 import com.mi.mvi.ui.auth.state.LoginFields
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
@@ -35,20 +35,18 @@ class LoginFragment : Fragment() {
         btnRegister.setOnClickListener { navRegistration() }
 
 
-        btnLogin.setOnClickListener {
-            //            viewModel.setAuthToken(AuthToken(2,"sdsdsdsad"))
-//            viewModel.login(input_email.text.toString(), input_password.text.toString())
-//                .observe(this, Observer {
-//                    Log.v("NetworkResponseData", it.data?.getContentIfNotHandled().toString())
-//                    Log.v("NetworkResponseError", it.error?.getContentIfNotHandled().toString())
-//                    Log.v("NetworkResponseError", it.loading.toString())
-//                    Log.v("NetworkResponse-------", "--------------")
-//                })
-
-
-        }
+        btnLogin.setOnClickListener { login() }
 
         subscribeObservers()
+    }
+
+    private fun login() {
+        viewModel.setStateEvent(
+            AuthEventState.LoginEvent(
+                input_email.text.toString(),
+                input_password.text.toString()
+            )
+        )
     }
 
     private fun subscribeObservers() {

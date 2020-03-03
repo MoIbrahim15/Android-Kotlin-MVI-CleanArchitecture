@@ -19,18 +19,29 @@ class AuthActivity : BaseActivity() {
     }
 
     private fun subscribeObservers() {
+
+        authViewModel.dataState.observe(this, Observer { dataState ->
+            dataState.data?.let { eventState ->
+                eventState.getContentIfNotHandled()?.let { authViewState ->
+                    authViewState.authToken?.let { authToken ->
+                        authViewModel.setAuthToken(authToken)
+                    }
+                }
+            }
+        })
+
         authViewModel.viewState.observe(this, Observer {
             it.authToken?.let { authToken ->
                 sessionManager.login(authToken)
             }
         })
+
         sessionManager.cachedToken.observe(
             this,
             Observer { authToken ->
                 authToken?.let {
                     if (it.account_pk != -1 || it.token != null) {
                         navMainActivity()
-                        finish()
                     }
                 }
             })
@@ -38,6 +49,7 @@ class AuthActivity : BaseActivity() {
 
     private fun navMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     override fun getLayoutRes(): Int {

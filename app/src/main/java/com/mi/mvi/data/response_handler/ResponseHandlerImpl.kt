@@ -12,7 +12,7 @@ class ResponseHandlerImpl :
     }
 
     override fun <T : Any> handleError(throwable: Throwable): DataState<T> {
-        return when(throwable) {
+        return when (throwable) {
             is IOException ->
                 DataState.ERROR(
                     ErrorResponse(
@@ -22,7 +22,7 @@ class ResponseHandlerImpl :
                     )
                 )
             is HttpException -> {
-                when(throwable.code()) {
+                when (throwable.code()) {
                     HTTP_GATEWAY_TIMEOUT -> DataState.ERROR(
                         ErrorResponse(
                             ErrorEntity.Network(throwable),
