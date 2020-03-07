@@ -1,23 +1,24 @@
 package com.mi.mvi.ui.auth
 
 import androidx.lifecycle.LiveData
-import com.mi.mvi.base.BaseViewModel
 import com.mi.mvi.data.models.AuthToken
 import com.mi.mvi.data.response_handler.DataState
+import com.mi.mvi.domain.auth.CheckTokenUseCase
 import com.mi.mvi.domain.auth.ForgetUseCase
 import com.mi.mvi.domain.auth.LoginUseCase
 import com.mi.mvi.domain.auth.RegisterUseCase
+import com.mi.mvi.ui.BaseViewModel
 import com.mi.mvi.ui.auth.state.AuthEventState
 import com.mi.mvi.ui.auth.state.AuthEventState.*
 import com.mi.mvi.ui.auth.state.AuthViewState
 import com.mi.mvi.ui.auth.state.LoginFields
 import com.mi.mvi.ui.auth.state.RegistrationFields
-import com.mi.mvi.utils.AbsentLiveData
 
 class AuthViewModel(
-    val loginUseCase: LoginUseCase,
-    val registerUseCase: RegisterUseCase,
-    val forgetUseCase: ForgetUseCase
+    private val loginUseCase: LoginUseCase,
+    private val registerUseCase: RegisterUseCase,
+    private val forgetUseCase: ForgetUseCase,
+    private val checkTokenUseCase: CheckTokenUseCase
 ) : BaseViewModel<AuthEventState, AuthViewState>() {
 
     override fun handleEventState(eventState: AuthEventState): LiveData<DataState<AuthViewState>> {
@@ -34,7 +35,7 @@ class AuthViewModel(
                 )
             }
             is CheckTokenEvent -> {
-                AbsentLiveData.create()
+                checkTokenUseCase.invoke()
             }
         }
     }
@@ -63,5 +64,4 @@ class AuthViewModel(
     override fun initNewViewState(): AuthViewState {
         return AuthViewState()
     }
-
 }

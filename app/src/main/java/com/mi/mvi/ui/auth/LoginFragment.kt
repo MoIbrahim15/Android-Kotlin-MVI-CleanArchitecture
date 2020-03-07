@@ -1,6 +1,7 @@
 package com.mi.mvi.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +28,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        Log.i("loginFragment", viewmodel.hashCode().toString())
 
         btnForget.setOnClickListener {
             navForgetPassword()

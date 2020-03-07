@@ -32,8 +32,6 @@ class SessionManager(
     }
 
     fun logout() {
-        Log.e("MVI>", "LOGOUT")
-
         GlobalScope.launch(IO) {
             var errorMessage: String? = null
 
@@ -42,15 +40,12 @@ class SessionManager(
                     authTokenDao.nullifyToken(pk)
                 }
             } catch (e: CancellationException) {
-                Log.e("MVI", "LOGOUT CancellationException")
                 errorMessage = e.message
             } catch (e: Exception) {
-                Log.e("MVI", "LOGOUT Exception")
                 errorMessage = errorMessage + "\n" + e.message
             } finally {
                 errorMessage?.let { Log.e("MVI", errorMessage) }
             }
-            Log.e("MVI", "LOGOUT finally")
             setValue(null)
         }
     }
@@ -81,15 +76,14 @@ class SessionManager(
                 try {
                     val activeNetworkInfo: NetworkInfo? = cm.activeNetworkInfo
                     activeNetworkInfo?.let {
-                        Log.i("update_status", "Network is available : true")
                         return it.isConnected
-                    } ?: false
+                    } ?: return false
                 } catch (e: java.lang.Exception) {
-                    Log.i("update_status", "" + e.message)
+
                 }
             }
         } catch (e: Exception) {
-            Log.e("MVI", "No Connection")
+
         }
         return false
     }

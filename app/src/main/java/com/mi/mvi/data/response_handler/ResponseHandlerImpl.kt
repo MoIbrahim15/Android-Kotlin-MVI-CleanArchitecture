@@ -1,5 +1,6 @@
 package com.mi.mvi.data.response_handler
 
+import com.mi.mvi.utils.Constants.Companion.UNABLE_TO_RESOLVE_HOST
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.HttpURLConnection.*
@@ -7,60 +8,68 @@ import java.net.HttpURLConnection.*
 class ResponseHandlerImpl :
     ResponseHandler {
 
-    override fun <T : Any> handleSuccess(data: T): DataState<T> {
-        return DataState.SUCCESS(data)
-    }
-
-    override fun <T : Any> handleError(throwable: Throwable): DataState<T> {
+    override fun <T> handleError(throwable: Throwable?, businessErrorMsg: String?): DataState<T> {
+        businessErrorMsg?.let{ message ->
+            return DataState.ERROR(
+                Response(
+                    ResponseEntity.Business(message), ResponseView.DIALOG()
+                )
+            )
+        }
         return when (throwable) {
             is IOException ->
                 DataState.ERROR(
-                    ErrorResponse(
-                        ErrorEntity.Network(
-                            throwable
-                        ), ErrorState.DIALOG()
+                    Response(
+                        ResponseEntity.Network(), ResponseView.DIALOG()
                     )
                 )
             is HttpException -> {
                 when (throwable.code()) {
                     HTTP_GATEWAY_TIMEOUT -> DataState.ERROR(
-                        ErrorResponse(
-                            ErrorEntity.Network(throwable),
-                            ErrorState.DIALOG()
+                        Response(
+                            ResponseEntity.Network(),
+                            ResponseView.DIALOG()
                         )
                     )
                     HTTP_NOT_FOUND -> DataState.ERROR(
-                        ErrorResponse(
-                            ErrorEntity.NotFound(throwable),
-                            ErrorState.DIALOG()
+                        Response(
+                            ResponseEntity.NotFound(),
+                            ResponseView.DIALOG()
                         )
                     )
                     HTTP_FORBIDDEN -> DataState.ERROR(
-                        ErrorResponse(
-                            ErrorEntity.AccessDenied(throwable),
-                            ErrorState.DIALOG()
+                        Response(
+                            ResponseEntity.AccessDenied(),
+                            ResponseView.DIALOG()
                         )
                     )
                     HTTP_UNAVAILABLE -> DataState.ERROR(
-                        ErrorResponse(
-                            ErrorEntity.ServiceUnavailable(throwable),
-                            ErrorState.DIALOG()
+                        Response(
+                            ResponseEntity.ServiceUnavailable(),
+                            ResponseView.DIALOG()
                         )
                     )
                     else -> DataState.ERROR(
-                        ErrorResponse(
-                            ErrorEntity.Unknown(throwable),
-                            ErrorState.DIALOG()
+                        Response(
+                            ResponseEntity.Unknown(),
+                            ResponseView.DIALOG()
                         )
                     )
                 }
             }
             else -> DataState.ERROR(
-                ErrorResponse(
-                    ErrorEntity.Unknown(throwable),
-                    ErrorState.DIALOG()
+                Response(
+                    ResponseEntity.Unknown(),
+                    ResponseView.DIALOG()
                 )
             )
+        }
+    }
+
+    override fun isNetworkError(msg: String): Boolean {
+        return when {
+            msg.contains(UNABLE_TO_RESOLVE_HOST) -> true
+            else -> false
         }
     }
 }

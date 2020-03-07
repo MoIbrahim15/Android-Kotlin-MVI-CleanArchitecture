@@ -1,7 +1,7 @@
 package com.mi.mvi.data.network.auth
 
 import com.mi.mvi.data.network.responses.LoginResponse
-import com.mi.mvi.data.network.responses.RegistrationResponse
+import com.mi.mvi.data.network.responses.RegisterResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -22,6 +22,5 @@ interface AuthApiService {
         @Field("username") username: String,
         @Field("password") password: String,
         @Field("password2") password2: String
-    ): RegistrationResponse
-
+    ): RegisterResponse
 }

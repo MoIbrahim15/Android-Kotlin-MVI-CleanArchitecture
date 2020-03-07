@@ -1,4 +1,4 @@
-package com.mi.mvi.base
+package com.mi.mvi.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

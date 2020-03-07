@@ -3,15 +3,7 @@ package com.mi.mvi.data.network.responses
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class RegistrationResponse(
-    @SerializedName("response")
-    @Expose
-    var response: String,
-
-    @SerializedName("error_message")
-    @Expose
-    var errorMessage: String,
-
+data class RegisterResponse(
     @SerializedName("email")
     @Expose
     var email: String,
@@ -27,5 +19,5 @@ data class RegistrationResponse(
     @SerializedName("token")
     @Expose
     var token: String
-)
+) : BaseResponse()
 

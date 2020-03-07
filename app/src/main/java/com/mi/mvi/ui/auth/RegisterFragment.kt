@@ -25,7 +25,6 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        Log.i("registerFragment", viewModel.hashCode().toString())
 
         btnRegister.setOnClickListener { register() }
         subscribeObservers()

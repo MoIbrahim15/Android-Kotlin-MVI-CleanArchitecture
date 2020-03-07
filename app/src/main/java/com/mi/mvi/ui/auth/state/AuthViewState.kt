@@ -1,6 +1,8 @@
 package com.mi.mvi.ui.auth.state
 
 import com.mi.mvi.data.models.AuthToken
+import com.mi.mvi.data.response_handler.ResponseEntity
+import com.mi.mvi.data.response_handler.ResponseEntity.*
 
 
 data class AuthViewState(
@@ -15,60 +17,30 @@ data class RegistrationFields(
     var password: String? = null,
     var confirmPassword: String? = null
 ) {
-
-    class RegistrationError {
-        companion object {
-            fun mustFillAllFields(): String {
-                return "All Fields are required"
-            }
-
-            fun passwordsDoNotMatch(): String {
-                return "Passwords must match"
-            }
-
-            fun none(): String {
-                return ""
-            }
-        }
-    }
-
-    fun isValid(): String {
+    fun registerError(): ResponseEntity {
         return if (email.isNullOrEmpty()
             || username.isNullOrEmpty()
             || password.isNullOrEmpty()
             || confirmPassword.isNullOrEmpty()
         ) {
-            RegistrationError.mustFillAllFields()
+            REQUIRED_FIELD()
         } else if (!password.equals(confirmPassword)) {
-            RegistrationError.passwordsDoNotMatch()
+            PASSWORD_MUST_SAME()
         } else {
-            RegistrationError.none()
+            NONE()
         }
     }
 }
-
 
 data class LoginFields(
     var email: String? = null,
     var password: String? = null
 ) {
-    class LoginError {
-        companion object {
-            fun mustFillAllFields(): String {
-                return "You can't login without an email and password."
-            }
-
-            fun none(): String {
-                return "None"
-            }
-        }
-    }
-
-    fun isValid(): String {
+    fun loginError(): ResponseEntity {
         return if (email.isNullOrEmpty()
             || password.isNullOrEmpty()
         ) {
-            LoginError.mustFillAllFields()
-        } else LoginError.none()
+            REQUIRED_FIELD()
+        } else NONE()
     }
 }

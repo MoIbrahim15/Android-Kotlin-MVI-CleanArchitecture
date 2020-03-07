@@ -3,10 +3,14 @@ package com.mi.mvi.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.lifecycle.Observer
 import com.mi.mvi.R
-import com.mi.mvi.base.BaseActivity
+import com.mi.mvi.ui.BaseActivity
+import com.mi.mvi.ui.auth.state.AuthEventState
 import com.mi.mvi.ui.main.MainActivity
+import kotlinx.android.synthetic.main.activity_auth.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class AuthActivity : BaseActivity() {
@@ -16,14 +20,15 @@ class AuthActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         subscribeObservers()
+        checkPreviousAuthUser()
     }
 
     private fun subscribeObservers() {
-
         authViewModel.dataState.observe(this, Observer { dataState ->
-            dataState.data?.let { eventState ->
-                eventState.getContentIfNotHandled()?.let { authViewState ->
-                    authViewState.authToken?.let { authToken ->
+            onDataStateChangeListener(dataState)
+            dataState.data?.let {
+                it.data?.getContentIfNotHandled()?.let { viewState ->
+                    viewState.authToken?.let { authToken ->
                         authViewModel.setAuthToken(authToken)
                     }
                 }
@@ -40,13 +45,18 @@ class AuthActivity : BaseActivity() {
             this,
             Observer { authToken ->
                 authToken?.let {
-                    if (it.account_pk != -1 || it.token != null) {
+                    if (it.account_pk != -1 && it.token != null) {
                         navMainActivity()
                     }
                 }
             })
     }
 
+
+    private fun checkPreviousAuthUser(){
+        authViewModel.setStateEvent(AuthEventState.CheckTokenEvent())
+
+    }
     private fun navMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
@@ -54,5 +64,13 @@ class AuthActivity : BaseActivity() {
 
     override fun getLayoutRes(): Int {
         return R.layout.activity_auth
+    }
+
+    override fun displayLoading(isLoading: Boolean) {
+        progress_bar.visibility = if (isLoading) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 }
