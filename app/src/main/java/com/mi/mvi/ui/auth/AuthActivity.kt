@@ -3,7 +3,6 @@ package com.mi.mvi.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import com.mi.mvi.R

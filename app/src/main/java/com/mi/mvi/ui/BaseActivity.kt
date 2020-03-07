@@ -2,7 +2,10 @@ package com.mi.mvi.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.mi.mvi.data.response_handler.*
+import com.mi.mvi.data.response_handler.DataState
+import com.mi.mvi.data.response_handler.Response
+import com.mi.mvi.data.response_handler.ResponseEntity
+import com.mi.mvi.data.response_handler.ResponseView
 import com.mi.mvi.data.session.SessionManager
 import org.koin.android.ext.android.inject
 
