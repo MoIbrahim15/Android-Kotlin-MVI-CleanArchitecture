@@ -1,8 +1,8 @@
 package com.mi.mvi.ui.auth.state
 
+import com.mi.mvi.R
 import com.mi.mvi.data.models.AuthToken
-import com.mi.mvi.data.response_handler.ResponseEntity
-import com.mi.mvi.data.response_handler.ResponseEntity.*
+import com.mi.mvi.data.response_handler.ErrorConstants.Companion.SUCCESS_CODE
 
 
 data class AuthViewState(
@@ -17,17 +17,17 @@ data class RegistrationFields(
     var password: String? = null,
     var confirmPassword: String? = null
 ) {
-    fun registerError(): ResponseEntity {
+    fun registerError(): Int {
         return if (email.isNullOrEmpty()
             || username.isNullOrEmpty()
             || password.isNullOrEmpty()
             || confirmPassword.isNullOrEmpty()
         ) {
-            REQUIRED_FIELD()
+            R.string.error_all_fields_are_required
         } else if (!password.equals(confirmPassword)) {
-            PASSWORD_MUST_SAME()
+            R.string.error_passwords_must_same
         } else {
-            NONE()
+            SUCCESS_CODE
         }
     }
 }
@@ -36,11 +36,11 @@ data class LoginFields(
     var email: String? = null,
     var password: String? = null
 ) {
-    fun loginError(): ResponseEntity {
+    fun loginError(): Int {
         return if (email.isNullOrEmpty()
             || password.isNullOrEmpty()
         ) {
-            REQUIRED_FIELD()
-        } else NONE()
+            R.string.error_all_fields_are_required
+        } else SUCCESS_CODE
     }
 }

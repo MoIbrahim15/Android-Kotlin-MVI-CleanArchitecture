@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import com.mi.mvi.data.models.AuthToken
 import com.mi.mvi.data.response_handler.DataState
 import com.mi.mvi.domain.auth.CheckTokenUseCase
-import com.mi.mvi.domain.auth.ForgetUseCase
 import com.mi.mvi.domain.auth.LoginUseCase
 import com.mi.mvi.domain.auth.RegisterUseCase
 import com.mi.mvi.ui.BaseViewModel
@@ -13,11 +12,12 @@ import com.mi.mvi.ui.auth.state.AuthEventState.*
 import com.mi.mvi.ui.auth.state.AuthViewState
 import com.mi.mvi.ui.auth.state.LoginFields
 import com.mi.mvi.ui.auth.state.RegistrationFields
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class AuthViewModel(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase,
-    private val forgetUseCase: ForgetUseCase,
     private val checkTokenUseCase: CheckTokenUseCase
 ) : BaseViewModel<AuthEventState, AuthViewState>() {
 
@@ -31,7 +31,7 @@ class AuthViewModel(
                     eventState.email,
                     eventState.username,
                     eventState.password,
-                    eventState.password
+                    eventState.confirmPassword
                 )
             }
             is CheckTokenEvent -> {

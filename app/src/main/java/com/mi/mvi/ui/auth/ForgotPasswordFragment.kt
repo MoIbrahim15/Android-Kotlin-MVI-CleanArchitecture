@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
 import com.mi.mvi.data.response_handler.DataState
 import com.mi.mvi.data.response_handler.Response
-import com.mi.mvi.data.response_handler.ResponseEntity
 import com.mi.mvi.data.response_handler.ResponseView
 import com.mi.mvi.ui.BaseFragment
 import com.mi.mvi.ui.DataStateChangeListener
@@ -38,7 +37,7 @@ class ForgetPasswordFragment : BaseFragment() {
                     dataStateChanged?.onDataStateChangeListener(
                         dataState = DataState.ERROR<Any>(
                             response = Response(
-                                ResponseEntity.Network(),
+                                R.string.error_something_went_wrong,
                                 ResponseView.DIALOG()
                             )
                         )

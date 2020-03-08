@@ -8,29 +8,12 @@ data class Error(val response: Response? = null)
 
 
 data class Response(
-    val responseEntity: ResponseEntity?,
+    val messageRes: Int,
     val responseView: ResponseView?
 )
 
 sealed class ResponseView {
-    class TOAST() : ResponseView()
-    class DIALOG() : ResponseView()
-    class NONE() : ResponseView()
+    class TOAST : ResponseView()
+    class DIALOG : ResponseView()
+    class NONE : ResponseView()
 }
-
-sealed class ResponseEntity {
-
-    data class Business(val message: String?) : ResponseEntity()
-    class Network() : ResponseEntity()
-    class NotFound() : ResponseEntity()
-    class AccessDenied() : ResponseEntity()
-    class ServiceUnavailable() : ResponseEntity()
-    class Unknown() : ResponseEntity()
-    //adding throw app
-    class NONE : ResponseEntity()
-    class REQUIRED_FIELD : ResponseEntity()
-    class PASSWORD_MUST_SAME : ResponseEntity()
-    class CAN_NOT_SAVE : ResponseEntity()
-
-}
-

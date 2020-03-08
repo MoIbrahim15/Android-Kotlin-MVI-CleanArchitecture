@@ -1,6 +1,7 @@
 package com.mi.mvi.data.repository.auth
 
 import android.content.SharedPreferences
+import com.mi.mvi.R
 import com.mi.mvi.data.database.AccountDao
 import com.mi.mvi.data.database.AuthTokenDao
 import com.mi.mvi.data.models.Account
@@ -12,8 +13,11 @@ import com.mi.mvi.data.network.responses.RegisterResponse
 import com.mi.mvi.data.preference.SharedPreferenceKeys.Companion.PREVIOUS_AUTH_USER
 import com.mi.mvi.data.repository.BaseRepository
 import com.mi.mvi.data.repository.NetworkBoundResource
-import com.mi.mvi.data.response_handler.*
-import com.mi.mvi.data.response_handler.ResponseEntity.NONE
+import com.mi.mvi.data.response_handler.DataState
+import com.mi.mvi.data.response_handler.ErrorConstants.Companion.SUCCESS_CODE
+import com.mi.mvi.data.response_handler.ErrorHandler
+import com.mi.mvi.data.response_handler.Response
+import com.mi.mvi.data.response_handler.ResponseView
 import com.mi.mvi.data.session.SessionManager
 import com.mi.mvi.ui.auth.state.AuthViewState
 import com.mi.mvi.ui.auth.state.LoginFields
@@ -29,18 +33,18 @@ class AuthRepository(
     private val accountDao: AccountDao,
     private val apiService: AuthApiService,
     private val sessionManager: SessionManager,
-    private val responseHandler: ResponseHandler,
+    private val errorHandler: ErrorHandler,
     private val sharedPreferences: SharedPreferences,
     private val sharedPrefsEditor: SharedPreferences.Editor
 ) : BaseRepository() {
 
     fun login(email: String, password: String): Flow<DataState<AuthViewState>> = flow {
         val loginError = LoginFields(email, password).loginError()
-        if (loginError !is NONE) {
+        if (loginError != SUCCESS_CODE) {
             emit(DataState.ERROR(Response(loginError, ResponseView.DIALOG())))
         } else {
             val networkBoundResource = object : NetworkBoundResource<LoginResponse, AuthViewState>(
-                responseHandler,
+                errorHandler,
                 sessionManager.isConnectedToInternet(),
                 true
             ) {
@@ -55,7 +59,7 @@ class AuthRepository(
                         emit(
                             DataState.ERROR(
                                 Response(
-                                    ResponseEntity.CAN_NOT_SAVE(),
+                                    R.string.error_something_went_wrong,
                                     ResponseView.DIALOG()
                                 )
                             )
@@ -92,14 +96,13 @@ class AuthRepository(
         password: String,
         confirmPassword: String
     ): Flow<DataState<AuthViewState>> = flow {
-        val registerError =
-            RegistrationFields(email, username, password, confirmPassword).registerError()
-        if (registerError !is NONE) {
+        val registerError = RegistrationFields(email, username, password, confirmPassword).registerError()
+        if (registerError != SUCCESS_CODE) {
             emit(DataState.ERROR(Response(registerError, ResponseView.DIALOG())))
         } else {
             val networkBoundResource =
                 object : NetworkBoundResource<RegisterResponse, AuthViewState>(
-                    responseHandler,
+                    errorHandler,
                     sessionManager.isConnectedToInternet(),
                     true
                 ) {
@@ -114,7 +117,7 @@ class AuthRepository(
                             emit(
                                 DataState.ERROR(
                                     Response(
-                                        ResponseEntity.CAN_NOT_SAVE(),
+                                        R.string.error_something_went_wrong,
                                         ResponseView.DIALOG()
                                     )
                                 )
@@ -147,7 +150,7 @@ class AuthRepository(
         val previousAuthUserEmail = sharedPreferences.getString(PREVIOUS_AUTH_USER, null)
         previousAuthUserEmail?.let {
             val networkBoundResource = object : NetworkBoundResource<BaseResponse, AuthViewState>(
-                responseHandler,
+                errorHandler,
                 sessionManager.isConnectedToInternet(),
                 false
             ) {
@@ -172,7 +175,7 @@ class AuthRepository(
 
             }
             emitAll(networkBoundResource.call())
-        } ?: emit(DataState.ERROR(Response(NONE(), ResponseView.NONE())))
+        }
     }
 
     private fun saveAuthUserToPrefs(email: String) {
