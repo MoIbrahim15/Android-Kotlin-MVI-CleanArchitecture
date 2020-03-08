@@ -4,6 +4,7 @@ class Constants {
 
     companion object{
         const val BASE_URL = "https://open-api.xyz/api/"
+        const val PASSWORD_RESET_URL: String = "https://open-api.xyz/password_reset/"
 
         const val UNABLE_TO_RESOLVE_HOST = "Unable to resolve host"
         const val UNABLE_TODO_OPERATION_WO_INTERNET = "Can't do that operation without an internet connection"

@@ -8,22 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
+import com.mi.mvi.ui.BaseFragment
 import com.mi.mvi.ui.auth.state.AuthEventState
 import com.mi.mvi.ui.auth.state.LoginFields
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment() {
 
     private val viewModel: AuthViewModel by sharedViewModel()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,5 +66,9 @@ class LoginFragment : Fragment() {
                 input_password.text.toString()
             )
         )
+    }
+
+    override fun getLayoutRes(): Int {
+        return R.layout.fragment_login
     }
 }

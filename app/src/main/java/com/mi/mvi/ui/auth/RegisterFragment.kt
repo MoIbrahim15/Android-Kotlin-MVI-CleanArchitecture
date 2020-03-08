@@ -7,21 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.mi.mvi.R
+import com.mi.mvi.ui.BaseFragment
 import com.mi.mvi.ui.auth.state.AuthEventState
 import com.mi.mvi.ui.auth.state.RegistrationFields
 import kotlinx.android.synthetic.main.fragment_register.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
-class RegisterFragment : Fragment() {
+class RegisterFragment :BaseFragment() {
 
     private val viewModel: AuthViewModel by sharedViewModel()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_register, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -66,5 +60,9 @@ class RegisterFragment : Fragment() {
                 input_password_confirm.text.toString()
             )
         )
+    }
+
+    override fun getLayoutRes(): Int {
+        return R.layout.fragment_register
     }
 }
