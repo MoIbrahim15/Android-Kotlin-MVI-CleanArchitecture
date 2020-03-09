@@ -10,8 +10,10 @@ import com.mi.mvi.ui.BaseActivity
 import com.mi.mvi.ui.auth.state.AuthEventState
 import com.mi.mvi.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_auth.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.viewModel
 
+@ExperimentalCoroutinesApi
 class AuthActivity : BaseActivity() {
 
     private val authViewModel: AuthViewModel by viewModel()

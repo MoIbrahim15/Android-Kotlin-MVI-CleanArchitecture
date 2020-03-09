@@ -8,8 +8,10 @@ import com.mi.mvi.ui.BaseFragment
 import com.mi.mvi.ui.auth.state.AuthEventState
 import com.mi.mvi.ui.auth.state.RegistrationFields
 import kotlinx.android.synthetic.main.fragment_register.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
+@ExperimentalCoroutinesApi
 class RegisterFragment :BaseFragment() {
 
     private val viewModel: AuthViewModel by sharedViewModel()

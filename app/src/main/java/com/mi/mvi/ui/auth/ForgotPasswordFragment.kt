@@ -3,6 +3,7 @@ package com.mi.mvi.ui.auth
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.TranslateAnimation
 import android.webkit.JavascriptInterface
@@ -23,7 +24,6 @@ import kotlinx.coroutines.launch
 
 class ForgetPasswordFragment : BaseFragment() {
 
-    private var dataStateChanged: DataStateChangeListener? = null
     private val webInteractionCallback: WebAppInterface.OnWebInteractionCallback =
         object : WebAppInterface.OnWebInteractionCallback {
             override fun onSuccess(email: String) {
@@ -124,13 +124,6 @@ class ForgetPasswordFragment : BaseFragment() {
             fun onSuccess(email: String)
             fun onError(errorMessage: String)
             fun onLoading(isLoading: Boolean)
-        }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is AuthActivity) {
-            dataStateChanged = context
         }
     }
 
