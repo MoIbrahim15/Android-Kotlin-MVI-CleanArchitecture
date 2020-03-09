@@ -81,7 +81,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
     // -- Room
-    def room_version = "2.1.0"
+    def room_version = "2.2.4"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     // Kotlin Extensions and Coroutines support for Room
@@ -98,13 +98,13 @@ dependencies {
 
     // jetpack navigation components
 //    def nav_version = "2.1.0-alpha06" // NEWEST VERSION DOESN'T HANDLE BACK NAV PROPERLY!!!
-    def nav_version = "2.1.0-alpha02"
+    def nav_version = "2.3.0-alpha03"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation "androidx.navigation:navigation-runtime:$nav_version"
 
 
-    def material_version = "1.1.0-alpha09"
+    def material_version = "1.2.0-alpha05"
     implementation "com.google.android.material:material:$material_version"
 
     // material dialogs
@@ -112,7 +112,7 @@ dependencies {
     implementation "com.afollestad.material-dialogs:core:$matieral_dialogs_version"
 
     // Leak Canary
-    def leak_canary_version = "2.0-alpha-3"
+    def leak_canary_version = "2.2"
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
 
     // Card View
@@ -120,7 +120,7 @@ dependencies {
     implementation "androidx.cardview:cardview:$cardview_version"
 
     // Recyclerview
-    def recyclerview_version = "1.1.0-beta03"
+    def recyclerview_version = "1.2.0-alpha01"
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
 
 //    //glide
