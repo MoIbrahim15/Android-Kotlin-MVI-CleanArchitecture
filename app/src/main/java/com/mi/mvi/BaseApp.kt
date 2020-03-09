@@ -14,6 +14,7 @@ class BaseApp : Application() {
             androidLogger(Level.DEBUG)
             androidContext(this@BaseApp)
             modules(koinModules)
+
         }
     }
 }
