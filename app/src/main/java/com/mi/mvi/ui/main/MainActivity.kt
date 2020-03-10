@@ -8,8 +8,10 @@ import com.mi.mvi.R
 import com.mi.mvi.ui.BaseActivity
 import com.mi.mvi.ui.auth.AuthActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@ExperimentalCoroutinesApi
 class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
