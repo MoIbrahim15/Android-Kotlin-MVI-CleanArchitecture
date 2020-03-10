@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 val networkModule = module {
 
-    factory<ErrorHandler> { ErrorHandler() }
+    factory { ErrorHandler() }
 
     single {
         val logging = HttpLoggingInterceptor()
