@@ -10,11 +10,14 @@ import com.mi.mvi.ui.BaseActivity
 import com.mi.mvi.ui.auth.state.AuthEventState
 import com.mi.mvi.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_auth.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.ext.android.viewModel
 
+@ExperimentalCoroutinesApi
 class AuthActivity : BaseActivity() {
 
-    private val authViewModel: AuthViewModel by viewModel()
+    private val authViewModel: AuthViewModel by currentScope.viewModel(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,14 +44,14 @@ class AuthActivity : BaseActivity() {
         })
 
         sessionManager.cachedToken.observe(
-            this,
-            Observer { authToken ->
-                authToken?.let {
-                    if (it.account_pk != -1 && it.token != null) {
-                        navMainActivity()
+                this,
+                Observer { authToken ->
+                    authToken?.let {
+                        if (it.account_pk != -1 && it.token != null) {
+                            navMainActivity()
+                        }
                     }
-                }
-            })
+                })
     }
 
 
@@ -56,6 +59,7 @@ class AuthActivity : BaseActivity() {
         authViewModel.setStateEvent(AuthEventState.CheckTokenEvent())
 
     }
+
     private fun navMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
