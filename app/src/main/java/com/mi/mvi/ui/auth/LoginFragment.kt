@@ -13,7 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
-class LoginFragment : BaseFragment() {
+class LoginFragment : BaseFragment(R.layout.fragment_login) {
 
     private val viewModel: AuthViewModel by sharedViewModel()
 
@@ -65,9 +65,5 @@ class LoginFragment : BaseFragment() {
                 input_password.text.toString()
             )
         )
-    }
-
-    override fun getLayoutRes(): Int {
-        return R.layout.fragment_login
     }
 }

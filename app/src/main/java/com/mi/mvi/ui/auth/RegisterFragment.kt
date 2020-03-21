@@ -12,7 +12,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
-class RegisterFragment :BaseFragment() {
+class RegisterFragment :BaseFragment(R.layout.fragment_register) {
 
     private val viewModel: AuthViewModel by sharedViewModel()
 
@@ -61,7 +61,4 @@ class RegisterFragment :BaseFragment() {
         )
     }
 
-    override fun getLayoutRes(): Int {
-        return R.layout.fragment_register
-    }
 }

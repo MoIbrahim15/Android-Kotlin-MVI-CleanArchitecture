@@ -15,7 +15,7 @@ import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.ext.android.viewModel
 
 @ExperimentalCoroutinesApi
-class AuthActivity : BaseActivity() {
+class AuthActivity : BaseActivity(R.layout.activity_auth) {
 
     private val authViewModel: AuthViewModel by currentScope.viewModel(this)
 
@@ -63,10 +63,6 @@ class AuthActivity : BaseActivity() {
     private fun navMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
-    }
-
-    override fun getLayoutRes(): Int {
-        return R.layout.activity_auth
     }
 
     override fun displayLoading(isLoading: Boolean) {

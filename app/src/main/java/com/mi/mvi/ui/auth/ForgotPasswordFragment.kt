@@ -22,7 +22,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class ForgetPasswordFragment : BaseFragment() {
+class ForgetPasswordFragment : BaseFragment(R.layout.fragment_forget_password) {
 
     private val webInteractionCallback: WebAppInterface.OnWebInteractionCallback =
         object : WebAppInterface.OnWebInteractionCallback {
@@ -127,7 +127,4 @@ class ForgetPasswordFragment : BaseFragment() {
         }
     }
 
-    override fun getLayoutRes(): Int {
-        return R.layout.fragment_forget_password
-    }
 }

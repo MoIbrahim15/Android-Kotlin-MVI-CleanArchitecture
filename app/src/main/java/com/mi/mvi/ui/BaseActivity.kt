@@ -1,6 +1,6 @@
 package com.mi.mvi.ui
 
-import android.os.Bundle
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import com.mi.mvi.data.response_handler.DataState
 import com.mi.mvi.data.response_handler.Response
@@ -8,15 +8,10 @@ import com.mi.mvi.data.response_handler.ResponseView
 import com.mi.mvi.data.session.SessionManager
 import org.koin.android.ext.android.inject
 
-abstract class BaseActivity : AppCompatActivity(),
+abstract class BaseActivity(@LayoutRes contentLayoutId : Int) : AppCompatActivity(contentLayoutId),
     DataStateChangeListener {
 
     val sessionManager: SessionManager by inject()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(getLayoutRes())
-    }
 
     override fun onDataStateChangeListener(dataState: DataState<*>?) {
         dataState?.let {
@@ -47,6 +42,5 @@ abstract class BaseActivity : AppCompatActivity(),
         }
     }
 
-    abstract fun getLayoutRes(): Int
     abstract fun displayLoading(isLoading: Boolean)
 }
