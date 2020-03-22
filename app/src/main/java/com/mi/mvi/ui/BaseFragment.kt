@@ -2,24 +2,19 @@ package com.mi.mvi.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import com.mi.mvi.data.session.SessionManager
 import com.mi.mvi.ui.main.MainActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.android.ext.android.inject
 
 @ExperimentalCoroutinesApi
 abstract class BaseFragment(val contentLayoutId: Int) : Fragment(contentLayoutId) {
 
-    private var TAG: String = "BaseFragment";
     protected var dataStateChanged: DataStateChangeListener? = null
-    val sessionManager: SessionManager by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,7 +37,7 @@ abstract class BaseFragment(val contentLayoutId: Int) : Fragment(contentLayoutId
         try {
             dataStateChanged = context as DataStateChangeListener
         } catch (e: ClassCastException) {
-            Log.e(TAG, "$context must implement DataStateChangeListener")
+
         }
     }
 }
