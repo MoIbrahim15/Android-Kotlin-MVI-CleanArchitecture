@@ -20,6 +20,7 @@ class BottomNavController(
     val graphChangeListener: OnNavigationGraphChanged?,
     val navGraphProvider: NavGraphProvider
 ) {
+    private val TAG: String = "APP_DEBUG"
     lateinit var activity: Activity
     lateinit var fragmentManager: FragmentManager
     lateinit var navItemChangeListener: OnNavigationItemChanged
@@ -54,6 +55,33 @@ class BottomNavController(
         graphChangeListener?.onGraphChanged()
 
         return true
+    }
+
+    fun onBackPressed() {
+        val childFragmentManager = fragmentManager.findFragmentById(containerId)!!
+            .childFragmentManager
+
+        when {
+            childFragmentManager.popBackStackImmediate() -> {
+
+            }
+            //fragment backstack is empty so try to back on navigation stack
+            navigationBackStack.size > 1 -> {
+                //remove last item from backstack
+                navigationBackStack.removeLast()
+                //update the container with new fragment
+                onNavigationItemSelected()
+            }
+
+            //if the stack has only one and it's not the navigation home we should ensure that the application always leave from startDestination
+            navigationBackStack.last() != appStartDestinationID -> {
+                navigationBackStack.removeLast()
+                navigationBackStack.add(0, appStartDestinationID)
+                onNavigationItemSelected()
+            }
+
+            else -> activity.finish()
+        }
     }
 
     private class BackStack : ArrayList<Int>() {
@@ -93,7 +121,8 @@ class BottomNavController(
         fun getNavGraphId(itemId: Int): Int
     }
 
-    //execute when navigation graph changed, select a new item in nav view as ->account
+    //execute when navigation graph changea
+    // select a new item in nav view as  ex: home->account
     interface OnNavigationGraphChanged {
         fun onGraphChanged()
     }
@@ -102,7 +131,6 @@ class BottomNavController(
         fun onReselectNavItem(navController: NavController, fragment: Fragment)
     }
 }
-
 
 fun BottomNavigationView.setUpNavigation(
     bottomNavController: BottomNavController,
@@ -124,4 +152,7 @@ fun BottomNavigationView.setUpNavigation(
         }
     }
 
+    bottomNavController.setOnNavigationItemChanged { itemId ->
+        menu.findItem(itemId).isChecked = true
+    }
 }
