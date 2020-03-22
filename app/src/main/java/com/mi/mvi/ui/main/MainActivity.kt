@@ -53,8 +53,8 @@ class MainActivity : BaseActivity(R.layout.activity_main),
         }
     }
 
-    override fun onGraphChanged() {
-        //        TODO()
+    override fun onGraphChange() {
+        app_bar.setExpanded(true)
     }
 
     override fun onReselectNavItem(navController: NavController, fragment: Fragment) =
@@ -119,5 +119,4 @@ class MainActivity : BaseActivity(R.layout.activity_main),
             View.GONE
         }
     }
-
 }

@@ -10,6 +10,8 @@ import com.mi.mvi.ui.BaseActivity
 import com.mi.mvi.ui.auth.state.AuthEventState
 import com.mi.mvi.ui.main.MainActivity
 import kotlinx.android.synthetic.main.activity_auth.*
+import kotlinx.android.synthetic.main.activity_auth.progress_bar
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.ext.android.viewModel

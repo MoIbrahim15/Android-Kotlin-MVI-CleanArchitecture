@@ -13,18 +13,25 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mi.mvi.R
 
+/**
+ * Class credit: Allan Veloso
+ * I took the concept from Allan Veloso and made alterations to fit our needs.
+ * https://stackoverflow.com/questions/50577356/android-jetpack-navigation-bottomnavigationview-with-youtube-or-instagram-like#_=_
+ * @property navigationBackStack: Backstack for the bottom navigation
+ */
 class BottomNavController(
     val context: Context,
     @IdRes val containerId: Int,
-    @IdRes val appStartDestinationID: Int,
+    @IdRes val appStartDestinationId: Int,
     val graphChangeListener: OnNavigationGraphChanged?,
     val navGraphProvider: NavGraphProvider
 ) {
-    private val TAG: String = "APP_DEBUG"
+    private val TAG: String = "AppDebug"
+    private val navigationBackStack = BackStack.of(appStartDestinationId)
     lateinit var activity: Activity
     lateinit var fragmentManager: FragmentManager
     lateinit var navItemChangeListener: OnNavigationItemChanged
-    private val navigationBackStack = BackStack.of(appStartDestinationID)
+
 
     init {
         if (context is Activity) {
@@ -34,6 +41,8 @@ class BottomNavController(
     }
 
     fun onNavigationItemSelected(itemId: Int = navigationBackStack.last()): Boolean {
+
+        // Replace fragment representing a navigation item
         val fragment = fragmentManager.findFragmentByTag(itemId.toString())
             ?: NavHostFragment.create(navGraphProvider.getNavGraphId(itemId))
         fragmentManager.beginTransaction()
@@ -42,17 +51,19 @@ class BottomNavController(
                 R.anim.fade_out,
                 R.anim.fade_in,
                 R.anim.fade_out
-            ).replace(containerId, fragment, itemId.toString())
+            )
+            .replace(containerId, fragment, itemId.toString())
             .addToBackStack(null)
             .commit()
-        //add to backstack
+
+        // Add to back stack
         navigationBackStack.moveLast(itemId)
 
-        //update checked icon
+        // Update checked icon
         navItemChangeListener.onItemChanged(itemId)
 
-        //communicate with activity
-        graphChangeListener?.onGraphChanged()
+        // communicate with Activity
+        graphChangeListener?.onGraphChange()
 
         return true
     }
@@ -60,26 +71,32 @@ class BottomNavController(
     fun onBackPressed() {
         val childFragmentManager = fragmentManager.findFragmentById(containerId)!!
             .childFragmentManager
-
         when {
+            // We should always try to go back on the child fragment manager stack before going to
+            // the navigation stack. It's important to use the child fragment manager instead of the
+            // NavController because if the user change tabs super fast commit of the
+            // supportFragmentManager may mess up with the NavController child fragment manager back
+            // stack
+
             childFragmentManager.popBackStackImmediate() -> {
-
             }
-            //fragment backstack is empty so try to back on navigation stack
+            // Fragment back stack is empty so try to go back on the navigation stack
             navigationBackStack.size > 1 -> {
-                //remove last item from backstack
+                // Remove last item from back stack
                 navigationBackStack.removeLast()
-                //update the container with new fragment
+
+                // Update the container with new fragment
+                onNavigationItemSelected()
+
+            }
+            // If the stack has only one and it's not the navigation home we should
+            // ensure that the application always leave from startDestination
+            navigationBackStack.last() != appStartDestinationId -> {
+                navigationBackStack.removeLast()
+                navigationBackStack.add(0, appStartDestinationId)
                 onNavigationItemSelected()
             }
-
-            //if the stack has only one and it's not the navigation home we should ensure that the application always leave from startDestination
-            navigationBackStack.last() != appStartDestinationID -> {
-                navigationBackStack.removeLast()
-                navigationBackStack.add(0, appStartDestinationID)
-                onNavigationItemSelected()
-            }
-
+            // Navigation stack is empty, so finish the activity
             else -> activity.finish()
         }
     }
@@ -96,42 +113,45 @@ class BottomNavController(
         fun removeLast() = removeAt(size - 1)
 
         fun moveLast(item: Int) {
-            remove(item)
-            add(item)
+            remove(item) // if present, remove
+            add(item) // add to end of list
         }
     }
 
-    //for setting the checked icon in the bottom nav
+    // For setting the checked icon in the bottom nav
     interface OnNavigationItemChanged {
         fun onItemChanged(itemId: Int)
     }
 
-    fun setOnNavigationItemChanged(listener: (itemId: Int) -> Unit) {
+    // Get id of each graph
+    // ex: R.navigation.nav_blog
+    // ex: R.navigation.nav_create_blog
+    interface NavGraphProvider {
+        @NavigationRes
+        fun getNavGraphId(itemId: Int): Int
+    }
+
+    // Execute when Navigation Graph changes.
+    // ex: Select a new item on the bottom navigation
+    // ex: Home -> Account
+    interface OnNavigationGraphChanged {
+        fun onGraphChange()
+    }
+
+    interface OnNavigationReselectedListener {
+        fun onReselectNavItem(navController: NavController, fragment: Fragment)
+    }
+
+    fun setOnItemNavigationChanged(listener: (itemId: Int) -> Unit) {
         this.navItemChangeListener = object : OnNavigationItemChanged {
             override fun onItemChanged(itemId: Int) {
                 listener.invoke(itemId)
             }
         }
     }
-
-    //get id for each graph
-    //ex: r.navigation.nav_blog
-    interface NavGraphProvider {
-        @NavigationRes
-        fun getNavGraphId(itemId: Int): Int
-    }
-
-    //execute when navigation graph changea
-    // select a new item in nav view as  ex: home->account
-    interface OnNavigationGraphChanged {
-        fun onGraphChanged()
-    }
-
-    interface OnNavigationReselectedListener {
-        fun onReselectNavItem(navController: NavController, fragment: Fragment)
-    }
 }
 
+// Convenience extension to set up the navigation
 fun BottomNavigationView.setUpNavigation(
     bottomNavController: BottomNavController,
     onReselectListener: BottomNavController.OnNavigationReselectedListener
@@ -152,7 +172,7 @@ fun BottomNavigationView.setUpNavigation(
         }
     }
 
-    bottomNavController.setOnNavigationItemChanged { itemId ->
+    bottomNavController.setOnItemNavigationChanged { itemId ->
         menu.findItem(itemId).isChecked = true
     }
 }

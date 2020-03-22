@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/blogFragment"
         android:name="com.mi.mvi.ui.main.blog.BlogFragment"
-        android:label="fragment_blog"
+        android:label="@string/fragment_blog"
         tools:layout="@layout/fragment_blog">
         <action
             android:id="@+id/action_blogFragment_to_viewBlogFragment"
@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/viewBlogFragment"
         android:name="com.mi.mvi.ui.main.blog.ViewBlogFragment"
-        android:label="fragment_view_blog"
+        android:label="@string/fragment_view_blog"
         tools:layout="@layout/fragment_view_blog">
         <action
             android:id="@+id/action_viewBlogFragment_to_updateBlogFragment"
@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/updateBlogFragment"
         android:name="com.mi.mvi.ui.main.blog.UpdateBlogFragment"
-        android:label="fragment_update_blog"
+        android:label="@string/fragment_update_blog"
         tools:layout="@layout/fragment_update_blog">
         <action
             android:id="@+id/action_updateBlogFragment_to_blogFragment"

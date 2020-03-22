@@ -5,11 +5,15 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
 import com.mi.mvi.ui.BaseFragment
+import com.mi.mvi.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_account.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
 
@@ -17,9 +21,11 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
+        setupActionBarWithNavController(R.id.accountFragment, activity as AppCompatActivity)
         change_password.setOnClickListener { findNavController().navigate(R.id.action_accountFragment_to_changePasswordFragment) }
         logout_button.setOnClickListener { sessionManager.logout() }
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)

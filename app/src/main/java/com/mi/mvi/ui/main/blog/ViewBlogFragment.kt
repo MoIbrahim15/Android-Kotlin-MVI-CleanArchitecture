@@ -5,16 +5,20 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
 import com.mi.mvi.ui.BaseFragment
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class ViewBlogFragment : BaseFragment(R.layout.fragment_view_blog) {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+        setupActionBarWithNavController(R.id.blogFragment, activity as AppCompatActivity)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
