@@ -1,13 +1,16 @@
 package com.mi.mvi.ui
 
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.mi.mvi.data.session.SessionManager
+import com.mi.mvi.ui.main.MainActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 
@@ -18,13 +21,20 @@ abstract class BaseFragment(val contentLayoutId: Int) : Fragment(contentLayoutId
     protected var dataStateChanged: DataStateChangeListener? = null
     val sessionManager: SessionManager by inject()
 
-    fun setupActionBarWithNavController(fragmentId: Int, activity: AppCompatActivity) {
-        val appBarConfiguration = AppBarConfiguration(setOf(fragmentId))
-        NavigationUI.setupActionBarWithNavController(
-            activity,
-            findNavController(),
-            appBarConfiguration
-        )
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupActionBarWithNavController(activity = activity as AppCompatActivity)
+    }
+
+    private fun setupActionBarWithNavController(activity: AppCompatActivity) {
+        if (activity is MainActivity) {
+            val appBarConfiguration = AppBarConfiguration(setOf(contentLayoutId))
+            NavigationUI.setupActionBarWithNavController(
+                activity as AppCompatActivity,
+                findNavController(),
+                appBarConfiguration
+            )
+        }
     }
 
     override fun onAttach(context: Context) {

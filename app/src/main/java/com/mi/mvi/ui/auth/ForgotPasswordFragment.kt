@@ -1,9 +1,7 @@
 package com.mi.mvi.ui.auth
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.TranslateAnimation
 import android.webkit.JavascriptInterface
@@ -15,7 +13,6 @@ import com.mi.mvi.data.response_handler.DataState
 import com.mi.mvi.data.response_handler.Response
 import com.mi.mvi.data.response_handler.ResponseView
 import com.mi.mvi.ui.BaseFragment
-import com.mi.mvi.ui.DataStateChangeListener
 import com.mi.mvi.utils.Constants
 import kotlinx.android.synthetic.main.fragment_forget_password.*
 import kotlinx.coroutines.Dispatchers.Main

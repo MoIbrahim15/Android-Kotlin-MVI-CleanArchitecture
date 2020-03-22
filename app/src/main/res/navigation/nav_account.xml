@@ -10,6 +10,7 @@
         android:name="com.mi.mvi.ui.main.account.AccountFragment"
         android:label="@string/fragment_account"
         tools:layout="@layout/fragment_account">
+
         <action
             android:id="@+id/action_accountFragment_to_changePasswordFragment"
             app:destination="@id/changePasswordFragment"
@@ -17,6 +18,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
         <action
             android:id="@+id/action_accountFragment_to_updateAccountFragment"
             app:destination="@id/updateAccountFragment"
@@ -31,8 +33,29 @@
         android:name="com.mi.mvi.ui.main.account.ChangePasswordFragment"
         android:label="@string/fragment_change_password"
         tools:layout="@layout/fragment_change_password">
+
         <action
-            android:id="@+id/action_changePasswordFragment_to_accountFragment"
+            android:id="@+id/action_changePasswordFragment_to_home"
+            app:destination="@id/accountFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@+id/nav_account"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/updateAccountFragment"
+        android:name="com.mi.mvi.ui.main.account.UpdateAccountFragment"
+        android:label="@string/fragment_update_account"
+        tools:layout="@layout/fragment_update_account">
+
+
+        <action
+            android:id="@+id/action_updateAccountFragment_to_home"
             app:destination="@id/accountFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
@@ -42,19 +65,4 @@
             app:popUpToInclusive="true" />
     </fragment>
 
-    <fragment
-        android:id="@+id/updateAccountFragment"
-        android:name="com.mi.mvi.ui.main.account.UpdateAccountFragment"
-        android:label="@string/fragment_update_account"
-        tools:layout="@layout/fragment_update_fragment">
-        <action
-            android:id="@+id/action_updateAccountFragment_to_accountFragment"
-            app:destination="@id/accountFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"
-            app:popUpTo="@+id/nav_account"
-            app:popUpToInclusive="true" />
-    </fragment>
 </navigation>

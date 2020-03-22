@@ -1,7 +1,9 @@
 package com.mi.mvi.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.os.Parcelable
 import androidx.annotation.IdRes
 import androidx.annotation.NavigationRes
 import androidx.fragment.app.Fragment
@@ -10,8 +12,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mi.mvi.R
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Class credit: Allan Veloso
@@ -26,12 +30,10 @@ class BottomNavController(
     val graphChangeListener: OnNavigationGraphChanged?,
     val navGraphProvider: NavGraphProvider
 ) {
-    private val TAG: String = "AppDebug"
-    private val navigationBackStack = BackStack.of(appStartDestinationId)
+    lateinit var navigationBackStack: BackStack
     lateinit var activity: Activity
     lateinit var fragmentManager: FragmentManager
     lateinit var navItemChangeListener: OnNavigationItemChanged
-
 
     init {
         if (context is Activity) {
@@ -39,6 +41,13 @@ class BottomNavController(
             fragmentManager = (activity as FragmentActivity).supportFragmentManager
         }
     }
+
+    fun setupBottomNavigationBackStack(previousBackStack: BackStack?) {
+        navigationBackStack = previousBackStack?.let {
+            it
+        } ?: BackStack.of(appStartDestinationId)
+    }
+
 
     fun onNavigationItemSelected(itemId: Int = navigationBackStack.last()): Boolean {
 
@@ -68,9 +77,10 @@ class BottomNavController(
         return true
     }
 
+    @SuppressLint("RestrictedApi")
     fun onBackPressed() {
-        val childFragmentManager = fragmentManager.findFragmentById(containerId)!!
-            .childFragmentManager
+        val navController = fragmentManager.findFragmentById(containerId)!!
+            .findNavController()
         when {
             // We should always try to go back on the child fragment manager stack before going to
             // the navigation stack. It's important to use the child fragment manager instead of the
@@ -78,8 +88,10 @@ class BottomNavController(
             // supportFragmentManager may mess up with the NavController child fragment manager back
             // stack
 
-            childFragmentManager.popBackStackImmediate() -> {
+            navController.backStack.size > 2 ->{
+                navController.popBackStack()
             }
+
             // Fragment back stack is empty so try to go back on the navigation stack
             navigationBackStack.size > 1 -> {
                 // Remove last item from back stack
@@ -97,11 +109,14 @@ class BottomNavController(
                 onNavigationItemSelected()
             }
             // Navigation stack is empty, so finish the activity
-            else -> activity.finish()
+            else -> {
+                activity.finish()
+            }
         }
     }
 
-    private class BackStack : ArrayList<Int>() {
+    @Parcelize
+    class BackStack : ArrayList<Int>(), Parcelable {
         companion object {
             fun of(vararg elements: Int): BackStack {
                 val b = BackStack()
@@ -170,6 +185,7 @@ fun BottomNavigationView.setUpNavigation(
                 fragment
             )
         }
+        bottomNavController.onNavigationItemSelected()
     }
 
     bottomNavController.setOnItemNavigationChanged { itemId ->
