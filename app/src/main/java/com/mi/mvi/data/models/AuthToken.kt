@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "auth_token",
     foreignKeys = [ForeignKey(
-        entity = Account::class,
+        entity = AccountProperties::class,
         parentColumns = ["pk"],
         childColumns = ["account_pk"],
         onDelete = CASCADE

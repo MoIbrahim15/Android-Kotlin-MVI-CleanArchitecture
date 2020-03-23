@@ -1,7 +1,7 @@
 package com.mi.mvi.ui.main.account
 
 import androidx.lifecycle.LiveData
-import com.mi.mvi.data.models.Account
+import com.mi.mvi.data.models.AccountProperties
 import com.mi.mvi.data.response_handler.DataState
 import com.mi.mvi.data.session.SessionManager
 import com.mi.mvi.domain.main.account.ChangePasswordUseCase
@@ -42,10 +42,10 @@ class AccountViewModel(
         return AccountViewState()
     }
 
-    fun setAccountData(account: Account) {
+    fun setAccountData(accountProperties: AccountProperties) {
         val update = getCurrentViewStateOrNew()
-        if (update.account != account) {
-            update.account = account
+        if (update.accountProperties != accountProperties) {
+            update.accountProperties = accountProperties
             _viewState.value = update
         }
     }

@@ -1,9 +1,9 @@
 package com.mi.mvi.ui.main.account.state
 
-import com.mi.mvi.data.models.Account
+import com.mi.mvi.data.models.AccountProperties
 
 
 class AccountViewState(
-    var account : Account? = null
+    var accountProperties : AccountProperties? = null
 ) {
 }

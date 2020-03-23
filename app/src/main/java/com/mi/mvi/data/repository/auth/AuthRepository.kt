@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.mi.mvi.R
 import com.mi.mvi.data.database.AccountDao
 import com.mi.mvi.data.database.AuthTokenDao
-import com.mi.mvi.data.models.Account
+import com.mi.mvi.data.models.AccountProperties
 import com.mi.mvi.data.models.AuthToken
 import com.mi.mvi.data.network.auth.AuthApiService
 import com.mi.mvi.data.network.responses.BaseResponse
@@ -13,11 +13,8 @@ import com.mi.mvi.data.network.responses.RegisterResponse
 import com.mi.mvi.data.preference.SharedPreferenceKeys.Companion.PREVIOUS_AUTH_USER
 import com.mi.mvi.data.repository.BaseRepository
 import com.mi.mvi.data.repository.NetworkBoundResource
-import com.mi.mvi.data.response_handler.DataState
+import com.mi.mvi.data.response_handler.*
 import com.mi.mvi.data.response_handler.ErrorConstants.Companion.SUCCESS_CODE
-import com.mi.mvi.data.response_handler.ErrorHandler
-import com.mi.mvi.data.response_handler.Response
-import com.mi.mvi.data.response_handler.ResponseView
 import com.mi.mvi.data.session.SessionManager
 import com.mi.mvi.ui.auth.state.AuthViewState
 import com.mi.mvi.ui.auth.state.LoginFields
@@ -53,30 +50,34 @@ class AuthRepository(
                 }
 
                 override suspend fun handleSuccess(response: LoginResponse) {
-                    accountDao.insertOrIgnore(Account(response.pk, response.email, ""))
-                    val result = authTokenDao.insert(AuthToken(response.pk, response.token))
-                    if (result < 0) {
-                        emit(
-                            DataState.ERROR(
-                                Response(
-                                    R.string.error_something_went_wrong,
-                                    ResponseView.DIALOG()
-                                )
-                            )
-                        )
-                    } else {
-                        saveAuthUserToPrefs(response.email)
-                        emit(
-                            DataState.SUCCESS(
-                                AuthViewState(
-                                    authToken = AuthToken(
-                                        account_pk = response.pk,
-                                        token = response.token
+                    if (response.response != ErrorConstants.GENERIC_AUTH_ERROR) {
+                        accountDao.insertOrIgnore(AccountProperties(response.pk, response.email, ""))
+                        val result = authTokenDao.insert(AuthToken(response.pk, response.token))
+                        if (result < 0) {
+                            emit(
+                                    DataState.ERROR(
+                                            Response(
+                                                    R.string.error_something_went_wrong,
+                                                    ResponseView.DIALOG()
+                                            )
                                     )
-                                )
                             )
-                        )
+                        } else {
+                            saveAuthUserToPrefs(response.email)
+                            emit(
+                                    DataState.SUCCESS(
+                                            AuthViewState(
+                                                    authToken = AuthToken(
+                                                            account_pk = response.pk,
+                                                            token = response.token
+                                                    )
+                                            )
+                                    )
+                            )
 
+                        }
+                    } else {
+                        emit(errorHandler.invoke(message = response.errorMessage))
                     }
                 }
 
@@ -111,7 +112,7 @@ class AuthRepository(
                     }
 
                     override suspend fun handleSuccess(response: RegisterResponse) {
-                        accountDao.insertOrIgnore(Account(response.pk, response.email, ""))
+                        accountDao.insertOrIgnore(AccountProperties(response.pk, response.email, ""))
                         val result = authTokenDao.insert(AuthToken(response.pk, response.token))
                         if (result < 0) {
                             emit(
