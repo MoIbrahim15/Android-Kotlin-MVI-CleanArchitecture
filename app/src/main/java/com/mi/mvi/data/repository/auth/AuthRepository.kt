@@ -14,7 +14,6 @@ import com.mi.mvi.data.preference.SharedPreferenceKeys.Companion.PREVIOUS_AUTH_U
 import com.mi.mvi.data.repository.BaseRepository
 import com.mi.mvi.data.repository.NetworkBoundResource
 import com.mi.mvi.data.response_handler.*
-import com.mi.mvi.data.response_handler.ErrorConstants.Companion.SUCCESS_CODE
 import com.mi.mvi.data.session.SessionManager
 import com.mi.mvi.ui.auth.state.AuthViewState
 import com.mi.mvi.ui.auth.state.LoginFields
@@ -23,6 +22,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+
 
 @ExperimentalCoroutinesApi
 class AuthRepository(
@@ -36,57 +36,61 @@ class AuthRepository(
 ) : BaseRepository() {
 
     fun login(email: String, password: String): Flow<DataState<AuthViewState>> = flow {
-        val loginError = LoginFields(email, password).loginError()
-        if (loginError != SUCCESS_CODE) {
-            emit(DataState.ERROR(Response(loginError, ResponseView.DIALOG())))
-        } else {
-            val networkBoundResource = object : NetworkBoundResource<LoginResponse, AuthViewState>(
-                errorHandler,
-                sessionManager.isConnectedToInternet(),
-                true
-            ) {
-                override suspend fun createNetworkRequest(): LoginResponse {
-                    return apiService.login(email, password)
-                }
+        val loginFieldErrors = LoginFields(email, password).isValidForLogin()
+        if (loginFieldErrors == LoginFields.LoginError.none()) {
+            val networkBoundResource =
+                object : NetworkBoundResource<LoginResponse, LoginResponse, AuthViewState>(
+                    apiCall = { apiService.login(email, password) },
+                    cacheCall = null,
+                    errorHandler = errorHandler,
+                    isNetworkAvailable = sessionManager.isConnectedToInternet()
+                ) {
 
-                override suspend fun handleSuccess(response: LoginResponse) {
-                    if (response.response != ErrorConstants.GENERIC_AUTH_ERROR) {
-                        accountDao.insertOrIgnore(AccountProperties(response.pk, response.email, ""))
-                        val result = authTokenDao.insert(AuthToken(response.pk, response.token))
-                        if (result < 0) {
-                            emit(
+                    override suspend fun handleNetworkSuccess(response: LoginResponse) {
+                        if (response.response != ErrorConstants.GENERIC_AUTH_ERROR) {
+                            accountDao.insertOrIgnore(
+                                AccountProperties(
+                                    response.pk,
+                                    response.email,
+                                    response
+                                )
+                            )
+                            val result = authTokenDao.insert(AuthToken(response.pk, response.token))
+                            if (result < 0) {
+                                emit(
                                     DataState.ERROR(
-                                            Response(
-                                                    R.string.error_something_went_wrong,
-                                                    ResponseView.DIALOG()
-                                            )
+                                        Response(
+                                            R.string.error_something_went_wrong,
+                                            ResponseView.DIALOG()
+                                        )
                                     )
-                            )
-                        } else {
-                            saveAuthUserToPrefs(response.email)
-                            emit(
+                                )
+                            } else {
+                                saveAuthUserToPrefs(response.email)
+                                emit(
                                     DataState.SUCCESS(
-                                            AuthViewState(
-                                                    authToken = AuthToken(
-                                                            account_pk = response.pk,
-                                                            token = response.token
-                                                    )
+                                        AuthViewState(
+                                            authToken = AuthToken(
+                                                account_pk = response.pk,
+                                                token = response.token
                                             )
+                                        )
                                     )
-                            )
+                                )
 
+                            }
+                        } else {
+                            emit(errorHandler.invoke(message = response.errorMessage))
                         }
-                    } else {
-                        emit(errorHandler.invoke(message = response.errorMessage))
+                    }
+
+                    override suspend fun handleCacheSuccess(response: LoginResponse?) {
+
                     }
                 }
-
-                override suspend fun createCacheRequest() {
-
-                }
-
-            }
             emitAll(networkBoundResource.call())
+        } else {
+            emit(DataState.ERROR(Response(loginFieldErrors, ResponseView.DIALOG())))
         }
     }
 
@@ -97,22 +101,26 @@ class AuthRepository(
         password: String,
         confirmPassword: String
     ): Flow<DataState<AuthViewState>> = flow {
-        val registerError = RegistrationFields(email, username, password, confirmPassword).registerError()
-        if (registerError != SUCCESS_CODE) {
-            emit(DataState.ERROR(Response(registerError, ResponseView.DIALOG())))
-        } else {
+        val registrationFieldErrors =
+            RegistrationFields(email, username, password, confirmPassword).isValidForRegistration()
+        if (registrationFieldErrors == RegistrationFields.RegistrationError.none()) {
             val networkBoundResource =
-                object : NetworkBoundResource<RegisterResponse, AuthViewState>(
-                    errorHandler,
-                    sessionManager.isConnectedToInternet(),
-                    true
+                object : NetworkBoundResource<RegisterResponse, RegisterResponse, AuthViewState>(
+                    apiCall = { apiService.register(email, username, password, confirmPassword) },
+                    cacheCall = null,
+                    errorHandler = errorHandler,
+                    isNetworkAvailable = sessionManager.isConnectedToInternet()
                 ) {
-                    override suspend fun createNetworkRequest(): RegisterResponse {
-                        return apiService.register(email, username, password, confirmPassword)
-                    }
 
-                    override suspend fun handleSuccess(response: RegisterResponse) {
-                        accountDao.insertOrIgnore(AccountProperties(response.pk, response.email, ""))
+
+                    override suspend fun handleNetworkSuccess(response: RegisterResponse) {
+                        accountDao.insertOrIgnore(
+                            AccountProperties(
+                                response.pk,
+                                response.email,
+                                ""
+                            )
+                        )
                         val result = authTokenDao.insert(AuthToken(response.pk, response.token))
                         if (result < 0) {
                             emit(
@@ -138,45 +146,43 @@ class AuthRepository(
                         }
                     }
 
-                    override suspend fun createCacheRequest() {
+
+                    override suspend fun handleCacheSuccess(response: RegisterResponse?) {
 
                     }
 
                 }
             emitAll(networkBoundResource.call())
+        } else {
+            emit(DataState.ERROR(Response(registrationFieldErrors, ResponseView.DIALOG())))
         }
     }
 
     fun checkPreviousAuthUser(): Flow<DataState<AuthViewState>> = flow {
         val previousAuthUserEmail = sharedPreferences.getString(PREVIOUS_AUTH_USER, null)
-        previousAuthUserEmail?.let {
-            val networkBoundResource = object : NetworkBoundResource<BaseResponse, AuthViewState>(
-                errorHandler,
-                sessionManager.isConnectedToInternet(),
-                false
-            ) {
-
-                override suspend fun createCacheRequest() {
-                    accountDao.searchByEmail(previousAuthUserEmail)?.let { account ->
-                        if (account.pk > -1) {
-                            authTokenDao.searchByPk(account.pk)?.let { authToken ->
-                                emit(DataState.SUCCESS(AuthViewState(authToken = authToken)))
+            val networkBoundResource =
+                object : NetworkBoundResource<BaseResponse, AccountProperties, AuthViewState>(
+                    apiCall = null,
+                    cacheCall = { accountDao.searchByEmail(previousAuthUserEmail!!) },
+                    errorHandler = errorHandler,
+                    isNetworkAvailable = sessionManager.isConnectedToInternet()
+                ) {
+                    override suspend fun handleCacheSuccess(response: AccountProperties?) {
+                        response?.let { account ->
+                            if (account.pk > -1) {
+                                authTokenDao.searchByPk(account.pk)?.let { authToken ->
+                                    emit(DataState.SUCCESS(AuthViewState(authToken = authToken)))
+                                }
                             }
                         }
                     }
-                }
 
-                override suspend fun createNetworkRequest(): BaseResponse? {
-                    return null
-                }
+                    override suspend fun handleNetworkSuccess(response: BaseResponse) {
 
-                override suspend fun handleSuccess(response: BaseResponse) {
+                    }
 
                 }
-
-            }
             emitAll(networkBoundResource.call())
-        }
     }
 
     private fun saveAuthUserToPrefs(email: String) {

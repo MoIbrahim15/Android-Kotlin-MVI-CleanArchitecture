@@ -12,18 +12,20 @@ import com.mi.mvi.ui.main.account.state.AccountEventState
 import com.mi.mvi.ui.main.account.state.AccountEventState.*
 import com.mi.mvi.ui.main.account.state.AccountViewState
 import com.mi.mvi.utils.AbsentLiveData
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class AccountViewModel(
-    val sessionManager: SessionManager,
-    val accountUseCase: GetAccountUseCase,
-    val updateAccountUseCase: UpdateAccountUseCase,
-    val changePasswordUseCase: ChangePasswordUseCase
+    private val sessionManager: SessionManager,
+    private val accountUseCase: GetAccountUseCase,
+    private val updateAccountUseCase: UpdateAccountUseCase,
+    private val changePasswordUseCase: ChangePasswordUseCase
 ) : BaseViewModel<AccountEventState, AccountViewState>() {
 
     override fun handleEventState(eventState: AccountEventState): LiveData<DataState<AccountViewState>> {
         return when (eventState) {
             is GetAccountEvent -> {
-                AbsentLiveData.create()
+                sessionManager.cachedToken.value?.let { accountUseCase.invoke(it) }?:AbsentLiveData.create()
             }
             is ChangePasswordEvent -> {
                 AbsentLiveData.create()
@@ -50,7 +52,7 @@ class AccountViewModel(
         }
     }
 
-    fun logout(){
+    fun logout() {
         sessionManager.logout()
     }
 }

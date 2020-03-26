@@ -17,17 +17,35 @@ data class RegistrationFields(
     var password: String? = null,
     var confirmPassword: String? = null
 ) {
-    fun registerError(): Int {
+
+    class RegistrationError {
+        companion object{
+
+            fun mustFillAllFields(): Int{
+                return  R.string.error_all_fields_are_required
+            }
+
+            fun passwordsDoNotMatch(): Int{
+                return R.string.error_passwords_must_same
+            }
+
+            fun none():Int{
+                return SUCCESS_CODE
+            }
+
+        }
+    }
+    fun isValidForRegistration(): Int {
         return if (email.isNullOrEmpty()
             || username.isNullOrEmpty()
             || password.isNullOrEmpty()
             || confirmPassword.isNullOrEmpty()
         ) {
-            R.string.error_all_fields_are_required
+            RegistrationError.mustFillAllFields()
         } else if (!password.equals(confirmPassword)) {
-            R.string.error_passwords_must_same
+            RegistrationError.passwordsDoNotMatch()
         } else {
-            SUCCESS_CODE
+            RegistrationError.none()
         }
     }
 }
@@ -36,11 +54,22 @@ data class LoginFields(
     var email: String? = null,
     var password: String? = null
 ) {
-    fun loginError(): Int {
-        return if (email.isNullOrEmpty()
-            || password.isNullOrEmpty()
-        ) {
-            R.string.error_all_fields_are_required
-        } else SUCCESS_CODE
+
+    class LoginError {
+        companion object {
+            fun mustFillAllFields(): Int {
+                return R.string.error_all_fields_are_required
+            }
+
+            fun none(): Int {
+                return SUCCESS_CODE
+            }
+        }
+    }
+
+    fun isValidForLogin(): Int {
+        return if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
+            LoginError.mustFillAllFields()
+        } else LoginError.none()
     }
 }

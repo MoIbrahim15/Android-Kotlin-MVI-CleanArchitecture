@@ -6,4 +6,5 @@ import com.mi.mvi.data.models.AccountProperties
 class AccountViewState(
     var accountProperties : AccountProperties? = null
 ) {
+
 }
