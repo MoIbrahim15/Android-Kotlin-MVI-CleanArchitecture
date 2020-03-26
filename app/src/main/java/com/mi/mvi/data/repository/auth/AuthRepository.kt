@@ -52,7 +52,7 @@ class AuthRepository(
                                 AccountProperties(
                                     response.pk,
                                     response.email,
-                                    response
+                                    ""
                                 )
                             )
                             val result = authTokenDao.insert(AuthToken(response.pk, response.token))
