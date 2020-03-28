@@ -25,14 +25,27 @@ class AccountViewModel(
     override fun handleEventState(eventState: AccountEventState): LiveData<DataState<AccountViewState>> {
         return when (eventState) {
             is GetAccountEvent -> {
-                sessionManager.cachedToken.value?.let { accountUseCase.invoke(it) }?:AbsentLiveData.create()
+                sessionManager.cachedToken.value?.let { accountUseCase.invoke(it) }
+                    ?: AbsentLiveData.create()
+            }
+            is UpdateAccountEvent -> {
+                sessionManager.cachedToken.value?.let { authToken ->
+                    authToken.account_pk?.let { pk ->
+                        updateAccountUseCase.invoke(
+                            authToken,
+                            AccountProperties(
+                                pk,
+                                eventState.email,
+                                eventState.username
+                            )
+                        )
+                    }
+
+                } ?: AbsentLiveData.create()
             }
             is ChangePasswordEvent -> {
                 AbsentLiveData.create()
 
-            }
-            is UpdateAccountEvent -> {
-                AbsentLiveData.create()
             }
             is None -> {
                 AbsentLiveData.create()

@@ -12,6 +12,7 @@ import com.mi.mvi.ui.BaseActivity
 import com.mi.mvi.ui.BottomNavController
 import com.mi.mvi.ui.BottomNavController.*
 import com.mi.mvi.ui.auth.AuthActivity
+import com.mi.mvi.ui.main.account.AccountViewModel
 import com.mi.mvi.ui.main.account.ChangePasswordFragment
 import com.mi.mvi.ui.main.account.UpdateAccountFragment
 import com.mi.mvi.ui.main.blog.UpdateBlogFragment
@@ -19,16 +20,20 @@ import com.mi.mvi.ui.main.blog.ViewBlogFragment
 import com.mi.mvi.ui.setUpNavigation
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.android.scope.currentScope
+import org.koin.android.viewmodel.ext.android.getViewModel
 
 
 const val BOTTOM_NAV_BACKSTACK_KEY =
-    "com.codingwithmitch.openapi.util.BottomNavController.bottom_nav_backstack"
+    "com.mi.mvi.BottomNavController.bottom_nav_backstack"
 
 @ExperimentalCoroutinesApi
 class MainActivity : BaseActivity(R.layout.activity_main),
     NavGraphProvider,
     OnNavigationGraphChanged,
     OnNavigationReselectedListener {
+
+    private lateinit var accountViewModel: AccountViewModel
 
     private val bottomNavController by lazy(LazyThreadSafetyMode.NONE) {
         BottomNavController(
@@ -88,6 +93,7 @@ class MainActivity : BaseActivity(R.layout.activity_main),
         setupBottomNavigationView(savedInstanceState)
 
         subscriberObservers()
+        accountViewModel = currentScope.getViewModel(this)
     }
 
     private fun setupBottomNavigationView(savedInstanceState: Bundle?) {

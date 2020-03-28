@@ -43,7 +43,8 @@ class AuthRepository(
                     apiCall = { apiService.login(email, password) },
                     cacheCall = null,
                     errorHandler = errorHandler,
-                    isNetworkAvailable = sessionManager.isConnectedToInternet()
+                    isNetworkAvailable = sessionManager.isConnectedToInternet(),
+                    canWorksOffline = false
                 ) {
 
                     override suspend fun handleNetworkSuccess(response: LoginResponse) {
@@ -109,7 +110,8 @@ class AuthRepository(
                     apiCall = { apiService.register(email, username, password, confirmPassword) },
                     cacheCall = null,
                     errorHandler = errorHandler,
-                    isNetworkAvailable = sessionManager.isConnectedToInternet()
+                    isNetworkAvailable = sessionManager.isConnectedToInternet(),
+                    canWorksOffline = false
                 ) {
 
 
@@ -165,7 +167,8 @@ class AuthRepository(
                     apiCall = null,
                     cacheCall = { accountDao.searchByEmail(previousAuthUserEmail!!) },
                     errorHandler = errorHandler,
-                    isNetworkAvailable = sessionManager.isConnectedToInternet()
+                    isNetworkAvailable = sessionManager.isConnectedToInternet(),
+                    canWorksOffline = false
                 ) {
                     override suspend fun handleCacheSuccess(response: AccountProperties?) {
                         response?.let { account ->
