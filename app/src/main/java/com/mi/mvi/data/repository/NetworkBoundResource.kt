@@ -23,7 +23,7 @@ abstract class NetworkBoundResource<NetworkObj, CacheObj, ViewState>(
         emit(DataState.LOADING(isLoading = true))
 
         if (cacheCall != null) {
-            val cacheResponse = cacheCall.invoke()
+            val cacheResponse = cacheCall?.invoke()
             handleCacheSuccess(cacheResponse)
         }
         if (apiCall != null) {

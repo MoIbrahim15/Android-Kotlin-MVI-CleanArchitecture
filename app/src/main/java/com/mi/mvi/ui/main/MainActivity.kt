@@ -15,6 +15,7 @@ import com.mi.mvi.ui.auth.AuthActivity
 import com.mi.mvi.ui.main.account.AccountViewModel
 import com.mi.mvi.ui.main.account.ChangePasswordFragment
 import com.mi.mvi.ui.main.account.UpdateAccountFragment
+import com.mi.mvi.ui.main.blog.BlogViewModel
 import com.mi.mvi.ui.main.blog.UpdateBlogFragment
 import com.mi.mvi.ui.main.blog.ViewBlogFragment
 import com.mi.mvi.ui.setUpNavigation
@@ -34,6 +35,7 @@ class MainActivity : BaseActivity(R.layout.activity_main),
     OnNavigationReselectedListener {
 
     private lateinit var accountViewModel: AccountViewModel
+    private lateinit var blogViewModel: BlogViewModel
 
     private val bottomNavController by lazy(LazyThreadSafetyMode.NONE) {
         BottomNavController(
@@ -94,6 +96,7 @@ class MainActivity : BaseActivity(R.layout.activity_main),
 
         subscriberObservers()
         accountViewModel = currentScope.getViewModel(this)
+        blogViewModel = currentScope.getViewModel(this)
     }
 
     private fun setupBottomNavigationView(savedInstanceState: Bundle?) {

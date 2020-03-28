@@ -14,7 +14,8 @@ val databaseModule = module {
             AppDatabase.DATABASE_NAME
         ).build()
     }
-    single { get<AppDatabase>().getAccountDao() }
     single { get<AppDatabase>().getAuthTokenDao() }
+    single { get<AppDatabase>().getAccountDao() }
+    single { get<AppDatabase>().getBlogPostDao() }
     single { SessionManager(get(), androidContext()) }
 }

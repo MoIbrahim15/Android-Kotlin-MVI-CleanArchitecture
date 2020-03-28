@@ -162,10 +162,11 @@ class AuthRepository(
 
     fun checkPreviousAuthUser(): Flow<DataState<AuthViewState>> = flow {
         val previousAuthUserEmail = sharedPreferences.getString(PREVIOUS_AUTH_USER, null)
+        if (previousAuthUserEmail != null) {
             val networkBoundResource =
                 object : NetworkBoundResource<BaseResponse, AccountProperties, AuthViewState>(
                     apiCall = null,
-                    cacheCall = { accountDao.searchByEmail(previousAuthUserEmail!!) },
+                    cacheCall = { accountDao.searchByEmail(previousAuthUserEmail) },
                     errorHandler = errorHandler,
                     isNetworkAvailable = sessionManager.isConnectedToInternet(),
                     canWorksOffline = false
@@ -186,6 +187,7 @@ class AuthRepository(
 
                 }
             emitAll(networkBoundResource.call())
+        }
     }
 
     private fun saveAuthUserToPrefs(email: String) {

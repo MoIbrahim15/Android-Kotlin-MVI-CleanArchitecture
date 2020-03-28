@@ -9,10 +9,12 @@ import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
 import com.mi.mvi.ui.BaseFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
 class ViewBlogFragment : BaseFragment(R.layout.fragment_view_blog) {
 
+    private val blogViewModel: BlogViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
