@@ -12,13 +12,12 @@ import com.mi.mvi.ui.BaseFragment
 import com.mi.mvi.ui.main.account.state.AccountEventState
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.android.scope.currentScope
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
 class AccountFragment : BaseFragment(R.layout.fragment_account) {
 
-    private val accountViewModel: AccountViewModel by currentScope.viewModel(this)
+    private val accountViewModel: AccountViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

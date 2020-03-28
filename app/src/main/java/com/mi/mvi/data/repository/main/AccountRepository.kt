@@ -1,5 +1,6 @@
 package com.mi.mvi.data.repository.main
 
+import com.mi.mvi.R
 import com.mi.mvi.data.database.AccountDao
 import com.mi.mvi.data.models.AccountProperties
 import com.mi.mvi.data.models.AuthToken
@@ -8,7 +9,10 @@ import com.mi.mvi.data.network.responses.BaseResponse
 import com.mi.mvi.data.repository.BaseRepository
 import com.mi.mvi.data.repository.NetworkBoundResource
 import com.mi.mvi.data.response_handler.DataState
+import com.mi.mvi.data.response_handler.ErrorConstants.Companion.RESPONSE_PASSWORD_UPDATE_SUCCESS
 import com.mi.mvi.data.response_handler.ErrorHandler
+import com.mi.mvi.data.response_handler.Response
+import com.mi.mvi.data.response_handler.ResponseView
 import com.mi.mvi.data.session.SessionManager
 import com.mi.mvi.ui.main.account.state.AccountViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -75,14 +79,64 @@ class AccountRepository(
                     accountProperties.email,
                     accountProperties.username
                 )
-
-                emit(DataState.LOADING(isLoading = false, cachedData = null))
+                if (response.response == RESPONSE_PASSWORD_UPDATE_SUCCESS)
+                    emit(
+                        DataState.SUCCESS(
+                            data = null,
+                            response = Response(R.string.text_success, ResponseView.TOAST())
+                        )
+                    )
+                else {
+                    emit(
+                        DataState.ERROR(
+                            response = Response(R.string.error_something_went_wrong, ResponseView.TOAST())
+                        )
+                    )
+                }
             }
 
             override suspend fun handleCacheSuccess(response: Any?) {
 
             }
         }
+        emitAll(networkBoundResource.call())
+    }
+
+    fun changePassword(
+        authToken: AuthToken,
+        currentPassword: String,
+        newPassword: String,
+        confirmNewPassword: String
+    ): Flow<DataState<AccountViewState>> = flow {
+        val networkBoundResource =
+            object : NetworkBoundResource<BaseResponse, Any, AccountViewState>(
+                apiCall = {
+                    apiService.changePassword(
+                        "Token ${authToken.token}",
+                        currentPassword,
+                        newPassword, confirmNewPassword
+                    )
+                },
+                cacheCall = null,
+                errorHandler = errorHandler,
+                isNetworkAvailable = sessionManager.isConnectedToInternet(),
+                canWorksOffline = false
+            ) {
+                override suspend fun handleNetworkSuccess(response: BaseResponse) {
+                    emit(
+                        DataState.SUCCESS(
+                            data = null,
+                            response = Response(R.string.text_success, ResponseView.TOAST())
+                        )
+                    )
+                }
+
+                override suspend fun handleCacheSuccess(response: Any?) {
+
+                }
+
+            }
+
         emitAll(networkBoundResource.call())
     }
 }

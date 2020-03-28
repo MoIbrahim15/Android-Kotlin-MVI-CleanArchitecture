@@ -44,8 +44,15 @@ class AccountViewModel(
                 } ?: AbsentLiveData.create()
             }
             is ChangePasswordEvent -> {
-                AbsentLiveData.create()
-
+                sessionManager.cachedToken.value?.let { authToken ->
+                    changePasswordUseCase.invoke(
+                        authToken,
+                        eventState.currentPassword,
+                        eventState.newPassword,
+                        eventState.confirmNewPassword
+                    )
+                }
+                    ?: AbsentLiveData.create()
             }
             is None -> {
                 AbsentLiveData.create()

@@ -7,5 +7,7 @@ class ErrorConstants {
 
         const val INVALID_CREDENTIALS = "Invalid credentials"
         const val USERNAME_EXISTS = "That username is already in use."
+        const val RESPONSE_PASSWORD_UPDATE_SUCCESS = "successfully changed password"
+
     }
 }

@@ -19,4 +19,14 @@ interface MainApiService {
         @Field("email") email: String,
         @Field("username") username: String
     ): BaseResponse
+
+
+    @PUT("account/change_password/")
+    @FormUrlEncoded
+    suspend fun changePassword(
+            @Header("Authorization") authorization: String,
+            @Field("old_password") currentPassword: String,
+            @Field("new_password") newPassword: String,
+            @Field("confirm_new_password") confirmNewPassword: String
+    ): BaseResponse
 }
