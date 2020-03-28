@@ -29,6 +29,7 @@
                 android:id="@+id/input_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="flagNoExtractUi"
                 android:inputType="textEmailAddress"
                 android:textColor="#000" />
 
@@ -51,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:imeOptions="flagNoExtractUi"
                 android:inputType="text"
                 android:textColor="#000" />
 

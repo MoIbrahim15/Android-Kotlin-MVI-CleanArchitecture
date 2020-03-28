@@ -34,11 +34,12 @@ class ChangePasswordFragment : BaseFragment(R.layout.fragment_change_password) {
 
     private fun subscribeObservers() {
         accountViewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            dataStateChanged?.onDataStateChangeListener(dataState)
+            dataStateChangeListener?.onDataStateChangeListener(dataState)
 
             dataState.data?.let {
                 it.response?.peekContent()?.let { content ->
                     if (content.messageRes == R.string.text_success) {
+                        dataStateChangeListener?.hideSoftKeyboard()
                         findNavController().popBackStack()
                     }
                 }

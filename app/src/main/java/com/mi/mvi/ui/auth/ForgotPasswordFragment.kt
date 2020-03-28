@@ -31,7 +31,7 @@ class ForgetPasswordFragment : BaseFragment(R.layout.fragment_forget_password) {
 
             override fun onError(errorMessage: String) {
                 GlobalScope.launch(Main) {
-                    dataStateChanged?.onDataStateChangeListener(
+                    dataStateChangeListener?.onDataStateChangeListener(
                         dataState = DataState.ERROR<Any>(
                             response = Response(
                                 R.string.error_something_went_wrong,
@@ -44,7 +44,7 @@ class ForgetPasswordFragment : BaseFragment(R.layout.fragment_forget_password) {
 
             override fun onLoading(isLoading: Boolean) {
                 GlobalScope.launch(Main) {
-                    dataStateChanged?.onDataStateChangeListener(
+                    dataStateChangeListener?.onDataStateChangeListener(
                         DataState.LOADING(isLoading, cachedData = null)
                     )
                 }
@@ -73,14 +73,14 @@ class ForgetPasswordFragment : BaseFragment(R.layout.fragment_forget_password) {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun loadPasswordResetView() {
-        dataStateChanged?.onDataStateChangeListener(
+        dataStateChangeListener?.onDataStateChangeListener(
             DataState.LOADING(true, cachedData = null)
         )
 
         webview.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-                dataStateChanged?.onDataStateChangeListener(
+                dataStateChangeListener?.onDataStateChangeListener(
                     DataState.LOADING(
                         false,
                         cachedData = null

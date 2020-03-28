@@ -14,7 +14,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 abstract class BaseFragment(val contentLayoutId: Int) : Fragment(contentLayoutId) {
 
-    protected var dataStateChanged: DataStateChangeListener? = null
+    protected var dataStateChangeListener: DataStateChangeListener? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,7 +35,7 @@ abstract class BaseFragment(val contentLayoutId: Int) : Fragment(contentLayoutId
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            dataStateChanged = context as DataStateChangeListener
+            dataStateChangeListener = context as DataStateChangeListener
         } catch (e: ClassCastException) {
 
         }

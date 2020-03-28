@@ -28,7 +28,7 @@ class UpdateAccountFragment : BaseFragment(R.layout.fragment_update_account) {
 
     private fun subscribeObservers() {
         accountViewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            dataStateChanged?.onDataStateChangeListener(dataState)
+            dataStateChangeListener?.onDataStateChangeListener(dataState)
 
         })
 
@@ -54,6 +54,7 @@ class UpdateAccountFragment : BaseFragment(R.layout.fragment_update_account) {
                 input_username.text.toString()
             )
         )
+        dataStateChangeListener?.hideSoftKeyboard()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

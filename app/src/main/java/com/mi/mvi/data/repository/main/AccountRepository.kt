@@ -79,20 +79,13 @@ class AccountRepository(
                     accountProperties.email,
                     accountProperties.username
                 )
-                if (response.response == RESPONSE_PASSWORD_UPDATE_SUCCESS)
-                    emit(
-                        DataState.SUCCESS(
-                            data = null,
-                            response = Response(R.string.text_success, ResponseView.TOAST())
-                        )
+                emit(
+                    DataState.SUCCESS(
+                        data = null,
+                        response = Response(R.string.text_success, ResponseView.TOAST())
                     )
-                else {
-                    emit(
-                        DataState.ERROR(
-                            response = Response(R.string.error_something_went_wrong, ResponseView.TOAST())
-                        )
-                    )
-                }
+                )
+
             }
 
             override suspend fun handleCacheSuccess(response: Any?) {
@@ -123,12 +116,21 @@ class AccountRepository(
                 canWorksOffline = false
             ) {
                 override suspend fun handleNetworkSuccess(response: BaseResponse) {
-                    emit(
-                        DataState.SUCCESS(
-                            data = null,
-                            response = Response(R.string.text_success, ResponseView.TOAST())
+
+                    if (response.response == RESPONSE_PASSWORD_UPDATE_SUCCESS)
+                        emit(
+                            DataState.SUCCESS(
+                                data = null,
+                                response = Response(R.string.text_success, ResponseView.TOAST())
+                            )
                         )
-                    )
+                    else {
+                        emit(
+                            DataState.ERROR(
+                                response = Response(R.string.error_something_went_wrong, ResponseView.TOAST())
+                            )
+                        )
+                    }
                 }
 
                 override suspend fun handleCacheSuccess(response: Any?) {
