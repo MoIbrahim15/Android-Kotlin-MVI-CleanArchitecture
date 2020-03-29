@@ -14,6 +14,6 @@ data class BlogViewState(
 
 
 data class BlogFields(
-    var blogs: MutableList<BlogPost> = mutableListOf(),
+    var blogList: MutableList<BlogPost> = mutableListOf(),
     var searchQuery : String = ""
 )

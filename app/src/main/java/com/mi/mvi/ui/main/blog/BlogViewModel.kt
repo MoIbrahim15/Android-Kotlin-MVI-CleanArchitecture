@@ -46,7 +46,7 @@ class BlogViewModel(
 
     fun setBlogList(blogList: MutableList<BlogPost>) {
         val update = getCurrentViewStateOrNew()
-        update.blogsFields.blogs = blogList
+        update.blogsFields.blogList = blogList
         _viewState.value = update
     }
 
