@@ -50,7 +50,7 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog), BlogListAdapter.Inter
 
         })
 
-        blogViewModel.viewState.observe(viewLifecycleOwner, Observer {viewState->
+        blogViewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             viewState?.let {
                 recyclerAdapter.submitList(
                     list = viewState.blogsFields.blogList,
@@ -69,7 +69,8 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog), BlogListAdapter.Inter
             addItemDecoration(topSpacingItemDecoration)
 
             recyclerAdapter = BlogListAdapter(
-                interaction = this@BlogFragment)
+                interaction = this@BlogFragment
+            )
 
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -93,7 +94,7 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog), BlogListAdapter.Inter
     }
 
     override fun onItemSelected(position: Int, item: BlogPost) {
-        Log.d("OnItemSelected", "item is $position + $item")
+        blogViewModel.setBlogPost(item)
         findNavController().navigate(R.id.action_blogFragment_to_viewBlogFragment)
     }
 }

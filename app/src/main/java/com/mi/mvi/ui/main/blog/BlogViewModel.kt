@@ -30,6 +30,9 @@ class BlogViewModel(
                     }
                 } ?: AbsentLiveData.create()
             }
+            is BlogEventState.CheckAuthorBlogPostEvent ->{
+                AbsentLiveData.create()
+            }
             is BlogEventState.None -> {
                 AbsentLiveData.create()
             }
@@ -38,15 +41,25 @@ class BlogViewModel(
 
     fun setQuery(query: String) {
         val update = getCurrentViewStateOrNew()
-//        if (query != update.blogsFields.searchQuery) {
             update.blogsFields.searchQuery = query
             _viewState.value = update
-//        }
     }
 
     fun setBlogList(blogList: MutableList<BlogPost>) {
         val update = getCurrentViewStateOrNew()
         update.blogsFields.blogList = blogList
+        _viewState.value = update
+    }
+
+    fun setBlogPost(blogPost: BlogPost) {
+        val update = getCurrentViewStateOrNew()
+        update.viewBlogFields.blogPost = blogPost
+        _viewState.value = update
+    }
+
+    fun setIsAuthorOfBlogPost(isAuthor: Boolean) {
+        val update = getCurrentViewStateOrNew()
+        update.viewBlogFields.isAuthor = isAuthor
         _viewState.value = update
     }
 
