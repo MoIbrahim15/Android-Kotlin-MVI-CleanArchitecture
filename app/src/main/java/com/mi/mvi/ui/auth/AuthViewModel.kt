@@ -37,6 +37,14 @@ class AuthViewModel(
             is CheckTokenEvent -> {
                 checkTokenUseCase.invoke()
             }
+            is None -> {
+                object : LiveData<DataState<AuthViewState>>() {
+                    override fun onActive() {
+                        super.onActive()
+                        value = DataState.LOADING(false)
+                    }
+                }
+            }
         }
     }
 

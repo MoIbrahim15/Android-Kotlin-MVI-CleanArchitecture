@@ -1,7 +1,6 @@
 package com.mi.mvi.ui.main.blog
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -9,8 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mi.mvi.R
 import com.mi.mvi.data.models.BlogPost
+import com.mi.mvi.data.response_handler.DataState
 import com.mi.mvi.ui.BaseFragment
-import com.mi.mvi.ui.main.blog.state.BlogEventState
+import com.mi.mvi.ui.main.blog.state.BlogViewState
+import com.mi.mvi.ui.main.blog.viewmodel.*
+import com.mi.mvi.utils.Constants.Companion.PAGINATION_PAGE_SIZE
 import com.mi.mvi.utils.TopSpacingItemDecoration
 import kotlinx.android.synthetic.main.fragment_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,39 +27,56 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog), BlogListAdapter.Inter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        subscribeObservers()
-        executeSearch()
         initRecyclerView()
+        subscribeObservers()
+        if (savedInstanceState == null) {
+            blogViewModel.loadFirstPage()
+        }
     }
 
-
-    private fun executeSearch() {
-        blogViewModel.setQuery("")
-        blogViewModel.setStateEvent(BlogEventState.BlogSearchEvent())
-    }
 
     private fun subscribeObservers() {
         blogViewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
+            handlePagination(dataState)
             dataStateChangeListener?.onDataStateChangeListener(dataState)
-            dataState?.data?.let { data ->
-                data.data?.let { event ->
-                    event.getContentIfNotHandled()?.let {
-                        blogViewModel.setBlogList(it.blogsFields.blogList)
-                    }
-                }
-            }
-
         })
 
         blogViewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             viewState?.let {
+                if (blogViewModel.getPage() * PAGINATION_PAGE_SIZE > viewState.blogsFields.blogList.size){
+                    viewState.blogsFields.isQueryExhausted = true
+                }
                 recyclerAdapter.submitList(
                     list = viewState.blogsFields.blogList,
-                    isQueryExhausted = true
+                    isQueryExhausted = viewState.blogsFields.isQueryExhausted
                 )
             }
         })
+    }
+
+    private fun handlePagination(dataState: DataState<BlogViewState>?) {
+        //handle incomming data from data state
+        dataState?.data?.let { data ->
+            data.data?.let { event ->
+                event.getContentIfNotHandled()?.let {
+                    blogViewModel.handleIncomingBlogListData(it)
+                }
+            }
+        }
+
+        //check for pagination end
+        dataState?.error?.let { event ->
+            event.peekContent().response?.messageRes?.let {
+                if (it == R.string.invalid_page) {
+                    // handle the error message event so it doesn't display in UI
+                    event.getContentIfNotHandled()
+
+                    // set query exhausted to update RecyclerView with
+                    // "No more results..." list item
+                    blogViewModel.setQueryExhausted(true)
+                }
+            }
+        }
     }
 
 
@@ -78,8 +97,7 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog), BlogListAdapter.Inter
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val lastPosition = layoutManager.findLastVisibleItemPosition()
                     if (lastPosition == recyclerAdapter.itemCount.minus(1)) {
-                        Log.d("BlogFragment", "PAGINATION: ")
-                        //TODO pagination load next
+                        blogViewModel.nextPage()
                     }
                 }
             })

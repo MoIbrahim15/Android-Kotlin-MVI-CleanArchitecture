@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.mi.mvi.R
 import com.mi.mvi.data.models.BlogPost
 import com.mi.mvi.ui.BaseFragment
+import com.mi.mvi.ui.main.blog.viewmodel.BlogViewModel
 import com.mi.mvi.utils.DateUtils
 import kotlinx.android.synthetic.main.fragment_view_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi

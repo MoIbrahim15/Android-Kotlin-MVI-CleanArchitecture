@@ -22,7 +22,7 @@ class ChangePasswordFragment : BaseFragment(R.layout.fragment_change_password) {
         subscribeObservers()
 
         update_password_button.setOnClickListener {
-            accountViewModel.setStateEvent(
+            accountViewModel.setEventState(
                     AccountEventState.ChangePasswordEvent(
                             input_current_password.text.toString(),
                             input_new_password.text.toString(),

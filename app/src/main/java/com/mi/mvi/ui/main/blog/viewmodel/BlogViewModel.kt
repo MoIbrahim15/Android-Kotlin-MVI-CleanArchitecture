@@ -1,9 +1,8 @@
-package com.mi.mvi.ui.main.blog
+package com.mi.mvi.ui.main.blog.viewmodel
 
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import com.bumptech.glide.RequestManager
-import com.mi.mvi.data.models.BlogPost
 import com.mi.mvi.data.response_handler.DataState
 import com.mi.mvi.data.session.SessionManager
 import com.mi.mvi.domain.main.blogs.SearchBlogUseCase
@@ -25,42 +24,25 @@ class BlogViewModel(
         return when (eventState) {
             is BlogEventState.BlogSearchEvent -> {
                 sessionManager.cachedToken.value?.let { authToken ->
-                    viewState.value?.blogsFields?.searchQuery?.let { query ->
-                        searchBlogUseCase.invoke(authToken, query)
-                    }
+                    searchBlogUseCase.invoke(
+                        token = authToken,
+                        query = getSearchQuery(),
+                        page = getPage()
+                    )
                 } ?: AbsentLiveData.create()
             }
-            is BlogEventState.CheckAuthorBlogPostEvent ->{
+            is BlogEventState.CheckAuthorBlogPostEvent -> {
                 AbsentLiveData.create()
             }
             is BlogEventState.None -> {
-                AbsentLiveData.create()
+                object : LiveData<DataState<BlogViewState>>() {
+                    override fun onActive() {
+                        super.onActive()
+                        value = DataState.LOADING(false)
+                    }
+                }
             }
         }
-    }
-
-    fun setQuery(query: String) {
-        val update = getCurrentViewStateOrNew()
-            update.blogsFields.searchQuery = query
-            _viewState.value = update
-    }
-
-    fun setBlogList(blogList: MutableList<BlogPost>) {
-        val update = getCurrentViewStateOrNew()
-        update.blogsFields.blogList = blogList
-        _viewState.value = update
-    }
-
-    fun setBlogPost(blogPost: BlogPost) {
-        val update = getCurrentViewStateOrNew()
-        update.viewBlogFields.blogPost = blogPost
-        _viewState.value = update
-    }
-
-    fun setIsAuthorOfBlogPost(isAuthor: Boolean) {
-        val update = getCurrentViewStateOrNew()
-        update.viewBlogFields.isAuthor = isAuthor
-        _viewState.value = update
     }
 
     override fun initNewViewState(): BlogViewState {

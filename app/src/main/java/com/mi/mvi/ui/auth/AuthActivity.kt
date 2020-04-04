@@ -56,7 +56,7 @@ class AuthActivity : BaseActivity(R.layout.activity_auth) {
 
 
     private fun checkPreviousAuthUser(){
-        authViewModel.setStateEvent(AuthEventState.CheckTokenEvent())
+        authViewModel.setEventState(AuthEventState.CheckTokenEvent())
 
     }
 

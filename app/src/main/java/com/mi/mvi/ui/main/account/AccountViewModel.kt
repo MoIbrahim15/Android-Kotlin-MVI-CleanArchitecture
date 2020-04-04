@@ -55,7 +55,12 @@ class AccountViewModel(
                     ?: AbsentLiveData.create()
             }
             is None -> {
-                AbsentLiveData.create()
+                object : LiveData<DataState<AccountViewState>>() {
+                    override fun onActive() {
+                        super.onActive()
+                        value = DataState.LOADING(false)
+                    }
+                }
             }
         }
     }

@@ -21,7 +21,7 @@ abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity
             it.error?.getContentIfNotHandled()?.let { error ->
                 handleResponseState(error.response)
             }
-            it.data?.response?.getContentIfNotHandled().let { response ->
+            it.data?.response?.getContentIfNotHandled()?.let { response ->
                 handleResponseState(response)
             }
         }

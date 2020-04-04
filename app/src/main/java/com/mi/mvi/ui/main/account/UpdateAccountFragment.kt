@@ -48,7 +48,7 @@ class UpdateAccountFragment : BaseFragment(R.layout.fragment_update_account) {
     }
 
     private fun saveChanges() {
-        accountViewModel.setStateEvent(
+        accountViewModel.setEventState(
             AccountEventState.UpdateAccountEvent(
                 input_email.text.toString(),
                 input_username.text.toString()

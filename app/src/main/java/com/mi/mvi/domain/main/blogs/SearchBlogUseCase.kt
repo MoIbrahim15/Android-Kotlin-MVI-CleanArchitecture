@@ -15,9 +15,10 @@ class SearchBlogUseCase(val repository: BlogRepository) {
 
     fun invoke(
         token: AuthToken,
-        query: String
+        query: String,
+        page: Int
     ): LiveData<DataState<BlogViewState>> {
-        return repository.searchBlogPosts(token, query)
+        return repository.searchBlogPosts(token, query, page)
             .flowOn(Dispatchers.IO)
             .asLiveData()
     }

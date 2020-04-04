@@ -28,7 +28,8 @@ class BlogRepository(
 
     fun searchBlogPosts(
         authToken: AuthToken,
-        query: String
+        query: String,
+        page: Int
     ): Flow<DataState<BlogViewState>> = flow {
         val networkBoundResource =
             object :
@@ -36,10 +37,16 @@ class BlogRepository(
                     apiCall = {
                         apiService.searchListBlogPosts(
                             authorization = "Token ${authToken.token}",
-                            query = query
+                            query = query,
+                            page = page
                         )
                     },
-                    cacheCall = { blogPostDao.getAllBlogPosts() },
+                    cacheCall = {
+                        blogPostDao.getAllBlogPosts(
+                            query = query,
+                            page = page
+                        )
+                    },
                     errorHandler = errorHandler,
                     canWorksOffline = true,
                     isNetworkAvailable = sessionManager.isConnectedToInternet()
@@ -61,13 +68,24 @@ class BlogRepository(
                             )
                         )
                     }
-
-                    blogPostDao.insertAllPostList(cachedItems)
+                    for (blogPost in cachedItems) {
+                        blogPostDao.insert(blogPost)
+                    }
+                    val cacheResponse = cacheCall?.invoke()
+                    handleCacheSuccess(cacheResponse)
                 }
 
                 override suspend fun handleCacheSuccess(response: MutableList<BlogPost>?) {
                     response?.let { items ->
-                        emit(DataState.SUCCESS(BlogViewState(BlogFields(items))))
+                        emit(
+                            DataState.SUCCESS(
+                                BlogViewState(
+                                    BlogFields(
+                                        items
+                                    )
+                                )
+                            )
+                        )
                     }
                 }
 

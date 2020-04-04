@@ -16,4 +16,7 @@ sealed class AuthEventState {
 
 
     class CheckTokenEvent : AuthEventState()
+
+    class None : AuthEventState()
+
 }

@@ -2,6 +2,7 @@ package com.mi.mvi.data.response_handler
 
 import com.mi.mvi.R
 import com.mi.mvi.data.response_handler.ErrorConstants.Companion.INVALID_CREDENTIALS
+import com.mi.mvi.data.response_handler.ErrorConstants.Companion.INVALID_PAGE_NUMBER
 import com.mi.mvi.data.response_handler.ErrorConstants.Companion.USERNAME_EXISTS
 import retrofit2.HttpException
 import java.io.IOException
@@ -38,6 +39,7 @@ class ErrorHandler {
         return when (message) {
             INVALID_CREDENTIALS -> R.string.error_login_invalid_credentials
             USERNAME_EXISTS -> R.string.error_username_exists
+            INVALID_PAGE_NUMBER -> R.string.invalid_page
             else -> R.string.error_something_went_wrong
         }
     }

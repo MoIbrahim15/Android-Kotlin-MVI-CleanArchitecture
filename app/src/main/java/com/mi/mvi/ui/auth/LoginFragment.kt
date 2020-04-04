@@ -32,7 +32,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
     }
 
     private fun login() {
-        viewModel.setStateEvent(
+        viewModel.setEventState(
             AuthEventState.LoginEvent(
                 input_email.text.toString(),
                 input_password.text.toString()

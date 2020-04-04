@@ -24,7 +24,7 @@ class RegisterFragment :BaseFragment(R.layout.fragment_register) {
     }
 
     private fun register() {
-        viewModel.setStateEvent(
+        viewModel.setEventState(
             AuthEventState.RegisterEvent(
                 input_email.text.toString(),
                 input_username.text.toString(),

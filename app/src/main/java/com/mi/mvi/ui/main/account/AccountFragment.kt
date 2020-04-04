@@ -24,7 +24,7 @@ class AccountFragment : BaseFragment(R.layout.fragment_account) {
         setHasOptionsMenu(true)
 
         subscribeObservers()
-        accountViewModel.setStateEvent(AccountEventState.GetAccountEvent())
+        accountViewModel.setEventState(AccountEventState.GetAccountEvent())
 
         change_password.setOnClickListener { findNavController().navigate(R.id.action_accountFragment_to_changePasswordFragment) }
         logout_button.setOnClickListener { accountViewModel.logout() }

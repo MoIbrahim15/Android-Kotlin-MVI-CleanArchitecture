@@ -9,7 +9,7 @@ import com.mi.mvi.domain.main.account.UpdateAccountUseCase
 import com.mi.mvi.domain.main.blogs.SearchBlogUseCase
 import com.mi.mvi.ui.main.MainActivity
 import com.mi.mvi.ui.main.account.AccountViewModel
-import com.mi.mvi.ui.main.blog.BlogViewModel
+import com.mi.mvi.ui.main.blog.viewmodel.BlogViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -34,7 +34,14 @@ val mainModule = module {
         //Blogs Scope
         factory { BlogRepository(get(), get(), get(), get()) }
         factory { SearchBlogUseCase(get()) }
-        viewModel { BlogViewModel(get(), get(), get(), get()) }
+        viewModel {
+            BlogViewModel(
+                get(),
+                get(),
+                get(),
+                get()
+            )
+        }
 
     }
 }

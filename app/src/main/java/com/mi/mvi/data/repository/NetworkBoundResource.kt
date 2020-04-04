@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flow
 @ExperimentalCoroutinesApi
 abstract class NetworkBoundResource<NetworkObj, CacheObj, ViewState>(
     private val apiCall: (suspend () -> NetworkObj?)?,
-    private val cacheCall: (suspend () -> CacheObj?)?,
+    val cacheCall: (suspend () -> CacheObj?)?,
     private val errorHandler: ErrorHandler,
     private val isNetworkAvailable: Boolean,
     private val canWorksOffline: Boolean

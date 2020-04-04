@@ -19,8 +19,12 @@ abstract class BaseViewModel<EventState, ViewState> : ViewModel() {
             handleEventState(_eventState)
         }
 
-    fun setStateEvent(eventState: EventState) {
+    fun setEventState(eventState: EventState) {
         _eventState.value = eventState
+    }
+
+    fun setViewState(viewState: ViewState) {
+        _viewState.value = viewState
     }
 
     fun getCurrentViewStateOrNew(): ViewState {

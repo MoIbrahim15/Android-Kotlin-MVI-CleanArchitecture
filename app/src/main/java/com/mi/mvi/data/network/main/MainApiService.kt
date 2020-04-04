@@ -35,6 +35,7 @@ interface MainApiService {
     @GET("blog/list")
     suspend fun searchListBlogPosts(
         @Header("Authorization") authorization: String,
-        @Query("search") query: String
+        @Query("search") query: String,
+        @Query("page") page : Int
     ): BlogListSearchResponse
 }

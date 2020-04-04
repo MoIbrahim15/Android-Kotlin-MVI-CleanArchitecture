@@ -15,7 +15,7 @@ import com.mi.mvi.ui.auth.AuthActivity
 import com.mi.mvi.ui.main.account.AccountViewModel
 import com.mi.mvi.ui.main.account.ChangePasswordFragment
 import com.mi.mvi.ui.main.account.UpdateAccountFragment
-import com.mi.mvi.ui.main.blog.BlogViewModel
+import com.mi.mvi.ui.main.blog.viewmodel.BlogViewModel
 import com.mi.mvi.ui.main.blog.UpdateBlogFragment
 import com.mi.mvi.ui.main.blog.ViewBlogFragment
 import com.mi.mvi.ui.setUpNavigation
