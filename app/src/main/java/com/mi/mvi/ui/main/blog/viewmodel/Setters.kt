@@ -37,3 +37,21 @@ fun BlogViewModel.setQueryExhausted(isExhausted: Boolean) {
     update.blogsFields.isQueryExhausted = isExhausted
     setViewState(update)
 }
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.setFilter(filter: String?) {
+    filter?.let {
+        val update = getCurrentViewStateOrNew()
+        update.blogsFields.filter = filter
+        setViewState(update)
+    }
+}
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.setOrder(order: String?) {
+    order?.let {
+        val update = getCurrentViewStateOrNew()
+        update.blogsFields.order = order
+        setViewState(update)
+    }
+}

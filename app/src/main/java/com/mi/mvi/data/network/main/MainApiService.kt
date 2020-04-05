@@ -36,6 +36,7 @@ interface MainApiService {
     suspend fun searchListBlogPosts(
         @Header("Authorization") authorization: String,
         @Query("search") query: String,
-        @Query("page") page : Int
+        @Query("ordering") ordering: String,
+        @Query("page") page: Int
     ): BlogListSearchResponse
 }

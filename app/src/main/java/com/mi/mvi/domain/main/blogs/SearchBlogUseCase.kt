@@ -14,12 +14,13 @@ import kotlinx.coroutines.flow.flowOn
 class SearchBlogUseCase(val repository: BlogRepository) {
 
     fun invoke(
-        token: AuthToken,
-        query: String,
-        page: Int
+            token: AuthToken,
+            query: String,
+            filterAndOrder: String,
+            page: Int
     ): LiveData<DataState<BlogViewState>> {
-        return repository.searchBlogPosts(token, query, page)
-            .flowOn(Dispatchers.IO)
-            .asLiveData()
+        return repository.searchBlogPosts(token, query, filterAndOrder, page)
+                .flowOn(Dispatchers.IO)
+                .asLiveData()
     }
 }

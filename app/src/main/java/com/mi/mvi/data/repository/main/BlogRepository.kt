@@ -13,6 +13,7 @@ import com.mi.mvi.data.session.SessionManager
 import com.mi.mvi.ui.main.blog.state.BlogFields
 import com.mi.mvi.ui.main.blog.state.BlogViewState
 import com.mi.mvi.utils.DateUtils
+import com.mi.mvi.utils.returnOrderedBlogQuery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
@@ -29,6 +30,7 @@ class BlogRepository(
     fun searchBlogPosts(
         authToken: AuthToken,
         query: String,
+        filterAndOrder: String,
         page: Int
     ): Flow<DataState<BlogViewState>> = flow {
         val networkBoundResource =
@@ -38,12 +40,14 @@ class BlogRepository(
                         apiService.searchListBlogPosts(
                             authorization = "Token ${authToken.token}",
                             query = query,
+                            ordering = filterAndOrder,
                             page = page
                         )
                     },
                     cacheCall = {
-                        blogPostDao.getAllBlogPosts(
+                        blogPostDao.returnOrderedBlogQuery(
                             query = query,
+                            filterAndOrder = filterAndOrder,
                             page = page
                         )
                     },
