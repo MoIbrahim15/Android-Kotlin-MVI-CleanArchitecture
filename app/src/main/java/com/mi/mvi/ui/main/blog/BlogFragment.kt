@@ -6,9 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
@@ -16,12 +20,18 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
 import com.mi.mvi.R
 import com.mi.mvi.data.models.BlogPost
 import com.mi.mvi.data.response_handler.DataState
 import com.mi.mvi.ui.BaseFragment
 import com.mi.mvi.ui.main.blog.state.BlogViewState
 import com.mi.mvi.ui.main.blog.viewmodel.*
+import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_FILTER_DATE_UPDATED
+import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_FILTER_USERNAME
+import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_ORDER_ASC
 import com.mi.mvi.utils.Constants.Companion.PAGINATION_PAGE_SIZE
 import com.mi.mvi.utils.TopSpacingItemDecoration
 import kotlinx.android.synthetic.main.fragment_blog.*
@@ -182,9 +192,75 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog),
         initSearchView(menu)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_filter_settings -> {
+                showFilterOptions()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onRefresh() {
         onBlogSearchOrFilter()
         swipe_refresh.isRefreshing = false
     }
 
+    private fun showFilterOptions() {
+
+        activity?.let {
+            val dialog = MaterialDialog(it)
+                .noAutoDismiss()
+                .customView(R.layout.layout_blog_filter)
+
+            val view = dialog.getCustomView()
+
+            val filter = blogViewModel.getFilter()
+            if (filter == BLOG_FILTER_DATE_UPDATED) {
+                view.findViewById<RadioGroup>(R.id.filter_group).check(R.id.filter_date)
+            } else {
+                view.findViewById<RadioGroup>(R.id.filter_group).check(R.id.filter_author)
+            }
+
+            val order = blogViewModel.getOrder()
+
+            if (order == BLOG_ORDER_ASC) {
+                view.findViewById<RadioGroup>(R.id.order_group).check(R.id.filter_asc)
+            } else {
+                view.findViewById<RadioGroup>(R.id.order_group).check(R.id.filter_desc)
+            }
+
+            view.findViewById<TextView>(R.id.positive_button).setOnClickListener {
+                val selectedFilter = view.findViewById<RadioButton>(
+                    view.findViewById<RadioGroup>(R.id.filter_group).checkedRadioButtonId
+                )
+
+                val selectedOrder = view.findViewById<RadioButton>(
+                    view.findViewById<RadioGroup>(R.id.order_group).checkedRadioButtonId
+                )
+
+
+                var filter = BLOG_FILTER_DATE_UPDATED
+                if (selectedFilter.text.toString() == getString(R.string.filter_author)) {
+                    filter = BLOG_FILTER_USERNAME
+                }
+
+                var order = ""
+                if (selectedOrder.text.toString() == getString(R.string.filter_desc)) {
+                    order = "-"
+                }
+                blogViewModel.saveFilterOptions(filter, order)
+                blogViewModel.setFilter(filter)
+                blogViewModel.setOrder(order)
+                onBlogSearchOrFilter()
+                dialog.dismiss()
+            }
+            view.findViewById<TextView>(R.id.negative_button).setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.show()
+        }
+
+    }
 }
