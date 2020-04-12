@@ -11,9 +11,26 @@ import com.mi.mvi.data.session.SessionManager
 import org.koin.android.ext.android.inject
 
 abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity(contentLayoutId),
-    DataStateChangeListener {
+    DataStateChangeListener, UICommunicationListener {
 
     val sessionManager: SessionManager by inject()
+
+    override fun onUIMessageReceived(uiMessage: UIMessage) {
+        when (uiMessage.uiMessageType) {
+            is UIMessageType.AreYouSureDialog -> {
+                areYouSureDialog(uiMessage.message, uiMessage.uiMessageType.callBack)
+            }
+            is UIMessageType.Dialog -> {
+                displayInfoDialog(uiMessage.message)
+            }
+            is UIMessageType.Toast -> {
+                displayToast(uiMessage.message)
+            }
+            is UIMessageType.None -> {
+
+            }
+        }
+    }
 
     override fun onDataStateChangeListener(dataState: DataState<*>?) {
         dataState?.let {
@@ -45,7 +62,7 @@ abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity
     }
 
     override fun hideSoftKeyboard() {
-        currentFocus?.let {   currentFocus ->
+        currentFocus?.let { currentFocus ->
             val inputMethodManager = getSystemService(
                 Context.INPUT_METHOD_SERVICE
             ) as InputMethodManager

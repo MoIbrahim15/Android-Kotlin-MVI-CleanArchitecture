@@ -55,3 +55,16 @@ fun BlogViewModel.setOrder(order: String?) {
         setViewState(update)
     }
 }
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.removeDeleteBlogPost() {
+    val update = getCurrentViewStateOrNew()
+    val list = update.blogsFields.blogList.toMutableList()
+    for (i in 0 until list.size) {
+        if (list[i] == getBlogPost()) {
+            list.remove(getBlogPost())
+            break
+        }
+    }
+    setBlogList(list)
+}

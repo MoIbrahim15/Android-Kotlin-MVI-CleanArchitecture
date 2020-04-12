@@ -1,20 +1,20 @@
 package com.mi.mvi.ui
 
-import android.content.Context
+import android.app.Activity
 import android.widget.Toast
 import androidx.annotation.StringRes
 import com.afollestad.materialdialogs.MaterialDialog
 import com.mi.mvi.R
 
-fun Context.displayToast(msg: String) {
+fun Activity.displayToast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
-fun Context.displayToast(@StringRes msg: Int) {
+fun Activity.displayToast(@StringRes msg: Int) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
-fun Context.displaySuccessDialog(message: String) {
+fun Activity.displaySuccessDialog(message: String) {
     MaterialDialog(this)
         .show {
             title(R.string.text_success)
@@ -23,7 +23,7 @@ fun Context.displaySuccessDialog(message: String) {
         }
 }
 
-fun Context.displayErrorDialog( message: String) {
+fun Activity.displayErrorDialog(message: String) {
     MaterialDialog(this)
         .show {
             title(R.string.text_error)
@@ -32,3 +32,31 @@ fun Context.displayErrorDialog( message: String) {
         }
 }
 
+fun Activity.displayInfoDialog(message: String) {
+    MaterialDialog(this)
+        .show {
+            title(R.string.are_you_sure)
+            message(text = message)
+            positiveButton(R.string.text_ok)
+        }
+}
+
+fun Activity.areYouSureDialog(message: String, callback: AreYouSureCallBack) {
+    MaterialDialog(this)
+        .show {
+            title(R.string.text_info)
+            message(text = message)
+            negativeButton(R.string.text_cancel) {
+                callback.cancel()
+            }
+            positiveButton(R.string.text_yes) {
+                callback.proceed()
+            }
+        }
+}
+
+
+interface AreYouSureCallBack {
+    fun proceed()
+    fun cancel()
+}

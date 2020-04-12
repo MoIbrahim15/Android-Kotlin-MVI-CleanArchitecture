@@ -80,6 +80,7 @@
     <string name="error_login_invalid_credentials">Invalid username or password</string>
     <string name="error_username_exists">That username is already in use.</string>
     <string name="invalid_page">invalid page number</string>
+    <string name="deleted">deleted</string>
 
 </resources>
 

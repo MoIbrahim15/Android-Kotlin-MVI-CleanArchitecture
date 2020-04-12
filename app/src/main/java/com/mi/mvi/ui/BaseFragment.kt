@@ -15,6 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 abstract class BaseFragment(val contentLayoutId: Int) : Fragment(contentLayoutId) {
 
     protected var dataStateChangeListener: DataStateChangeListener? = null
+    protected var uiCommunicationListener: UICommunicationListener? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,6 +37,7 @@ abstract class BaseFragment(val contentLayoutId: Int) : Fragment(contentLayoutId
         super.onAttach(context)
         try {
             dataStateChangeListener = context as DataStateChangeListener
+            uiCommunicationListener = context as UICommunicationListener
         } catch (e: ClassCastException) {
 
         }

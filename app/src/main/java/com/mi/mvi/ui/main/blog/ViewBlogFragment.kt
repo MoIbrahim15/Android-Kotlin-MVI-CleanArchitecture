@@ -10,10 +10,14 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.mi.mvi.R
 import com.mi.mvi.data.models.BlogPost
+import com.mi.mvi.ui.AreYouSureCallBack
 import com.mi.mvi.ui.BaseFragment
+import com.mi.mvi.ui.UIMessage
+import com.mi.mvi.ui.UIMessageType
 import com.mi.mvi.ui.main.blog.state.BlogEventState
 import com.mi.mvi.ui.main.blog.viewmodel.BlogViewModel
 import com.mi.mvi.ui.main.blog.viewmodel.isAuthorOfBlogPost
+import com.mi.mvi.ui.main.blog.viewmodel.removeDeleteBlogPost
 import com.mi.mvi.ui.main.blog.viewmodel.setIsAuthorOfBlogPost
 import com.mi.mvi.utils.DateUtils
 import kotlinx.android.synthetic.main.fragment_view_blog.*
@@ -35,7 +39,19 @@ class ViewBlogFragment : BaseFragment(R.layout.fragment_view_blog) {
     }
 
     private fun deleteBlogPost() {
-        blogViewModel.setEventState(BlogEventState.DeleteBlogPostEvent())
+        uiCommunicationListener?.onUIMessageReceived(UIMessage(
+            getString(R.string.are_you_sure_delete), UIMessageType.AreYouSureDialog(
+                object : AreYouSureCallBack {
+                    override fun proceed() {
+                        blogViewModel.setEventState(BlogEventState.DeleteBlogPostEvent())
+                    }
+
+                    override fun cancel() {
+                    }
+
+                }
+            )
+        ))
     }
 
     private fun checkIsAuthor() {
@@ -50,6 +66,14 @@ class ViewBlogFragment : BaseFragment(R.layout.fragment_view_blog) {
                     blogViewModel.setIsAuthorOfBlogPost(
                         viewState.viewBlogFields.isAuthor
                     )
+                }
+
+                data.response?.peekContent()?.let { response ->
+                    if (response.messageRes == R.string.delete) {
+                        blogViewModel.removeDeleteBlogPost()
+                        findNavController().popBackStack()
+                    }
+
                 }
             }
         })

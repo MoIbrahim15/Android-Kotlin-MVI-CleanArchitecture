@@ -185,7 +185,7 @@ class BlogRepository(
                                 DataState.ERROR(
                                     response =
                                     Response(
-                                        messageRes = R.string.error_something_went_wrong,
+                                        messageRes = R.string.deleted,
                                         responseView = ResponseView.TOAST()
                                     )
                                 )
