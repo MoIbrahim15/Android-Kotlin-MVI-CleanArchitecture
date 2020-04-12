@@ -1,10 +1,12 @@
 package com.mi.mvi.ui.main.blog
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -15,10 +17,7 @@ import com.mi.mvi.ui.BaseFragment
 import com.mi.mvi.ui.UIMessage
 import com.mi.mvi.ui.UIMessageType
 import com.mi.mvi.ui.main.blog.state.BlogEventState
-import com.mi.mvi.ui.main.blog.viewmodel.BlogViewModel
-import com.mi.mvi.ui.main.blog.viewmodel.isAuthorOfBlogPost
-import com.mi.mvi.ui.main.blog.viewmodel.removeDeleteBlogPost
-import com.mi.mvi.ui.main.blog.viewmodel.setIsAuthorOfBlogPost
+import com.mi.mvi.ui.main.blog.viewmodel.*
 import com.mi.mvi.utils.DateUtils
 import kotlinx.android.synthetic.main.fragment_view_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -127,6 +126,16 @@ class ViewBlogFragment : BaseFragment(R.layout.fragment_view_blog) {
     }
 
     private fun navUpdateBlogFragment() {
-        findNavController().navigate(R.id.action_viewBlogFragment_to_updateBlogFragment)
+        try{
+            // prep for next fragment
+            blogViewModel.setUpdatedBlogFields(
+                blogViewModel.getBlogPost().title,
+                blogViewModel.getBlogPost().body,
+                blogViewModel.getBlogPost().image.toUri()
+            )
+            findNavController().navigate(R.id.action_viewBlogFragment_to_updateBlogFragment)
+        }catch (e: Exception){
+            // send error report or something. These fields should never be null. Not possible
+        }
     }
 }

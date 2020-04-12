@@ -6,6 +6,7 @@ import com.mi.mvi.data.models.AuthToken
 import com.mi.mvi.data.models.BlogPost
 import com.mi.mvi.data.network.main.MainApiService
 import com.mi.mvi.data.network.responses.BaseResponse
+import com.mi.mvi.data.network.responses.BlogCreateUpdateResponse
 import com.mi.mvi.data.network.responses.BlogListSearchResponse
 import com.mi.mvi.data.repository.BaseRepository
 import com.mi.mvi.data.repository.NetworkBoundResource
@@ -25,6 +26,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 @ExperimentalCoroutinesApi
 class BlogRepository(
@@ -192,6 +195,69 @@ class BlogRepository(
                             )
                         }
                     }
+                }
+
+                override suspend fun handleCacheSuccess(response: BaseResponse?) {
+
+                }
+
+            }
+
+        emitAll(networkBoundResource.call())
+    }
+
+    fun updateBlogPost(
+        authToken: AuthToken,
+        slug: String,
+        title: RequestBody,
+        body: RequestBody,
+        image: MultipartBody.Part?
+    ): Flow<DataState<BlogViewState>> = flow {
+        val networkBoundResource =
+            object :
+                NetworkBoundResource<BlogCreateUpdateResponse, BaseResponse, BlogViewState>(
+                    apiCall = {
+                        apiService.updateBlog(
+                            "Token ${authToken.token!!}",
+                            slug,
+                            title,
+                            body,
+                            image
+                        )
+                    },
+                    cacheCall = null,
+                    errorHandler = errorHandler,
+                    canWorksOffline = false,
+                    isNetworkAvailable = sessionManager.isConnectedToInternet()
+                ) {
+                override suspend fun handleNetworkSuccess(response: BlogCreateUpdateResponse) {
+
+                    val updatedBlogPost = BlogPost(
+                        response.pk,
+                        response.title,
+                        response.slug,
+                        response.body,
+                        response.image,
+                        DateUtils.convertServerStringDateToLong(response.date_updated),
+                        response.username
+                    )
+                    updatedBlogPost.let { blogPost ->
+                        blogPostDao.updateBlogPost(
+                            blogPost.pk,
+                            blogPost.title,
+                            blogPost.body,
+                            blogPost.image
+                        )
+                    }
+
+                    DataState.SUCCESS(
+                        BlogViewState(
+                            viewBlogFields = ViewBlogFields(
+                                blogPost = updatedBlogPost
+                            )
+                        ),
+                        Response(R.string.text_success, ResponseView.TOAST())
+                    )
                 }
 
                 override suspend fun handleCacheSuccess(response: BaseResponse?) {

@@ -1,5 +1,7 @@
 package com.mi.mvi.ui.main.blog.state
 
+import okhttp3.MultipartBody
+
 sealed class BlogEventState {
 
     class BlogSearchEvent : BlogEventState()
@@ -7,6 +9,13 @@ sealed class BlogEventState {
     class CheckAuthorBlogPostEvent : BlogEventState()
 
     class DeleteBlogPostEvent: BlogEventState()
+
+    data class UpdateBlogPostEvent(
+        val title: String,
+        val body: String,
+        val image: MultipartBody.Part?
+    ): BlogEventState()
+
 
     class None : BlogEventState()
 }

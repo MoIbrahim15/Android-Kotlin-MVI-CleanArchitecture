@@ -1,5 +1,6 @@
 package com.mi.mvi.ui.main.blog.viewmodel
 
+import android.net.Uri
 import com.mi.mvi.data.models.BlogPost
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -68,3 +69,17 @@ fun BlogViewModel.removeDeleteBlogPost() {
     }
     setBlogList(list)
 }
+
+
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.setUpdatedBlogFields(title: String?, body: String?, uri: Uri?){
+    val update = getCurrentViewStateOrNew()
+    val updatedBlogFields = update.updatedBlogFields
+    title?.let{ updatedBlogFields.updatedBlogTitle = it }
+    body?.let{ updatedBlogFields.updatedBlogBody = it }
+    uri?.let{ updatedBlogFields.updatedImageUri = it }
+    update.updatedBlogFields = updatedBlogFields
+    setViewState(update)
+}
+

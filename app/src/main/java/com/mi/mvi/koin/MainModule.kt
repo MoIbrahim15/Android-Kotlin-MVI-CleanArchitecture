@@ -9,6 +9,7 @@ import com.mi.mvi.domain.main.account.UpdateAccountUseCase
 import com.mi.mvi.domain.main.blogs.DeleteBlogPostUseCase
 import com.mi.mvi.domain.main.blogs.IsAuthorBlogPostUseCase
 import com.mi.mvi.domain.main.blogs.SearchBlogUseCase
+import com.mi.mvi.domain.main.blogs.UpdateBlogPostUseCase
 import com.mi.mvi.ui.main.MainActivity
 import com.mi.mvi.ui.main.account.AccountViewModel
 import com.mi.mvi.ui.main.blog.viewmodel.BlogViewModel
@@ -38,8 +39,10 @@ val mainModule = module {
         factory { SearchBlogUseCase(get()) }
         factory { IsAuthorBlogPostUseCase(get()) }
         factory { DeleteBlogPostUseCase(get()) }
+        factory { UpdateBlogPostUseCase(get()) }
         viewModel {
             BlogViewModel(
+                get(),
                 get(),
                 get(),
                 get(),

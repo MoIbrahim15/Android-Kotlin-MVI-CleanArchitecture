@@ -9,18 +9,23 @@ import com.mi.mvi.data.session.SessionManager
 import com.mi.mvi.domain.main.blogs.DeleteBlogPostUseCase
 import com.mi.mvi.domain.main.blogs.IsAuthorBlogPostUseCase
 import com.mi.mvi.domain.main.blogs.SearchBlogUseCase
+import com.mi.mvi.domain.main.blogs.UpdateBlogPostUseCase
 import com.mi.mvi.ui.BaseViewModel
 import com.mi.mvi.ui.main.blog.state.BlogEventState
 import com.mi.mvi.ui.main.blog.state.BlogViewState
 import com.mi.mvi.utils.AbsentLiveData
 import com.mi.mvi.utils.BlogQueryUtils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 @ExperimentalCoroutinesApi
 class BlogViewModel(
     private val searchBlogUseCase: SearchBlogUseCase,
     private val isAuthorBlogPostUseCase: IsAuthorBlogPostUseCase,
     private val deleteBlogPostUseCase: DeleteBlogPostUseCase,
+    private val updateBlogPostUseCase: UpdateBlogPostUseCase,
     private val sessionManager: SessionManager,
     private val sheredPreferences: SharedPreferences,
     private val editor: SharedPreferences.Editor
@@ -62,11 +67,30 @@ class BlogViewModel(
                     )
                 } ?: AbsentLiveData.create()
             }
-            is BlogEventState.DeleteBlogPostEvent ->{
+            is BlogEventState.DeleteBlogPostEvent -> {
                 sessionManager.cachedToken.value?.let { authToken ->
                     deleteBlogPostUseCase.invoke(
                         token = authToken,
                         blogPost = getBlogPost()
+                    )
+                } ?: AbsentLiveData.create()
+            }
+
+            is BlogEventState.UpdateBlogPostEvent -> {
+
+                return sessionManager.cachedToken.value?.let { authToken ->
+
+                    val title = eventState.title
+                        .toRequestBody("text/plain".toMediaTypeOrNull())
+                    val body = eventState.body
+                        .toRequestBody("text/plain".toMediaTypeOrNull())
+
+                    updateBlogPostUseCase.invoke(
+                        authToken = authToken,
+                        slug = getSlug(),
+                        title = title,
+                        body = body,
+                        image = eventState.image
                     )
                 } ?: AbsentLiveData.create()
             }

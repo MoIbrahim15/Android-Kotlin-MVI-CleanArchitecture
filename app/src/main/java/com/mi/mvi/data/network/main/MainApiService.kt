@@ -3,7 +3,10 @@ package com.mi.mvi.data.network.main
 import androidx.lifecycle.LiveData
 import com.mi.mvi.data.models.AccountProperties
 import com.mi.mvi.data.network.responses.BaseResponse
+import com.mi.mvi.data.network.responses.BlogCreateUpdateResponse
 import com.mi.mvi.data.network.responses.BlogListSearchResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface MainApiService {
@@ -54,4 +57,15 @@ interface MainApiService {
         @Header("Authorization") authorization: String,
         @Path("slug") slug: String
     ): BaseResponse
+
+
+    @Multipart
+    @PUT("blog/{slug}/update")
+    suspend fun updateBlog(
+        @Header("Authorization") authorization: String,
+        @Path("slug") slug: String,
+        @Part("title") title: RequestBody,
+        @Part("body") body: RequestBody,
+        @Part image: MultipartBody.Part?
+    ): BlogCreateUpdateResponse
 }
