@@ -6,6 +6,7 @@ import com.mi.mvi.data.preference.SharedPreferenceKeys.Companion.BLOG_FILTER
 import com.mi.mvi.data.preference.SharedPreferenceKeys.Companion.BLOG_ORDER
 import com.mi.mvi.data.response_handler.DataState
 import com.mi.mvi.data.session.SessionManager
+import com.mi.mvi.domain.main.blogs.DeleteBlogPostUseCase
 import com.mi.mvi.domain.main.blogs.IsAuthorBlogPostUseCase
 import com.mi.mvi.domain.main.blogs.SearchBlogUseCase
 import com.mi.mvi.ui.BaseViewModel
@@ -19,6 +20,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class BlogViewModel(
     private val searchBlogUseCase: SearchBlogUseCase,
     private val isAuthorBlogPostUseCase: IsAuthorBlogPostUseCase,
+    private val deleteBlogPostUseCase: DeleteBlogPostUseCase,
     private val sessionManager: SessionManager,
     private val sheredPreferences: SharedPreferences,
     private val editor: SharedPreferences.Editor
@@ -61,7 +63,12 @@ class BlogViewModel(
                 } ?: AbsentLiveData.create()
             }
             is BlogEventState.DeleteBlogPostEvent ->{
-                AbsentLiveData.create()
+                sessionManager.cachedToken.value?.let { authToken ->
+                    deleteBlogPostUseCase.invoke(
+                        token = authToken,
+                        blogPost = getBlogPost()
+                    )
+                } ?: AbsentLiveData.create()
             }
             is BlogEventState.None -> {
                 object : LiveData<DataState<BlogViewState>>() {

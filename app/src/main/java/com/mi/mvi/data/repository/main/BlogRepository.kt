@@ -1,5 +1,6 @@
 package com.mi.mvi.data.repository.main
 
+import com.mi.mvi.R
 import com.mi.mvi.data.database.BlogPostDao
 import com.mi.mvi.data.models.AuthToken
 import com.mi.mvi.data.models.BlogPost
@@ -10,7 +11,10 @@ import com.mi.mvi.data.repository.BaseRepository
 import com.mi.mvi.data.repository.NetworkBoundResource
 import com.mi.mvi.data.response_handler.DataState
 import com.mi.mvi.data.response_handler.ErrorConstants.Companion.RESPONSE_PERMISSION_TO_EDIT
+import com.mi.mvi.data.response_handler.ErrorConstants.Companion.SUCCESS_BLOG_DELETED
 import com.mi.mvi.data.response_handler.ErrorHandler
+import com.mi.mvi.data.response_handler.Response
+import com.mi.mvi.data.response_handler.ResponseView
 import com.mi.mvi.data.session.SessionManager
 import com.mi.mvi.ui.main.blog.state.BlogFields
 import com.mi.mvi.ui.main.blog.state.BlogViewState
@@ -132,6 +136,61 @@ class BlogRepository(
                                 )
                             )
                         )
+                    }
+                }
+
+                override suspend fun handleCacheSuccess(response: BaseResponse?) {
+
+                }
+
+            }
+
+        emitAll(networkBoundResource.call())
+    }
+
+
+    fun deleteBlogPost(
+        authToken: AuthToken,
+        blogPost: BlogPost
+    ): Flow<DataState<BlogViewState>> = flow {
+        val networkBoundResource =
+            object :
+                NetworkBoundResource<BaseResponse, BaseResponse, BlogViewState>(
+                    apiCall = {
+                        apiService.deleteBlogPost(
+                            authorization = "Token ${authToken.token}",
+                            slug = blogPost.slug
+                        )
+                    },
+                    cacheCall = null,
+                    errorHandler = errorHandler,
+                    canWorksOffline = false,
+                    isNetworkAvailable = sessionManager.isConnectedToInternet()
+                ) {
+                override suspend fun handleNetworkSuccess(response: BaseResponse) {
+                    response?.let { response ->
+                        val isDeleted = response.response == SUCCESS_BLOG_DELETED
+                        if (isDeleted) {
+                            blogPostDao.deleteBlogPost(blogPost)
+                            emit(
+                                DataState.SUCCESS(
+                                    data = null, response = Response(
+                                        messageRes = R.string.text_success,
+                                        responseView = ResponseView.TOAST()
+                                    )
+                                )
+                            )
+                        } else {
+                            emit(
+                                DataState.ERROR(
+                                    response =
+                                    Response(
+                                        messageRes = R.string.error_something_went_wrong,
+                                        responseView = ResponseView.TOAST()
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
 

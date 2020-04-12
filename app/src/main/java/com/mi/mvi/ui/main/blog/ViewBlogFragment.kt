@@ -30,6 +30,12 @@ class ViewBlogFragment : BaseFragment(R.layout.fragment_view_blog) {
         setHasOptionsMenu(true)
         subscribeObservers()
         checkIsAuthor()
+
+        delete_button.setOnClickListener { deleteBlogPost() }
+    }
+
+    private fun deleteBlogPost() {
+        blogViewModel.setEventState(BlogEventState.DeleteBlogPostEvent())
     }
 
     private fun checkIsAuthor() {

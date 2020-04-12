@@ -10,5 +10,6 @@ class ErrorConstants {
         const val RESPONSE_PASSWORD_UPDATE_SUCCESS = "successfully changed password"
         const val INVALID_PAGE_NUMBER = "Invalid page."
         const val RESPONSE_PERMISSION_TO_EDIT = "You have permission to edit that."
+        const val SUCCESS_BLOG_DELETED = "deleted"
     }
 }
