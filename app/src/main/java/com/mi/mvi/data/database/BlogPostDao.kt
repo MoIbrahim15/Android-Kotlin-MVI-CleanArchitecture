@@ -1,9 +1,6 @@
 package com.mi.mvi.data.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.mi.mvi.data.models.BlogPost
 import com.mi.mvi.utils.Constants.Companion.PAGINATION_PAGE_SIZE
 
@@ -11,6 +8,9 @@ import com.mi.mvi.utils.Constants.Companion.PAGINATION_PAGE_SIZE
 interface BlogPostDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(blogPost: BlogPost): Long
+
+    @Delete
+    suspend fun deleteBlogPost(blogPost: BlogPost)
 
     @Query(
         """

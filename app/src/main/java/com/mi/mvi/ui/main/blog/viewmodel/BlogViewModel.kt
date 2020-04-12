@@ -6,6 +6,7 @@ import com.mi.mvi.data.preference.SharedPreferenceKeys.Companion.BLOG_FILTER
 import com.mi.mvi.data.preference.SharedPreferenceKeys.Companion.BLOG_ORDER
 import com.mi.mvi.data.response_handler.DataState
 import com.mi.mvi.data.session.SessionManager
+import com.mi.mvi.domain.main.blogs.IsAuthorBlogPostUseCase
 import com.mi.mvi.domain.main.blogs.SearchBlogUseCase
 import com.mi.mvi.ui.BaseViewModel
 import com.mi.mvi.ui.main.blog.state.BlogEventState
@@ -16,25 +17,26 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 class BlogViewModel(
-        private val searchBlogUseCase: SearchBlogUseCase,
-        private val sessionManager: SessionManager,
-        private val sheredPreferences: SharedPreferences,
-        private val editor: SharedPreferences.Editor
+    private val searchBlogUseCase: SearchBlogUseCase,
+    private val isAuthorBlogPostUseCase: IsAuthorBlogPostUseCase,
+    private val sessionManager: SessionManager,
+    private val sheredPreferences: SharedPreferences,
+    private val editor: SharedPreferences.Editor
 ) : BaseViewModel<BlogEventState, BlogViewState>() {
 
     init {
         setFilter(
-                sheredPreferences.getString(
-                        BLOG_FILTER,
-                        BlogQueryUtils.BLOG_FILTER_DATE_UPDATED
-                )
+            sheredPreferences.getString(
+                BLOG_FILTER,
+                BlogQueryUtils.BLOG_FILTER_DATE_UPDATED
+            )
         )
 
         setOrder(
-                sheredPreferences.getString(
-                        BLOG_ORDER,
-                        BlogQueryUtils.BLOG_ORDER_ASC
-                )
+            sheredPreferences.getString(
+                BLOG_ORDER,
+                BlogQueryUtils.BLOG_ORDER_ASC
+            )
         )
     }
 
@@ -43,14 +45,22 @@ class BlogViewModel(
             is BlogEventState.BlogSearchEvent -> {
                 sessionManager.cachedToken.value?.let { authToken ->
                     searchBlogUseCase.invoke(
-                            token = authToken,
-                            query = getSearchQuery(),
-                            filterAndOrder = getOrder() + getFilter(),
-                            page = getPage()
+                        token = authToken,
+                        query = getSearchQuery(),
+                        filterAndOrder = getOrder() + getFilter(),
+                        page = getPage()
                     )
                 } ?: AbsentLiveData.create()
             }
             is BlogEventState.CheckAuthorBlogPostEvent -> {
+                sessionManager.cachedToken.value?.let { authToken ->
+                    isAuthorBlogPostUseCase.invoke(
+                        token = authToken,
+                        slug = getSlug()
+                    )
+                } ?: AbsentLiveData.create()
+            }
+            is BlogEventState.DeleteBlogPostEvent ->{
                 AbsentLiveData.create()
             }
             is BlogEventState.None -> {

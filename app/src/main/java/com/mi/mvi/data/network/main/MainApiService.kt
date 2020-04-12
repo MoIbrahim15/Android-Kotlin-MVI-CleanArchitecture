@@ -1,5 +1,6 @@
 package com.mi.mvi.data.network.main
 
+import androidx.lifecycle.LiveData
 import com.mi.mvi.data.models.AccountProperties
 import com.mi.mvi.data.network.responses.BaseResponse
 import com.mi.mvi.data.network.responses.BlogListSearchResponse
@@ -39,4 +40,18 @@ interface MainApiService {
         @Query("ordering") ordering: String,
         @Query("page") page: Int
     ): BlogListSearchResponse
+
+
+    @GET("blog/{slug}/is_author")
+    suspend fun isAuthorOfBlogPost(
+        @Header("Authorization") authorization: String,
+        @Path("slug") slug: String
+    ): BaseResponse
+
+
+    @DELETE("blog/{slug}/delete")
+    suspend fun deleteBlogPost(
+        @Header("Authorization") authorization: String,
+        @Path("slug") slug: String
+    ): BaseResponse
 }

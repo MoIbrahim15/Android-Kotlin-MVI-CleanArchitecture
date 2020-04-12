@@ -21,8 +21,7 @@ data class BlogFields(
     var page: Int = 1,
     var isQueryExhausted: Boolean = false,
     var filter: String = ORDER_BY_ASC_DATE_UPDATED,
-    var order: String = BLOG_ORDER_ASC
-)
+    var order: String = BLOG_ORDER_ASC)
 
 
 data class ViewBlogFields(

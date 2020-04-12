@@ -1,5 +1,6 @@
 package com.mi.mvi.ui.main.blog.viewmodel
 
+import com.mi.mvi.data.models.BlogPost
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -37,4 +38,36 @@ fun BlogViewModel.getIsQueryExhausted() : Boolean{
     getCurrentViewStateOrNew()?.let {
         return it.blogsFields.isQueryExhausted
     }
+}
+
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.getSlug(): String{
+    getCurrentViewStateOrNew().let {
+        it.viewBlogFields.blogPost?.let {
+            return it.slug
+        }
+    }
+    return ""
+}
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.isAuthorOfBlogPost(): Boolean{
+    getCurrentViewStateOrNew().let {
+        return it.viewBlogFields.isAuthor
+    }
+}
+
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.getBlogPost(): BlogPost {
+    getCurrentViewStateOrNew().let {
+        return it.viewBlogFields.blogPost?.let {
+            return it
+        }?: getDummyBlogPost()
+    }
+}
+
+fun BlogViewModel.getDummyBlogPost(): BlogPost{
+    return BlogPost(-1, "" , "", "", "", 1, "")
 }

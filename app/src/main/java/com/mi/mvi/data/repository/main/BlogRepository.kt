@@ -4,14 +4,17 @@ import com.mi.mvi.data.database.BlogPostDao
 import com.mi.mvi.data.models.AuthToken
 import com.mi.mvi.data.models.BlogPost
 import com.mi.mvi.data.network.main.MainApiService
+import com.mi.mvi.data.network.responses.BaseResponse
 import com.mi.mvi.data.network.responses.BlogListSearchResponse
 import com.mi.mvi.data.repository.BaseRepository
 import com.mi.mvi.data.repository.NetworkBoundResource
 import com.mi.mvi.data.response_handler.DataState
+import com.mi.mvi.data.response_handler.ErrorConstants.Companion.RESPONSE_PERMISSION_TO_EDIT
 import com.mi.mvi.data.response_handler.ErrorHandler
 import com.mi.mvi.data.session.SessionManager
 import com.mi.mvi.ui.main.blog.state.BlogFields
 import com.mi.mvi.ui.main.blog.state.BlogViewState
+import com.mi.mvi.ui.main.blog.state.ViewBlogFields
 import com.mi.mvi.utils.DateUtils
 import com.mi.mvi.utils.returnOrderedBlogQuery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -91,6 +94,49 @@ class BlogRepository(
                             )
                         )
                     }
+                }
+
+            }
+
+        emitAll(networkBoundResource.call())
+    }
+
+
+    fun isAuthorOfBlogPosts(
+        authToken: AuthToken,
+        slug: String
+    ): Flow<DataState<BlogViewState>> = flow {
+        val networkBoundResource =
+            object :
+                NetworkBoundResource<BaseResponse, BaseResponse, BlogViewState>(
+                    apiCall = {
+                        apiService.isAuthorOfBlogPost(
+                            authorization = "Token ${authToken.token}",
+                            slug = slug
+                        )
+                    },
+                    cacheCall = null,
+                    errorHandler = errorHandler,
+                    canWorksOffline = false,
+                    isNetworkAvailable = sessionManager.isConnectedToInternet()
+                ) {
+                override suspend fun handleNetworkSuccess(response: BaseResponse) {
+                    response?.let { response ->
+                        val isAuthor = response.response == RESPONSE_PERMISSION_TO_EDIT
+                        emit(
+                            DataState.SUCCESS(
+                                BlogViewState(
+                                    viewBlogFields = ViewBlogFields(
+                                        isAuthor = isAuthor
+                                    )
+                                )
+                            )
+                        )
+                    }
+                }
+
+                override suspend fun handleCacheSuccess(response: BaseResponse?) {
+
                 }
 
             }
