@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools" tools:context=".ui.auth.AuthActivity">
+      xmlns:tools="http://schemas.android.com/tools" tools:context=".presentation.auth.AuthActivity">
 
     <item android:id="@+id/action_filter_settings"
           android:title="@string/filter"

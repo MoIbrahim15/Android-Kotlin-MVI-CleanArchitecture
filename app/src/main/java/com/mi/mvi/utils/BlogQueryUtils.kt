@@ -1,7 +1,7 @@
 package com.mi.mvi.utils
 
-import com.mi.mvi.data.database.BlogPostDao
-import com.mi.mvi.data.models.BlogPost
+import com.mi.mvi.data.datasource.cache.BlogCacheDataSource
+import com.mi.mvi.datasource.model.BlogPost
 import com.mi.mvi.utils.BlogQueryUtils.Companion.ORDER_BY_ASC_DATE_UPDATED
 import com.mi.mvi.utils.BlogQueryUtils.Companion.ORDER_BY_ASC_USERNAME
 import com.mi.mvi.utils.BlogQueryUtils.Companion.ORDER_BY_DESC_DATE_UPDATED
@@ -25,7 +25,7 @@ class BlogQueryUtils {
 }
 
 
-suspend fun BlogPostDao.returnOrderedBlogQuery(
+suspend fun BlogCacheDataSource.returnOrderedBlogQuery(
     filterAndOrder: String,
     query: String,
     page: Int

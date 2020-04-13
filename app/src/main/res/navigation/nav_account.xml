@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/accountFragment"
-        android:name="com.mi.mvi.ui.main.account.AccountFragment"
+        android:name="com.mi.mvi.presentation.main.account.AccountFragment"
         android:label="@string/fragment_account"
         tools:layout="@layout/fragment_account">
 
@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.mi.mvi.ui.main.account.ChangePasswordFragment"
+        android:name="com.mi.mvi.presentation.main.account.ChangePasswordFragment"
         android:label="@string/fragment_change_password"
         tools:layout="@layout/fragment_change_password">
 
@@ -49,7 +49,7 @@
 
     <fragment
         android:id="@+id/updateAccountFragment"
-        android:name="com.mi.mvi.ui.main.account.UpdateAccountFragment"
+        android:name="com.mi.mvi.presentation.main.account.UpdateAccountFragment"
         android:label="@string/fragment_update_account"
         tools:layout="@layout/fragment_update_account">
 

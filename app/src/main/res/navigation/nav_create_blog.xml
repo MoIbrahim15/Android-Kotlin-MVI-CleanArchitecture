@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/createBlogFragment"
-        android:name="com.mi.mvi.ui.main.create_blog.CreateBlogFragment"
+        android:name="com.mi.mvi.presentation.main.create_blog.CreateBlogFragment"
         android:label="@string/fragment_create_blog"
         tools:layout="@layout/fragment_create_blog" />
 </navigation>

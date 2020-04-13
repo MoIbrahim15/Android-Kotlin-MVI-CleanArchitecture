@@ -1,10 +1,10 @@
 package com.mi.mvi.data.repository
 
 import com.mi.mvi.R
-import com.mi.mvi.data.response_handler.DataState
-import com.mi.mvi.data.response_handler.ErrorHandler
-import com.mi.mvi.data.response_handler.Response
-import com.mi.mvi.data.response_handler.ResponseView
+import com.mi.mvi.utils.response_handler.DataState
+import com.mi.mvi.utils.response_handler.ErrorHandler
+import com.mi.mvi.utils.response_handler.Response
+import com.mi.mvi.utils.response_handler.ResponseView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll

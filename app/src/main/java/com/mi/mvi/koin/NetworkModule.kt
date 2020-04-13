@@ -1,7 +1,7 @@
 package com.mi.mvi.koin
 
-import com.mi.mvi.data.response_handler.ErrorHandler
 import com.mi.mvi.utils.Constants.Companion.BASE_URL
+import com.mi.mvi.utils.response_handler.ErrorHandler
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module

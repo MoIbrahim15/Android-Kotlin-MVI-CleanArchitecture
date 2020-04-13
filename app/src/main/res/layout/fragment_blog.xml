@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.blog.BlogFragment">
+    tools:context=".presentation.main.blog.BlogFragment">
 
     <View android:layout_width="0.5dp"
         android:layout_height="0.5dp"

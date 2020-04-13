@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.mi.mvi.ui.auth.LoginFragment"
+        android:name="com.mi.mvi.presentation.auth.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login">
         <action
@@ -28,12 +28,12 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.mi.mvi.ui.auth.RegisterFragment"
+        android:name="com.mi.mvi.presentation.auth.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
 
     <fragment
         android:id="@+id/forgetPasswordFragment"
-        android:name="com.mi.mvi.ui.auth.ForgetPasswordFragment"
+        android:name="com.mi.mvi.presentation.auth.ForgetPasswordFragment"
         android:label="ForgetPasswordFragment" />
 </navigation>

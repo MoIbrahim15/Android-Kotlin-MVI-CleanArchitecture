@@ -2,7 +2,7 @@ package com.mi.mvi.koin
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.mi.mvi.data.preference.SharedPreferenceKeys
+import com.mi.mvi.utils.SharedPreferenceKeys
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

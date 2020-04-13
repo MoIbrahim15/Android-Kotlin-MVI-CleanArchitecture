@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#fff"
     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-    tools:context=".ui.main.blog.ViewBlogFragment">
+    tools:context=".presentation.main.blog.ViewBlogFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
