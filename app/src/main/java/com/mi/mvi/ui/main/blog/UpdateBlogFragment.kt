@@ -7,11 +7,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.mi.mvi.R
 import com.mi.mvi.ui.BaseFragment
 import com.mi.mvi.ui.main.blog.state.BlogEventState
 import com.mi.mvi.ui.main.blog.viewmodel.BlogViewModel
+import com.mi.mvi.ui.main.blog.viewmodel.onBlogPostUpdatedSuccess
+import com.mi.mvi.ui.main.blog.viewmodel.setUpdatedBlogFields
 import kotlinx.android.synthetic.main.fragment_update_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.MultipartBody
@@ -36,7 +39,8 @@ class UpdateBlogFragment : BaseFragment(R.layout.fragment_update_blog) {
 
                     // if this is not null, the blogpost was updated
                     viewState.viewBlogFields.blogPost?.let { blogPost ->
-                        // TODO("onBlogPostUpdateSuccess")
+                        viewModel.onBlogPostUpdatedSuccess(blogPost)
+                        findNavController().popBackStack()
                     }
                 }
             }
@@ -87,4 +91,12 @@ class UpdateBlogFragment : BaseFragment(R.layout.fragment_update_blog) {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.setUpdatedBlogFields(
+            uri = null,
+            title = blog_title.text.toString(),
+            body = blog_body.text.toString()
+        )
+    }
 }

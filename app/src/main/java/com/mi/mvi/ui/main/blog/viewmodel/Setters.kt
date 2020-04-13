@@ -61,7 +61,7 @@ fun BlogViewModel.setOrder(order: String?) {
 fun BlogViewModel.removeDeleteBlogPost() {
     val update = getCurrentViewStateOrNew()
     val list = update.blogsFields.blogList.toMutableList()
-    for (i in 0 until list.size) {
+    for (i in 0 until list.size - 1) {
         if (list[i] == getBlogPost()) {
             list.remove(getBlogPost())
             break
@@ -71,15 +71,39 @@ fun BlogViewModel.removeDeleteBlogPost() {
 }
 
 
-
 @ExperimentalCoroutinesApi
-fun BlogViewModel.setUpdatedBlogFields(title: String?, body: String?, uri: Uri?){
+fun BlogViewModel.setUpdatedBlogFields(title: String?, body: String?, uri: Uri?) {
     val update = getCurrentViewStateOrNew()
     val updatedBlogFields = update.updatedBlogFields
-    title?.let{ updatedBlogFields.updatedBlogTitle = it }
-    body?.let{ updatedBlogFields.updatedBlogBody = it }
-    uri?.let{ updatedBlogFields.updatedImageUri = it }
+    title?.let { updatedBlogFields.updatedBlogTitle = it }
+    body?.let { updatedBlogFields.updatedBlogBody = it }
+    uri?.let { updatedBlogFields.updatedImageUri = it }
     update.updatedBlogFields = updatedBlogFields
     setViewState(update)
 }
 
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.updateListItem(newBlogPost: BlogPost) {
+    val update = getCurrentViewStateOrNew()
+    val list = update.blogsFields.blogList.toMutableList()
+    for (i in 0 until list.size - 1) {
+        if (list[i].pk == newBlogPost.pk) {
+            list[i] == newBlogPost
+            break
+        }
+    }
+    update.blogsFields.blogList = list
+    setViewState(update)
+}
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.onBlogPostUpdatedSuccess(blogPost: BlogPost) {
+    setUpdatedBlogFields(
+        uri = null,
+        title = blogPost.title,
+        body = blogPost.body
+        )
+    setBlogPost(blogPost)
+    updateListItem(blogPost)
+}
