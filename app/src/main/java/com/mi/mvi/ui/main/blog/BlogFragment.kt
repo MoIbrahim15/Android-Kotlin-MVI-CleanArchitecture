@@ -82,10 +82,14 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog),
                 if (blogViewModel.getPage() * PAGINATION_PAGE_SIZE > viewState.blogsFields.blogList.size) {
                     viewState.blogsFields.isQueryExhausted = true
                 }
-                recyclerAdapter.submitList(
-                    list = viewState.blogsFields.blogList,
-                    isQueryExhausted = viewState.blogsFields.isQueryExhausted
-                )
+                recyclerAdapter.apply {
+                    preloadGlideImages(this@BlogFragment.context, viewState.blogsFields.blogList)
+                    submitList(
+                        list = viewState.blogsFields.blogList,
+                        isQueryExhausted = viewState.blogsFields.isQueryExhausted
+                    )
+                }
+
             }
         })
     }

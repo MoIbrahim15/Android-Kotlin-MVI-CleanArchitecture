@@ -1,5 +1,6 @@
 package com.mi.mvi.ui.main.blog
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -123,6 +124,18 @@ class BlogListAdapter(
         if (isQueryExhausted)
             newList?.add(NO_MORE_RESULTS_BLOG_MARKER)
         differ.submitList(newList)
+    }
+
+    fun preloadGlideImages(
+        context : Context?, list : List<BlogPost>
+    ){
+        for(blogPost in list){
+            context?.let {
+                Glide.with(it)
+                    .load(blogPost.image)
+                    .preload()
+            }
+        }
     }
 
     class BlogViewHolder(
