@@ -6,6 +6,7 @@ import com.mi.mvi.data.datasource.remote.AccountRemoteDataSource
 import com.mi.mvi.data.datasource.remote.BlogRemoteDataSource
 import com.mi.mvi.data.repository.AccountRepositoryImpl
 import com.mi.mvi.data.repository.BlogRepositoryImpl
+import com.mi.mvi.data.repository.CreateBlogRepositoryImpl
 import com.mi.mvi.datasource.cache.account.AccountCacheDataSourceImpl
 import com.mi.mvi.datasource.cache.blog.BlogCacheDataSourceImpl
 import com.mi.mvi.datasource.remote.account.AccountAPIService
@@ -14,16 +15,15 @@ import com.mi.mvi.datasource.remote.blog.BlogAPIService
 import com.mi.mvi.datasource.remote.blog.BlogRemoteDataSourceImpl
 import com.mi.mvi.domain.repository.AccountRepository
 import com.mi.mvi.domain.repository.BlogRepository
+import com.mi.mvi.domain.repository.CreateBlogRepository
 import com.mi.mvi.domain.usecase.account.ChangePasswordUseCase
 import com.mi.mvi.domain.usecase.account.GetAccountUseCase
 import com.mi.mvi.domain.usecase.account.UpdateAccountUseCase
-import com.mi.mvi.domain.usecase.blogs.DeleteBlogPostUseCase
-import com.mi.mvi.domain.usecase.blogs.IsAuthorBlogPostUseCase
-import com.mi.mvi.domain.usecase.blogs.SearchBlogUseCase
-import com.mi.mvi.domain.usecase.blogs.UpdateBlogPostUseCase
+import com.mi.mvi.domain.usecase.blogs.*
 import com.mi.mvi.presentation.main.MainActivity
 import com.mi.mvi.presentation.main.account.AccountViewModel
 import com.mi.mvi.presentation.main.blog.viewmodel.BlogViewModel
+import com.mi.mvi.presentation.main.create_blog.CreateBlogViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -65,10 +65,19 @@ val mainModule = module {
                 get()
             )
         }
+        factory<CreateBlogRepository> {
+            CreateBlogRepositoryImpl(
+                get(),
+                get(),
+                get(),
+                get()
+            )
+        }
         factory { SearchBlogUseCase(get()) }
         factory { IsAuthorBlogPostUseCase(get()) }
         factory { DeleteBlogPostUseCase(get()) }
         factory { UpdateBlogPostUseCase(get()) }
+        factory { CreateBlogUseCase(get()) }
         viewModel {
             BlogViewModel(
                 get(),
@@ -80,7 +89,12 @@ val mainModule = module {
                 get()
             )
         }
-
+        viewModel {
+            CreateBlogViewModel(
+                get(),
+                get()
+            )
+        }
     }
 }
 
