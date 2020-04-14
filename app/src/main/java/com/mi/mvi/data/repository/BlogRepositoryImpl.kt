@@ -5,6 +5,7 @@ import com.mi.mvi.data.datasource.cache.BlogCacheDataSource
 import com.mi.mvi.data.datasource.remote.BlogRemoteDataSource
 import com.mi.mvi.datasource.model.*
 import com.mi.mvi.domain.repository.BlogRepository
+import com.mi.mvi.presentation.main.account.state.AccountViewState
 import com.mi.mvi.presentation.main.blog.state.BlogFields
 import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import com.mi.mvi.presentation.main.blog.state.ViewBlogFields
@@ -171,7 +172,7 @@ class BlogRepositoryImpl(
                         if (isDeleted) {
                             blogCacheDataSource.deleteBlogPost(blogPost)
                             emit(
-                                DataState.SUCCESS(
+                                DataState.SUCCESS<BlogViewState>(
                                     data = null, response = Response(
                                         messageRes = R.string.text_success,
                                         responseView = ResponseView.TOAST()
@@ -180,7 +181,7 @@ class BlogRepositoryImpl(
                             )
                         } else {
                             emit(
-                                DataState.ERROR(
+                                DataState.ERROR<BlogViewState>(
                                     response =
                                     Response(
                                         messageRes = R.string.deleted,

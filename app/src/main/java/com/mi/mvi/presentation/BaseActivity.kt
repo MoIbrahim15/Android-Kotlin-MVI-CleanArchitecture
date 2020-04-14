@@ -1,9 +1,14 @@
 package com.mi.mvi.presentation
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.mi.mvi.utils.Constants.Companion.PERMISSION_REQUEST_READ_STORAGE
 import com.mi.mvi.utils.SessionManager
 import com.mi.mvi.utils.response_handler.DataState
 import com.mi.mvi.utils.response_handler.Response
@@ -70,6 +75,26 @@ abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity
             inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
         }
 
+    }
+
+    override fun isStoragePermissionGranted(): Boolean {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED
+            &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ), PERMISSION_REQUEST_READ_STORAGE
+            )
+            return false
+        } else {
+            return true
+        }
     }
 
     abstract fun displayLoading(isLoading: Boolean)

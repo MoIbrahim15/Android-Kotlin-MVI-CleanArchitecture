@@ -12,7 +12,7 @@ import com.mi.mvi.presentation.main.MainActivity
 import kotlinx.android.synthetic.main.activity_auth.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.scope.currentScope
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.viewmodel.scope.viewModel
 
 @ExperimentalCoroutinesApi
 class AuthActivity : BaseActivity(R.layout.activity_auth) {

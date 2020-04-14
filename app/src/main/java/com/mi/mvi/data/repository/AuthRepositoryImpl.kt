@@ -10,6 +10,7 @@ import com.mi.mvi.domain.repository.AuthRepository
 import com.mi.mvi.presentation.auth.state.AuthViewState
 import com.mi.mvi.presentation.auth.state.LoginFields
 import com.mi.mvi.presentation.auth.state.RegistrationFields
+import com.mi.mvi.presentation.main.account.state.AccountViewState
 import com.mi.mvi.utils.SessionManager
 import com.mi.mvi.utils.SharedPreferenceKeys.Companion.PREVIOUS_AUTH_USER
 import com.mi.mvi.utils.response_handler.*
@@ -59,7 +60,7 @@ class AuthRepositoryImpl(
                             )
                             if (result < 0) {
                                 emit(
-                                    DataState.ERROR(
+                                    DataState.ERROR<AuthViewState>(
                                         Response(
                                             R.string.error_something_went_wrong,
                                             ResponseView.DIALOG()
@@ -81,7 +82,7 @@ class AuthRepositoryImpl(
 
                             }
                         } else {
-                            emit(errorHandler.invoke(message = response.errorMessage))
+                            emit(errorHandler.invoke<AuthViewState>(message = response.errorMessage))
                         }
                     }
 
@@ -91,7 +92,7 @@ class AuthRepositoryImpl(
                 }
             emitAll(networkBoundResource.call())
         } else {
-            emit(DataState.ERROR(Response(loginFieldErrors, ResponseView.DIALOG())))
+            emit(DataState.ERROR<AuthViewState>(Response(loginFieldErrors, ResponseView.DIALOG())))
         }
     }
 
@@ -131,7 +132,7 @@ class AuthRepositoryImpl(
                         )
                         if (result < 0) {
                             emit(
-                                DataState.ERROR(
+                                DataState.ERROR<AuthViewState>(
                                     Response(
                                         R.string.error_something_went_wrong,
                                         ResponseView.DIALOG()
@@ -161,7 +162,7 @@ class AuthRepositoryImpl(
                 }
             emitAll(networkBoundResource.call())
         } else {
-            emit(DataState.ERROR(Response(registrationFieldErrors, ResponseView.DIALOG())))
+            emit(DataState.ERROR<AuthViewState>(Response(registrationFieldErrors, ResponseView.DIALOG())))
         }
     }
 

@@ -81,7 +81,7 @@ class AccountRepositoryImpl(
                     accountProperties.username
                 )
                 emit(
-                    DataState.SUCCESS(
+                    DataState.SUCCESS<AccountViewState>(
                         data = null,
                         response = Response(R.string.text_success, ResponseView.TOAST())
                     )
@@ -120,14 +120,14 @@ class AccountRepositoryImpl(
 
                     if (response.response == RESPONSE_PASSWORD_UPDATE_SUCCESS)
                         emit(
-                            DataState.SUCCESS(
+                            DataState.SUCCESS<AccountViewState>(
                                 data = null,
                                 response = Response(R.string.text_success, ResponseView.TOAST())
                             )
                         )
                     else {
                         emit(
-                            DataState.ERROR(
+                            DataState.ERROR<AccountViewState>(
                                 response = Response(
                                     R.string.error_something_went_wrong,
                                     ResponseView.TOAST()

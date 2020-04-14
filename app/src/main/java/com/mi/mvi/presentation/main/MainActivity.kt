@@ -18,11 +18,12 @@ import com.mi.mvi.presentation.main.account.UpdateAccountFragment
 import com.mi.mvi.presentation.main.blog.UpdateBlogFragment
 import com.mi.mvi.presentation.main.blog.ViewBlogFragment
 import com.mi.mvi.presentation.main.blog.viewmodel.BlogViewModel
+import com.mi.mvi.presentation.main.create_blog.CreateBlogViewModel
 import com.mi.mvi.presentation.setUpNavigation
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.scope.currentScope
-import org.koin.android.viewmodel.ext.android.getViewModel
+import org.koin.android.viewmodel.scope.getViewModel
 
 
 const val BOTTOM_NAV_BACKSTACK_KEY =
@@ -36,6 +37,7 @@ class MainActivity : BaseActivity(R.layout.activity_main),
 
     private lateinit var accountViewModel: AccountViewModel
     private lateinit var blogViewModel: BlogViewModel
+    private lateinit var createBlogViewModel: CreateBlogViewModel
 
     private val bottomNavController by lazy(LazyThreadSafetyMode.NONE) {
         BottomNavController(
@@ -97,6 +99,7 @@ class MainActivity : BaseActivity(R.layout.activity_main),
         subscriberObservers()
         accountViewModel = currentScope.getViewModel(this)
         blogViewModel = currentScope.getViewModel(this)
+        createBlogViewModel = currentScope.getViewModel(this)
     }
 
     private fun setupBottomNavigationView(savedInstanceState: Bundle?) {
