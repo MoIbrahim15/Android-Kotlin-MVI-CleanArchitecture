@@ -36,4 +36,13 @@ class BlogRemoteDataSourceImpl(
     ): BlogCreateUpdateResponse {
         return blogAPIService.updateBlog(authorization, slug, title, body, image)
     }
+
+    override suspend fun createBlog(
+        authorization: String,
+        title: RequestBody,
+        body: RequestBody,
+        image: MultipartBody.Part?
+    ): BlogCreateUpdateResponse {
+        return blogAPIService.createBlog(authorization, title, body, image)
+    }
 }

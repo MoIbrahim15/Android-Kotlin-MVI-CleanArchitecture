@@ -12,7 +12,11 @@ import com.mi.mvi.presentation.main.create_blog.state.NewBlogFields
 import com.mi.mvi.utils.AbsentLiveData
 import com.mi.mvi.utils.SessionManager
 import com.mi.mvi.utils.response_handler.DataState
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 
+@ExperimentalCoroutinesApi
 class CreateBlogViewModel(
     private val createBlogUseCase: CreateBlogUseCase,
     private val sessionManager: SessionManager
@@ -21,7 +25,20 @@ class CreateBlogViewModel(
     override fun handleEventState(eventState: CreateBlogEventState): LiveData<DataState<CreateBlogViewState>> {
         return when (eventState) {
             is CreateNewBlogEvent -> {
-                AbsentLiveData.create()
+                sessionManager.cachedToken.value?.let { authToken ->
+                    val title = eventState.title
+                        .toRequestBody("text/plain".toMediaTypeOrNull())
+                    val body = eventState.body
+                        .toRequestBody("text/plain".toMediaTypeOrNull())
+
+                    createBlogUseCase.invoke(
+                        authToken,
+                        title,
+                        body,
+                        eventState.image
+                    )
+
+                } ?: AbsentLiveData.create()
             }
             is None -> {
                 AbsentLiveData.create()
@@ -48,5 +65,13 @@ class CreateBlogViewModel(
         val update = getCurrentViewStateOrNew()
         update.newBlogField = NewBlogFields()
         setViewState(update)
+    }
+
+    fun getNewImageUri(): Uri? {
+        getCurrentViewStateOrNew().let { viewState ->
+            viewState.newBlogField.let { newBlogFields ->
+                return newBlogFields.newImageUri
+            }
+        }
     }
 }

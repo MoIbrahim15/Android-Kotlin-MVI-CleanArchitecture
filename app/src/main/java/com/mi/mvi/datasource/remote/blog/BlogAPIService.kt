@@ -41,4 +41,13 @@ interface BlogAPIService {
         @Part("body") body: RequestBody,
         @Part image: MultipartBody.Part?
     ): BlogCreateUpdateResponse
+
+    @Multipart
+    @POST("blog/create")
+    suspend fun createBlog(
+        @Header("Authorization") authorization: String,
+        @Part("title") title: RequestBody,
+        @Part("body") body: RequestBody,
+        @Part image: MultipartBody.Part?
+    ): BlogCreateUpdateResponse
 }

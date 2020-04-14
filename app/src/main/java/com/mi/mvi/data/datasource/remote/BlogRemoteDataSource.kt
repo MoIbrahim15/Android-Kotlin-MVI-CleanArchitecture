@@ -35,4 +35,12 @@ interface BlogRemoteDataSource {
         body: RequestBody,
         image: MultipartBody.Part?
     ): BlogCreateUpdateResponse
+
+
+    suspend fun createBlog(
+        authorization: String,
+        title: RequestBody,
+        body: RequestBody,
+        image: MultipartBody.Part?
+    ): BlogCreateUpdateResponse
 }

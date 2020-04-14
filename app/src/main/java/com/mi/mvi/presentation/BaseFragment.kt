@@ -8,7 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import com.mi.mvi.R
 import com.mi.mvi.presentation.main.MainActivity
+import com.mi.mvi.presentation.main.create_blog.state.CreateBlogViewState
+import com.mi.mvi.utils.response_handler.DataState
+import com.mi.mvi.utils.response_handler.Response
+import com.mi.mvi.utils.response_handler.ResponseView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -42,4 +47,16 @@ abstract class BaseFragment(val contentLayoutId: Int) : Fragment(contentLayoutId
 
         }
     }
+
+    fun showErrorDialog(errorMessage: String) {
+        dataStateChangeListener?.onDataStateChangeListener(
+            DataState.ERROR<CreateBlogViewState>(
+                Response(
+                    R.string.error_something_went_wrong,
+                    ResponseView.DIALOG()
+                )
+            )
+        )
+    }
+
 }
