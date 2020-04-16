@@ -1,9 +1,12 @@
 package com.mi.mvi.datasource.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "blog_post")
 data class BlogPost(
 
@@ -28,4 +31,4 @@ data class BlogPost(
 
     @ColumnInfo(name = "username")
     var username: String
-)
+) : Parcelable

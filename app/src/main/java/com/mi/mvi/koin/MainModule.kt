@@ -74,12 +74,14 @@ val mainModule = module {
             )
         }
         factory { SearchBlogUseCase(get()) }
+        factory { RestoreBlogListUseCase(get()) }
         factory { IsAuthorBlogPostUseCase(get()) }
         factory { DeleteBlogPostUseCase(get()) }
         factory { UpdateBlogPostUseCase(get()) }
         factory { CreateBlogUseCase(get()) }
         viewModel {
             BlogViewModel(
+                get(),
                 get(),
                 get(),
                 get(),

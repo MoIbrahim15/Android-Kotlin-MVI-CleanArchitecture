@@ -3,7 +3,6 @@ package com.mi.mvi.presentation.main.blog
 import android.app.SearchManager
 import android.content.Context.SEARCH_SERVICE
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -25,7 +24,6 @@ import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.mi.mvi.R
 import com.mi.mvi.datasource.model.BlogPost
-import com.mi.mvi.presentation.BaseFragment
 import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import com.mi.mvi.presentation.main.blog.viewmodel.*
 import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_FILTER_DATE_UPDATED
@@ -36,14 +34,11 @@ import com.mi.mvi.utils.TopSpacingItemDecoration
 import com.mi.mvi.utils.response_handler.DataState
 import kotlinx.android.synthetic.main.fragment_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
-class BlogFragment : BaseFragment(R.layout.fragment_blog),
+class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
     BlogListAdapter.Interaction,
     SwipeRefreshLayout.OnRefreshListener {
-
-    private val blogViewModel: BlogViewModel by sharedViewModel()
 
     private lateinit var recyclerAdapter: BlogListAdapter
     private lateinit var searchView: SearchView
@@ -55,13 +50,26 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog),
         swipe_refresh.setOnRefreshListener(this)
         initRecyclerView()
         subscribeObservers()
-        if (savedInstanceState == null) {
-            blogViewModel.loadFirstPage()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshFromCache()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveLayoutManagerState()
+    }
+
+    private fun saveLayoutManagerState() {
+        blog_post_recyclerview.layoutManager?.onSaveInstanceState()?.let { lmState ->
+            viewModel.setLayoutManagerState(lmState)
         }
     }
 
     private fun onBlogSearchOrFilter() {
-        blogViewModel.loadFirstPage()
+        viewModel.loadFirstPage()
         resetUI()
     }
 
@@ -72,14 +80,16 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog),
     }
 
     private fun subscribeObservers() {
-        blogViewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            handlePagination(dataState)
-            dataStateChangeListener?.onDataStateChangeListener(dataState)
+        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
+            dataState?.let {
+                handlePagination(dataState)
+                dataStateChangeListener?.onDataStateChangeListener(dataState)
+            }
         })
 
-        blogViewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             viewState?.let {
-                if (blogViewModel.getPage() * PAGINATION_PAGE_SIZE > viewState.blogsFields.blogList.size) {
+                if (viewModel.getPage() * PAGINATION_PAGE_SIZE > viewState.blogsFields.blogList.size) {
                     viewState.blogsFields.isQueryExhausted = true
                 }
                 recyclerAdapter.apply {
@@ -112,8 +122,7 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog),
                 || actionId == EditorInfo.IME_ACTION_SEARCH
             ) {
                 val searchQuery = v.text.toString()
-                Log.e("", searchQuery)
-                blogViewModel.setQuery(searchQuery)
+                viewModel.setQuery(searchQuery)
                 onBlogSearchOrFilter()
             }
             true
@@ -121,8 +130,7 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog),
         //cas2: SEARCH BUTTON CLICKED (in toolbar)
         (searchView.findViewById(R.id.search_go_btn) as View).setOnClickListener {
             val searchQuery = searchPlate.text.toString()
-            Log.e("SEARCH_QUERY", searchQuery)
-            blogViewModel.setQuery(searchQuery)
+            viewModel.setQuery(searchQuery)
             onBlogSearchOrFilter()
         }
 
@@ -133,7 +141,7 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog),
         dataState?.data?.let { data ->
             data.data?.let { event ->
                 event.getContentIfNotHandled()?.let {
-                    blogViewModel.handleIncomingBlogListData(it)
+                    viewModel.handleIncomingBlogListData(it)
                 }
             }
         }
@@ -147,7 +155,7 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog),
 
                     // set query exhausted to update RecyclerView with
                     // "No more results..." list item
-                    blogViewModel.setQueryExhausted(true)
+                    viewModel.setQueryExhausted(true)
                 }
             }
         }
@@ -171,7 +179,7 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog),
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val lastPosition = layoutManager.findLastVisibleItemPosition()
                     if (lastPosition == recyclerAdapter.itemCount.minus(1)) {
-                        blogViewModel.nextPage()
+                        viewModel.nextPage()
                     }
                 }
             })
@@ -186,8 +194,14 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog),
     }
 
     override fun onItemSelected(position: Int, item: BlogPost) {
-        blogViewModel.setBlogPost(item)
+        viewModel.setBlogPost(item)
         findNavController().navigate(R.id.action_blogFragment_to_viewBlogFragment)
+    }
+
+    override fun restoreListPosition() {
+        viewModel.viewState.value?.blogsFields?.layoutManagerState?.let { lmState ->
+            blog_post_recyclerview.layoutManager?.onRestoreInstanceState(lmState)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -220,14 +234,14 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog),
 
             val view = dialog.getCustomView()
 
-            val filter = blogViewModel.getFilter()
+            val filter = viewModel.getFilter()
             if (filter == BLOG_FILTER_DATE_UPDATED) {
                 view.findViewById<RadioGroup>(R.id.filter_group).check(R.id.filter_date)
             } else {
                 view.findViewById<RadioGroup>(R.id.filter_group).check(R.id.filter_author)
             }
 
-            val order = blogViewModel.getOrder()
+            val order = viewModel.getOrder()
 
             if (order == BLOG_ORDER_ASC) {
                 view.findViewById<RadioGroup>(R.id.order_group).check(R.id.filter_asc)
@@ -254,9 +268,9 @@ class BlogFragment : BaseFragment(R.layout.fragment_blog),
                 if (selectedOrder.text.toString() == getString(R.string.filter_desc)) {
                     order = "-"
                 }
-                blogViewModel.saveFilterOptions(filter, order)
-                blogViewModel.setFilter(filter)
-                blogViewModel.setOrder(order)
+                viewModel.saveFilterOptions(filter, order)
+                viewModel.setFilter(filter)
+                viewModel.setOrder(order)
                 onBlogSearchOrFilter()
                 dialog.dismiss()
             }

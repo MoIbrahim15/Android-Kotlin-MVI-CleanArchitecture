@@ -9,42 +9,44 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
 import com.mi.mvi.presentation.BaseFragment
+import com.mi.mvi.presentation.main.account.state.ACCOUNT_VIEW_STATE_BUNDLE_KEY
 import com.mi.mvi.presentation.main.account.state.AccountEventState
+import com.mi.mvi.presentation.main.account.state.AccountViewState
+import com.mi.mvi.presentation.main.blog.state.BLOG_VIEW_STATE_BUNDLE_KEY
+import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
-class AccountFragment : BaseFragment(R.layout.fragment_account) {
-
-    private val accountViewModel: AccountViewModel by sharedViewModel()
+class AccountFragment : BaseAccountFragment(R.layout.fragment_account) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
         subscribeObservers()
-        accountViewModel.setEventState(AccountEventState.GetAccountEvent())
+        viewModel.setEventState(AccountEventState.GetAccountEvent())
 
         change_password.setOnClickListener { findNavController().navigate(R.id.action_accountFragment_to_changePasswordFragment) }
-        logout_button.setOnClickListener { accountViewModel.logout() }
+        logout_button.setOnClickListener { viewModel.logout() }
     }
 
-
     private fun subscribeObservers() {
-
-        accountViewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            dataStateChangeListener?.onDataStateChangeListener(dataState)
-            dataState.data?.let {
-                it.data?.getContentIfNotHandled()?.let { viewState ->
-                    viewState.accountProperties?.let { account ->
-                        accountViewModel.setAccountData(account)
+        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
+            dataState?.let {
+                dataStateChangeListener?.onDataStateChangeListener(dataState)
+                dataState.data?.let {
+                    it.data?.getContentIfNotHandled()?.let { viewState ->
+                        viewState.accountProperties?.let { account ->
+                            viewModel.setAccountData(account)
+                        }
                     }
                 }
             }
         })
 
-        accountViewModel.viewState.observe(viewLifecycleOwner, Observer {
+        viewModel.viewState.observe(viewLifecycleOwner, Observer {
             it.accountProperties?.let { account ->
                 email.text = account.email
                 username.text = account.username

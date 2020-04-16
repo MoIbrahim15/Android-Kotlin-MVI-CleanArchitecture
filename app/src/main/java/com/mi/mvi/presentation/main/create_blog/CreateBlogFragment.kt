@@ -17,13 +17,11 @@ import com.mi.mvi.presentation.AreYouSureCallBack
 import com.mi.mvi.presentation.BaseFragment
 import com.mi.mvi.presentation.UIMessage
 import com.mi.mvi.presentation.UIMessageType
+import com.mi.mvi.presentation.main.create_blog.state.CREATE_BLOG_VIEW_STATE_BUNDLE_KEY
 import com.mi.mvi.presentation.main.create_blog.state.CreateBlogEventState
 import com.mi.mvi.presentation.main.create_blog.state.CreateBlogViewState
 import com.mi.mvi.presentation.main.create_blog.state.NewBlogFields
 import com.mi.mvi.utils.Constants.Companion.GALLERY_REQUEST_CODE
-import com.mi.mvi.utils.response_handler.DataState
-import com.mi.mvi.utils.response_handler.Response
-import com.mi.mvi.utils.response_handler.ResponseView
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.fragment_create_blog.*
@@ -37,7 +35,7 @@ import java.io.File
 @ExperimentalCoroutinesApi
 class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
 
-    private val createBlogViewModel: CreateBlogViewModel by sharedViewModel()
+    private val viewModel: CreateBlogViewModel by sharedViewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,24 +59,42 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
         subscribeObservers()
     }
 
-    private fun subscribeObservers() {
-        createBlogViewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            dataStateChangeListener?.onDataStateChangeListener(dataState = dataState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        savedInstanceState?.let { inState ->
+            (inState[CREATE_BLOG_VIEW_STATE_BUNDLE_KEY] as CreateBlogViewState?)?.let { viewState ->
+                viewModel.setViewState(viewState)
+            }
+        }
+    }
 
-            dataState.data?.let { data ->
-                data.response?.let { event ->
-                    event.peekContent().let { response ->
-                        response.messageRes?.let { messageRes ->
-                            if (messageRes == R.string.text_success) {
-                                createBlogViewModel.clearNewBlogFields()
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(
+            CREATE_BLOG_VIEW_STATE_BUNDLE_KEY,
+            viewModel.viewState.value
+        )
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun subscribeObservers() {
+        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
+            dataState?.let {
+                dataStateChangeListener?.onDataStateChangeListener(dataState = dataState)
+                dataState.data?.let { data ->
+                    data.response?.let { event ->
+                        event.peekContent().let { response ->
+                            response.messageRes?.let { messageRes ->
+                                if (messageRes == R.string.text_success) {
+                                    viewModel.clearNewBlogFields()
+                                }
                             }
                         }
-                    }
 
+                    }
                 }
             }
         })
-        createBlogViewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             setBlogProperties(viewState.newBlogField)
         })
     }
@@ -132,7 +148,7 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
                     val resultUri = result.uri
-                    createBlogViewModel.setNewBlogFields(
+                    viewModel.setNewBlogFields(
                         title = null,
                         body = null,
                         uri = resultUri
@@ -147,7 +163,7 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
 
     override fun onPause() {
         super.onPause()
-        createBlogViewModel.setNewBlogFields(
+        viewModel.setNewBlogFields(
             blog_title.text.toString(),
             blog_body.text.toString(),
             null
@@ -156,7 +172,7 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
 
     fun publishNewBlogPost() {
         var multipartBody: MultipartBody.Part? = null
-        createBlogViewModel.getNewImageUri()?.let { imageUri ->
+        viewModel.getNewImageUri()?.let { imageUri ->
             imageUri.path?.let { filePath ->
                 val imageFile = File(filePath)
                 val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
@@ -166,7 +182,7 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
         }
 
         multipartBody?.let { image ->
-            createBlogViewModel.setEventState(
+            viewModel.setEventState(
                 CreateBlogEventState.CreateNewBlogEvent(
                     blog_title.text.toString(),
                     blog_body.text.toString(),

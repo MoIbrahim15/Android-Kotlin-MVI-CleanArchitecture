@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.mi.mvi.R
+import com.mi.mvi.datasource.model.AUTH_TOKEN_BUNDLE_KEY
+import com.mi.mvi.datasource.model.AuthToken
 import com.mi.mvi.presentation.BaseActivity
 import com.mi.mvi.presentation.BottomNavController
 import com.mi.mvi.presentation.BottomNavController.*
@@ -100,6 +102,30 @@ class MainActivity : BaseActivity(R.layout.activity_main),
         accountViewModel = currentScope.getViewModel(this)
         blogViewModel = currentScope.getViewModel(this)
         createBlogViewModel = currentScope.getViewModel(this)
+
+        restoreSession(savedInstanceState)
+    }
+
+    private fun restoreSession(savedInstanceState: Bundle?) {
+        savedInstanceState?.let { inState ->
+            inState[AUTH_TOKEN_BUNDLE_KEY]?.let { authToken ->
+                sessionManager.setValue(authToken as AuthToken)
+            }
+        }
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(
+            AUTH_TOKEN_BUNDLE_KEY,
+            sessionManager.cachedToken.value
+        )
+        // save backstack for bottom nav
+        outState.putIntArray(
+            BOTTOM_NAV_BACKSTACK_KEY,
+            bottomNavController.navigationBackStack.toIntArray()
+        )
+        super.onSaveInstanceState(outState)
     }
 
     private fun setupBottomNavigationView(savedInstanceState: Bundle?) {
@@ -114,16 +140,6 @@ class MainActivity : BaseActivity(R.layout.activity_main),
                 bottomNavController.setupBottomNavigationBackStack(backstack)
             }
         }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        // save backstack for bottom nav
-        outState.putIntArray(
-            BOTTOM_NAV_BACKSTACK_KEY,
-            bottomNavController.navigationBackStack.toIntArray()
-        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

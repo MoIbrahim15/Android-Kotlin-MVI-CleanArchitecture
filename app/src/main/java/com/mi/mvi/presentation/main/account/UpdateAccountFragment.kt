@@ -10,15 +10,15 @@ import androidx.lifecycle.Observer
 import com.mi.mvi.R
 import com.mi.mvi.datasource.model.AccountProperties
 import com.mi.mvi.presentation.BaseFragment
+import com.mi.mvi.presentation.main.account.state.ACCOUNT_VIEW_STATE_BUNDLE_KEY
 import com.mi.mvi.presentation.main.account.state.AccountEventState
+import com.mi.mvi.presentation.main.account.state.AccountViewState
 import kotlinx.android.synthetic.main.fragment_update_account.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
-class UpdateAccountFragment : BaseFragment(R.layout.fragment_update_account) {
-
-    private val accountViewModel: AccountViewModel by sharedViewModel()
+class UpdateAccountFragment : BaseAccountFragment(R.layout.fragment_update_account) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,12 +27,13 @@ class UpdateAccountFragment : BaseFragment(R.layout.fragment_update_account) {
     }
 
     private fun subscribeObservers() {
-        accountViewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            dataStateChangeListener?.onDataStateChangeListener(dataState)
-
+        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
+            dataState?.let {
+                dataStateChangeListener?.onDataStateChangeListener(dataState)
+            }
         })
 
-        accountViewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             if (viewState != null) {
                 viewState.accountProperties?.let { accountProperties ->
                     setAccountProperties(accountProperties = accountProperties)
@@ -48,7 +49,7 @@ class UpdateAccountFragment : BaseFragment(R.layout.fragment_update_account) {
     }
 
     private fun saveChanges() {
-        accountViewModel.setEventState(
+        viewModel.setEventState(
             AccountEventState.UpdateAccountEvent(
                 input_email.text.toString(),
                 input_username.text.toString()

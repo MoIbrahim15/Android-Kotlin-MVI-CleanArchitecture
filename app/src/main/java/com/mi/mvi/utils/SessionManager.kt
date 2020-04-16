@@ -44,13 +44,13 @@ class SessionManager(
             } catch (e: Exception) {
                 errorMessage = errorMessage + "\n" + e.message
             } finally {
-                errorMessage?.let { Log.e("MVI", errorMessage) }
+
             }
             setValue(null)
         }
     }
 
-    private fun setValue(newValue: AuthToken?) {
+    fun setValue(newValue: AuthToken?) {
         GlobalScope.launch(Main) {
             if (_cachedToken.value != newValue) {
                 _cachedToken.value = newValue

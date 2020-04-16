@@ -15,7 +15,9 @@ import com.mi.mvi.presentation.AreYouSureCallBack
 import com.mi.mvi.presentation.BaseFragment
 import com.mi.mvi.presentation.UIMessage
 import com.mi.mvi.presentation.UIMessageType
+import com.mi.mvi.presentation.main.blog.state.BLOG_VIEW_STATE_BUNDLE_KEY
 import com.mi.mvi.presentation.main.blog.state.BlogEventState
+import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import com.mi.mvi.presentation.main.blog.viewmodel.*
 import com.mi.mvi.utils.DateUtils
 import kotlinx.android.synthetic.main.fragment_view_blog.*
@@ -23,9 +25,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
-class ViewBlogFragment : BaseFragment(R.layout.fragment_view_blog) {
-
-    private val blogViewModel: BlogViewModel by sharedViewModel()
+class ViewBlogFragment : BaseBlogFragment(R.layout.fragment_view_blog) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,7 +41,7 @@ class ViewBlogFragment : BaseFragment(R.layout.fragment_view_blog) {
             getString(R.string.are_you_sure_delete), UIMessageType.AreYouSureDialog(
                 object : AreYouSureCallBack {
                     override fun proceed() {
-                        blogViewModel.setEventState(BlogEventState.DeleteBlogPostEvent())
+                        viewModel.setEventState(BlogEventState.DeleteBlogPostEvent())
                     }
 
                     override fun cancel() {
@@ -53,30 +53,32 @@ class ViewBlogFragment : BaseFragment(R.layout.fragment_view_blog) {
     }
 
     private fun checkIsAuthor() {
-        blogViewModel.setEventState(BlogEventState.CheckAuthorBlogPostEvent())
+        viewModel.setEventState(BlogEventState.CheckAuthorBlogPostEvent())
     }
 
     private fun subscribeObservers() {
-        blogViewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            dataStateChangeListener?.onDataStateChangeListener(dataState = dataState)
-            dataState.data?.let { data ->
-                data.data?.getContentIfNotHandled()?.let { viewState ->
-                    blogViewModel.setIsAuthorOfBlogPost(
-                        viewState.viewBlogFields.isAuthor
-                    )
-                }
-
-                data.response?.peekContent()?.let { response ->
-                    if (response.messageRes == R.string.delete) {
-                        blogViewModel.removeDeleteBlogPost()
-                        findNavController().popBackStack()
+        viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
+            dataState?.let {
+                dataStateChangeListener?.onDataStateChangeListener(dataState = dataState)
+                dataState.data?.let { data ->
+                    data.data?.getContentIfNotHandled()?.let { viewState ->
+                        viewModel.setIsAuthorOfBlogPost(
+                            viewState.viewBlogFields.isAuthor
+                        )
                     }
 
+                    data.response?.peekContent()?.let { response ->
+                        if (response.messageRes == R.string.delete) {
+                            viewModel.removeDeleteBlogPost()
+                            findNavController().popBackStack()
+                        }
+
+                    }
                 }
             }
         })
 
-        blogViewModel.viewState.observe(viewLifecycleOwner, Observer { blogViewState ->
+        viewModel.viewState.observe(viewLifecycleOwner, Observer { blogViewState ->
             blogViewState?.viewBlogFields?.blogPost?.let { blogPost ->
                 setBlogProperties(blogPost)
             }
@@ -107,13 +109,13 @@ class ViewBlogFragment : BaseFragment(R.layout.fragment_view_blog) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        if (blogViewModel.isAuthorOfBlogPost()) {
+        if (viewModel.isAuthorOfBlogPost()) {
             inflater.inflate(R.menu.edit_view_menu, menu)
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (blogViewModel.isAuthorOfBlogPost()) {
+        if (viewModel.isAuthorOfBlogPost()) {
             when (item.itemId) {
                 R.id.edit -> {
                     navUpdateBlogFragment()
@@ -125,15 +127,15 @@ class ViewBlogFragment : BaseFragment(R.layout.fragment_view_blog) {
     }
 
     private fun navUpdateBlogFragment() {
-        try{
+        try {
             // prep for next fragment
-            blogViewModel.setUpdatedBlogFields(
-                blogViewModel.getBlogPost().title,
-                blogViewModel.getBlogPost().body,
-                blogViewModel.getBlogPost().image.toUri()
+            viewModel.setUpdatedBlogFields(
+                viewModel.getBlogPost().title,
+                viewModel.getBlogPost().body,
+                viewModel.getBlogPost().image.toUri()
             )
             findNavController().navigate(R.id.action_viewBlogFragment_to_updateBlogFragment)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             // send error report or something. These fields should never be null. Not possible
         }
     }

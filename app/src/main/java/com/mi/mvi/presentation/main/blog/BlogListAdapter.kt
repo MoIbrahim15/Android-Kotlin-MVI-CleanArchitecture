@@ -14,8 +14,8 @@ import com.mi.mvi.utils.DateUtils
 import kotlinx.android.synthetic.main.layout_blog_list_item.view.*
 
 class BlogListAdapter(
-    private val interaction: Interaction? = null)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val interaction: Interaction? = null
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val NO_MORE_RESULTS = -1
     private val BLOG_ITEM = 0
@@ -85,7 +85,8 @@ class BlogListAdapter(
                         parent,
                         false
                     ),
-                    interaction = interaction)
+                    interaction = interaction
+                )
             }
             else -> {
                 return BlogViewHolder(
@@ -94,7 +95,8 @@ class BlogListAdapter(
                         parent,
                         false
                     ),
-                    interaction = interaction)
+                    interaction = interaction
+                )
             }
         }
 
@@ -123,13 +125,16 @@ class BlogListAdapter(
         val newList = list?.toMutableList()
         if (isQueryExhausted)
             newList?.add(NO_MORE_RESULTS_BLOG_MARKER)
-        differ.submitList(newList)
+        val commitCallBack = Runnable {
+            interaction?.restoreListPosition()
+        }
+        differ.submitList(newList, commitCallBack)
     }
 
     fun preloadGlideImages(
-        context : Context?, list : List<BlogPost>
-    ){
-        for(blogPost in list){
+        context: Context?, list: List<BlogPost>
+    ) {
+        for (blogPost in list) {
             context?.let {
                 Glide.with(it)
                     .load(blogPost.image)
@@ -140,7 +145,8 @@ class BlogListAdapter(
 
     class BlogViewHolder(
         itemView: View,
-        private val interaction: Interaction?) : RecyclerView.ViewHolder(itemView) {
+        private val interaction: Interaction?
+    ) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: BlogPost) = with(itemView) {
             itemView.setOnClickListener {
@@ -149,6 +155,7 @@ class BlogListAdapter(
 
             Glide.with(this)
                 .load(item.image)
+                .placeholder(R.drawable.default_image)
                 .transition(withCrossFade())
                 .into(itemView.imgBlog)
 
@@ -161,5 +168,6 @@ class BlogListAdapter(
 
     interface Interaction {
         fun onItemSelected(position: Int, item: BlogPost)
+        fun restoreListPosition()
     }
 }

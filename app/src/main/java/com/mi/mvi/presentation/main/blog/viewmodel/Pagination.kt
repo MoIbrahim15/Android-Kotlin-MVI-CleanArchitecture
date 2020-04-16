@@ -1,5 +1,6 @@
 package com.mi.mvi.presentation.main.blog.viewmodel
 
+import com.mi.mvi.presentation.main.blog.state.BlogEventState
 import com.mi.mvi.presentation.main.blog.state.BlogEventState.BlogSearchEvent
 import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -11,6 +12,12 @@ fun BlogViewModel.resetPage() {
     setViewState(update)
 }
 
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.refreshFromCache() {
+    setQueryExhausted(false)
+    setEventState(BlogEventState.RestoreBlogListFromCacheEvent())
+}
 
 @ExperimentalCoroutinesApi
 fun BlogViewModel.loadFirstPage() {

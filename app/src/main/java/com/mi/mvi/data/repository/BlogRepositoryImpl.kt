@@ -104,6 +104,48 @@ class BlogRepositoryImpl(
         emitAll(networkBoundResource.call())
     }
 
+    override fun restoreBlogListFromCache(
+        query: String,
+        filterAndOrder: String,
+        page: Int
+    ): Flow<DataState<BlogViewState>> = flow {
+        val networkBoundResource =
+            object :
+                NetworkBoundResource<BlogListSearchResponse, MutableList<BlogPost>, BlogViewState>(
+                    apiCall = null,
+                    cacheCall = {
+                        blogCacheDataSource.returnOrderedBlogQuery(
+                            query = query,
+                            filterAndOrder = filterAndOrder,
+                            page = page
+                        )
+                    },
+                    errorHandler = errorHandler,
+                    canWorksOffline = true,
+                    isNetworkAvailable = sessionManager.isConnectedToInternet()
+                ) {
+                override suspend fun handleNetworkSuccess(response: BlogListSearchResponse) {
+
+                }
+
+                override suspend fun handleCacheSuccess(response: MutableList<BlogPost>?) {
+                    response?.let { items ->
+                        emit(
+                            DataState.SUCCESS(
+                                BlogViewState(
+                                    BlogFields(
+                                        items
+                                    )
+                                )
+                            )
+                        )
+                    }
+                }
+
+            }
+
+        emitAll(networkBoundResource.call())
+    }
 
     override fun isAuthorOfBlogPosts(
         authToken: AuthToken,

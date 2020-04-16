@@ -1,6 +1,7 @@
 package com.mi.mvi.presentation.main.blog.viewmodel
 
 import android.net.Uri
+import android.os.Parcelable
 import com.mi.mvi.datasource.model.BlogPost
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -22,6 +23,20 @@ fun BlogViewModel.setBlogList(blogList: MutableList<BlogPost>) {
 fun BlogViewModel.setBlogPost(blogPost: BlogPost) {
     val update = getCurrentViewStateOrNew()
     update.viewBlogFields.blogPost = blogPost
+    setViewState(update)
+}
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.setLayoutManagerState(layoutManagerState: Parcelable) {
+    val update = getCurrentViewStateOrNew()
+    update.blogsFields.layoutManagerState = layoutManagerState
+    setViewState(update)
+}
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.clearLayoutManagerState() {
+    val update = getCurrentViewStateOrNew()
+    update.blogsFields.layoutManagerState = null
     setViewState(update)
 }
 
@@ -103,7 +118,7 @@ fun BlogViewModel.onBlogPostUpdatedSuccess(blogPost: BlogPost) {
         uri = null,
         title = blogPost.title,
         body = blogPost.body
-        )
+    )
     setBlogPost(blogPost)
     updateListItem(blogPost)
 }

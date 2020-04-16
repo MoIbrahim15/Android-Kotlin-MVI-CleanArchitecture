@@ -2,10 +2,7 @@ package com.mi.mvi.presentation.main.blog.viewmodel
 
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
-import com.mi.mvi.domain.usecase.blogs.DeleteBlogPostUseCase
-import com.mi.mvi.domain.usecase.blogs.IsAuthorBlogPostUseCase
-import com.mi.mvi.domain.usecase.blogs.SearchBlogUseCase
-import com.mi.mvi.domain.usecase.blogs.UpdateBlogPostUseCase
+import com.mi.mvi.domain.usecase.blogs.*
 import com.mi.mvi.presentation.BaseViewModel
 import com.mi.mvi.presentation.main.blog.state.BlogEventState
 import com.mi.mvi.presentation.main.blog.state.BlogViewState
@@ -22,6 +19,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 @ExperimentalCoroutinesApi
 class BlogViewModel(
     private val searchBlogUseCase: SearchBlogUseCase,
+    private val restoreBlogListUSeCase: RestoreBlogListUseCase,
     private val isAuthorBlogPostUseCase: IsAuthorBlogPostUseCase,
     private val deleteBlogPostUseCase: DeleteBlogPostUseCase,
     private val updateBlogPostUseCase: UpdateBlogPostUseCase,
@@ -49,6 +47,7 @@ class BlogViewModel(
     override fun handleEventState(eventState: BlogEventState): LiveData<DataState<BlogViewState>> {
         return when (eventState) {
             is BlogEventState.BlogSearchEvent -> {
+                clearLayoutManagerState()
                 sessionManager.cachedToken.value?.let { authToken ->
                     searchBlogUseCase.invoke(
                         token = authToken,
@@ -57,6 +56,13 @@ class BlogViewModel(
                         page = getPage()
                     )
                 } ?: AbsentLiveData.create()
+            }
+            is BlogEventState.RestoreBlogListFromCacheEvent -> {
+                restoreBlogListUSeCase.invoke(
+                    query = getSearchQuery(),
+                    filterAndOrder = getOrder() + getFilter(),
+                    page = getPage()
+                )
             }
             is BlogEventState.CheckAuthorBlogPostEvent -> {
                 sessionManager.cachedToken.value?.let { authToken ->

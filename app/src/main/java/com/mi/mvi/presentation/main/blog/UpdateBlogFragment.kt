@@ -14,7 +14,9 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.mi.mvi.R
 import com.mi.mvi.presentation.BaseFragment
+import com.mi.mvi.presentation.main.blog.state.BLOG_VIEW_STATE_BUNDLE_KEY
 import com.mi.mvi.presentation.main.blog.state.BlogEventState
+import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import com.mi.mvi.presentation.main.blog.viewmodel.BlogViewModel
 import com.mi.mvi.presentation.main.blog.viewmodel.getUpdatedBlogUri
 import com.mi.mvi.presentation.main.blog.viewmodel.onBlogPostUpdatedSuccess
@@ -36,9 +38,7 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.io.File
 
 @ExperimentalCoroutinesApi
-class UpdateBlogFragment : BaseFragment(R.layout.fragment_update_blog) {
-
-    private val viewModel: BlogViewModel by sharedViewModel()
+class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,14 +55,16 @@ class UpdateBlogFragment : BaseFragment(R.layout.fragment_update_blog) {
 
     fun subscribeObservers() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            dataStateChangeListener?.onDataStateChangeListener(dataState)
-            dataState.data?.let { data ->
-                data.data?.getContentIfNotHandled()?.let { viewState ->
+            dataState?.let {
+                dataStateChangeListener?.onDataStateChangeListener(dataState)
+                dataState.data?.let { data ->
+                    data.data?.getContentIfNotHandled()?.let { viewState ->
 
-                    // if this is not null, the blogpost was updated
-                    viewState.viewBlogFields.blogPost?.let { blogPost ->
-                        viewModel.onBlogPostUpdatedSuccess(blogPost)
-                        findNavController().popBackStack()
+                        // if this is not null, the blogpost was updated
+                        viewState.viewBlogFields.blogPost?.let { blogPost ->
+                            viewModel.onBlogPostUpdatedSuccess(blogPost)
+                            findNavController().popBackStack()
+                        }
                     }
                 }
             }
