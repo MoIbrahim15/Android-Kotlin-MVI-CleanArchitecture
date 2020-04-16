@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import com.mi.mvi.R
 import com.mi.mvi.datasource.model.AUTH_TOKEN_BUNDLE_KEY
 import com.mi.mvi.datasource.model.AuthToken
+import com.mi.mvi.presentation.BOTTOM_NAV_BACKSTACK_KEY
 import com.mi.mvi.presentation.BaseActivity
 import com.mi.mvi.presentation.BottomNavController
 import com.mi.mvi.presentation.BottomNavController.*
@@ -27,9 +28,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.scope.getViewModel
 
-
-const val BOTTOM_NAV_BACKSTACK_KEY =
-    "com.mi.mvi.BottomNavController.bottom_nav_backstack"
 
 @ExperimentalCoroutinesApi
 class MainActivity : BaseActivity(R.layout.activity_main),
@@ -135,9 +133,9 @@ class MainActivity : BaseActivity(R.layout.activity_main),
             bottomNavController.onNavigationItemSelected()
         } else {
             (savedInstanceState[BOTTOM_NAV_BACKSTACK_KEY] as IntArray?)?.let { items ->
-                val backstack = BackStack()
-                backstack.addAll(items.toTypedArray())
-                bottomNavController.setupBottomNavigationBackStack(backstack)
+                val backStack = BackStack()
+                backStack.addAll(items.toTypedArray())
+                bottomNavController.setupBottomNavigationBackStack(backStack)
             }
         }
     }

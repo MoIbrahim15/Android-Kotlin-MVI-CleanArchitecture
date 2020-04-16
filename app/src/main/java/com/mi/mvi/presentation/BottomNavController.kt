@@ -23,6 +23,10 @@ import kotlinx.android.parcel.Parcelize
  * https://stackoverflow.com/questions/50577356/android-jetpack-navigation-bottomnavigationview-with-youtube-or-instagram-like#_=_
  * @property navigationBackStack: Backstack for the bottom navigation
  */
+
+const val BOTTOM_NAV_BACKSTACK_KEY =
+    "com.mi.mvi.BottomNavController.bottom_nav_backstack"
+
 class BottomNavController(
     val context: Context,
     @IdRes val containerId: Int,
@@ -43,9 +47,7 @@ class BottomNavController(
     }
 
     fun setupBottomNavigationBackStack(previousBackStack: BackStack?) {
-        navigationBackStack = previousBackStack?.let {
-            it
-        } ?: BackStack.of(appStartDestinationId)
+        navigationBackStack = previousBackStack ?: BackStack.of(appStartDestinationId)
     }
 
 
