@@ -57,34 +57,34 @@ class SessionManager(
             }
         }
     }
-
-    fun isConnectedToInternet(): Boolean {
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        try {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val capabilities: NetworkCapabilities? = cm.getNetworkCapabilities(cm.activeNetwork)
-                capabilities?.let {
-                    if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-                        || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                        || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
-                    ) {
-                        return true
-                    }
-                }
-            } else {
-                try {
-                    val activeNetworkInfo: NetworkInfo? = cm.activeNetworkInfo
-                    activeNetworkInfo?.let {
-                        return it.isConnected
-                    } ?: return false
-                } catch (e: java.lang.Exception) {
-
-                }
-            }
-        } catch (e: Exception) {
-
-        }
-        return false
-    }
+//
+//    fun isConnectedToInternet(): Boolean {
+//        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+//        try {
+//
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                val capabilities: NetworkCapabilities? = cm.getNetworkCapabilities(cm.activeNetwork)
+//                capabilities?.let {
+//                    if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+//                        || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+//                        || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+//                    ) {
+//                        return true
+//                    }
+//                }
+//            } else {
+//                try {
+//                    val activeNetworkInfo: NetworkInfo? = cm.activeNetworkInfo
+//                    activeNetworkInfo?.let {
+//                        return it.isConnected
+//                    } ?: return false
+//                } catch (e: java.lang.Exception) {
+//
+//                }
+//            }
+//        } catch (e: Exception) {
+//
+//        }
+//        return false
+//    }
 }

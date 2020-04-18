@@ -28,11 +28,9 @@ class AuthActivity : BaseActivity(R.layout.activity_auth) {
     private fun subscribeObservers() {
         authViewModel.dataState.observe(this, Observer { dataState ->
             onDataStateChangeListener(dataState)
-            dataState.data?.let {
-                it.data?.getContentIfNotHandled()?.let { viewState ->
-                    viewState.authToken?.let { authToken ->
-                        authViewModel.setAuthToken(authToken)
-                    }
+            dataState.data?.let { viewState ->
+                viewState.authToken?.let { authToken ->
+                    authViewModel.setAuthToken(authToken)
                 }
             }
         })
@@ -44,18 +42,18 @@ class AuthActivity : BaseActivity(R.layout.activity_auth) {
         })
 
         sessionManager.cachedToken.observe(
-                this,
-                Observer { authToken ->
-                    authToken?.let {
-                        if (it.account_pk != -1 && it.token != null) {
-                            navMainActivity()
-                        }
+            this,
+            Observer { authToken ->
+                authToken?.let {
+                    if (it.account_pk != -1 && it.token != null) {
+                        navMainActivity()
                     }
-                })
+                }
+            })
     }
 
 
-    private fun checkPreviousAuthUser(){
+    private fun checkPreviousAuthUser() {
         authViewModel.setEventState(AuthEventState.CheckTokenEvent())
 
     }

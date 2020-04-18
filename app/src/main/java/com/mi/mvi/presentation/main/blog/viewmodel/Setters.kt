@@ -6,119 +6,131 @@ import com.mi.mvi.datasource.model.BlogPost
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.setQuery(query: String) {
+fun BlogViewModel.setQuery(query: String){
     val update = getCurrentViewStateOrNew()
-    update.blogsFields.searchQuery = query
+    update.blogFields?.searchQuery = query
     setViewState(update)
 }
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.setBlogList(blogList: MutableList<BlogPost>) {
+fun BlogViewModel.setBlogListData(blogList: MutableList<BlogPost>){
     val update = getCurrentViewStateOrNew()
-    update.blogsFields.blogList = blogList
+    update.blogFields?.blogList = blogList
     setViewState(update)
 }
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.setBlogPost(blogPost: BlogPost) {
+fun BlogViewModel.setBlogPost(blogPost: BlogPost){
     val update = getCurrentViewStateOrNew()
-    update.viewBlogFields.blogPost = blogPost
+    update.viewBlogFields?.blogPost = blogPost
     setViewState(update)
 }
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.setLayoutManagerState(layoutManagerState: Parcelable) {
+fun BlogViewModel.setIsAuthorOfBlogPost(isAuthorOfBlogPost: Boolean){
     val update = getCurrentViewStateOrNew()
-    update.blogsFields.layoutManagerState = layoutManagerState
+    update.viewBlogFields?.isAuthor = isAuthorOfBlogPost
     setViewState(update)
 }
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.clearLayoutManagerState() {
+fun BlogViewModel.setQueryExhausted(isExhausted: Boolean){
     val update = getCurrentViewStateOrNew()
-    update.blogsFields.layoutManagerState = null
+    update.blogFields?.isQueryExhausted = isExhausted
     setViewState(update)
 }
 
-@ExperimentalCoroutinesApi
-fun BlogViewModel.setIsAuthorOfBlogPost(isAuthor: Boolean) {
-    val update = getCurrentViewStateOrNew()
-    update.viewBlogFields.isAuthor = isAuthor
-    setViewState(update)
-}
 
+// Filter can be "date_updated" or "username"
 @ExperimentalCoroutinesApi
-fun BlogViewModel.setQueryExhausted(isExhausted: Boolean) {
-    val update = getCurrentViewStateOrNew()
-    update.blogsFields.isQueryExhausted = isExhausted
-    setViewState(update)
-}
-
-@ExperimentalCoroutinesApi
-fun BlogViewModel.setFilter(filter: String?) {
-    filter?.let {
+fun BlogViewModel.setBlogFilter(filter: String?){
+    filter?.let{
         val update = getCurrentViewStateOrNew()
-        update.blogsFields.filter = filter
+        update.blogFields?.filter = filter
         setViewState(update)
     }
 }
 
+// Order can be "-" or ""
+// Note: "-" = DESC, "" = ASC
 @ExperimentalCoroutinesApi
-fun BlogViewModel.setOrder(order: String?) {
-    order?.let {
-        val update = getCurrentViewStateOrNew()
-        update.blogsFields.order = order
-        setViewState(update)
-    }
+fun BlogViewModel.setBlogOrder(order: String?){
+    val update = getCurrentViewStateOrNew()
+    update.blogFields?.order = order
+    setViewState(update)
 }
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.removeDeleteBlogPost() {
+fun BlogViewModel.setLayoutManagerState(layoutManagerState: Parcelable){
     val update = getCurrentViewStateOrNew()
-    val list = update.blogsFields.blogList.toMutableList()
-    for (i in 0 until list.size - 1) {
-        if (list[i] == getBlogPost()) {
-            list.remove(getBlogPost())
-            break
+    update.blogFields?.layoutManagerState = layoutManagerState
+    setViewState(update)
+}
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.clearLayoutManagerState(){
+    val update = getCurrentViewStateOrNew()
+    update.blogFields?.layoutManagerState = null
+    setViewState(update)
+}
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.removeDeletedBlogPost() {
+    val update = getCurrentViewStateOrNew()
+    val list = update.blogFields?.blogList?.toMutableList()
+    if(list != null){
+        for(i in 0..(list.size - 1)){
+            if(list[i] == getBlogPost()){
+                list.remove(getBlogPost())
+                break
+            }
         }
+        setBlogListData(list)
     }
-    setBlogList(list)
+}
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.updateListItem(){
+    val update = getCurrentViewStateOrNew()
+    val list = update.blogFields?.blogList?.toMutableList()
+    if(list != null){
+        val newBlogPost = getBlogPost()
+        for(i in 0..(list.size - 1)){
+            if(list[i].pk == newBlogPost.pk){
+                list[i] = newBlogPost
+                break
+            }
+        }
+        update.blogFields?.blogList = list
+        setViewState(update)
+    }
 }
 
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.setUpdatedBlogFields(title: String?, body: String?, uri: Uri?) {
+fun BlogViewModel.setUpdatedUri(uri: Uri){
     val update = getCurrentViewStateOrNew()
     val updatedBlogFields = update.updatedBlogFields
-    title?.let { updatedBlogFields.updatedBlogTitle = it }
-    body?.let { updatedBlogFields.updatedBlogBody = it }
-    uri?.let { updatedBlogFields.updatedImageUri = it }
+    updatedBlogFields?.updatedImageUri = uri
+    update.updatedBlogFields = updatedBlogFields
+    setViewState(update)
+}
+
+@ExperimentalCoroutinesApi
+fun BlogViewModel.setUpdatedTitle(title: String){
+    val update = getCurrentViewStateOrNew()
+    val updatedBlogFields = update.updatedBlogFields
+    updatedBlogFields?.updatedBlogTitle = title
     update.updatedBlogFields = updatedBlogFields
     setViewState(update)
 }
 
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.updateListItem(newBlogPost: BlogPost) {
+fun BlogViewModel.setUpdatedBody(body: String){
     val update = getCurrentViewStateOrNew()
-    val list = update.blogsFields.blogList.toMutableList()
-    for (i in 0 until list.size - 1) {
-        if (list[i].pk == newBlogPost.pk) {
-            list[i] == newBlogPost
-            break
-        }
-    }
-    update.blogsFields.blogList = list
+    val updatedBlogFields = update.updatedBlogFields
+    updatedBlogFields?.updatedBlogBody = body
+    update.updatedBlogFields = updatedBlogFields
     setViewState(update)
-}
-
-@ExperimentalCoroutinesApi
-fun BlogViewModel.onBlogPostUpdatedSuccess(blogPost: BlogPost) {
-    setUpdatedBlogFields(
-        uri = null,
-        title = blogPost.title,
-        body = blogPost.body
-    )
-    setBlogPost(blogPost)
-    updateListItem(blogPost)
 }

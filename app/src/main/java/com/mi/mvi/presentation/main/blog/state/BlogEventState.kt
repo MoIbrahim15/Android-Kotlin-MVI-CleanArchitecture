@@ -4,13 +4,13 @@ import okhttp3.MultipartBody
 
 sealed class BlogEventState {
 
-    class BlogSearchEvent : BlogEventState()
+    class BlogSearchEvent(
+        val clearLayoutManagerState: Boolean = true
+    ) : BlogEventState()
 
-    class RestoreBlogListFromCacheEvent : BlogEventState()
+    object CheckAuthorBlogPostEvent : BlogEventState()
 
-    class CheckAuthorBlogPostEvent : BlogEventState()
-
-    class DeleteBlogPostEvent: BlogEventState()
+    object DeleteBlogPostEvent : BlogEventState()
 
     data class UpdateBlogPostEvent(
         val title: String,
@@ -18,6 +18,5 @@ sealed class BlogEventState {
         val image: MultipartBody.Part?
     ): BlogEventState()
 
-
-    class None : BlogEventState()
+    object None : BlogEventState()
 }

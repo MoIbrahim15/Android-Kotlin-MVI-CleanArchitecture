@@ -21,4 +21,7 @@ interface AuthRepository : BaseRepository {
 
     fun checkPreviousAuthUser()
             : Flow<DataState<AuthViewState>>
+
+
+    fun saveAuthUserToPrefs(email: String)
 }

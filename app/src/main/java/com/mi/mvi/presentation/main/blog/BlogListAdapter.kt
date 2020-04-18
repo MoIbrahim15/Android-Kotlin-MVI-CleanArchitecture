@@ -131,18 +131,6 @@ class BlogListAdapter(
         differ.submitList(newList, commitCallBack)
     }
 
-    fun preloadGlideImages(
-        context: Context?, list: List<BlogPost>
-    ) {
-        for (blogPost in list) {
-            context?.let {
-                Glide.with(it)
-                    .load(blogPost.image)
-                    .preload()
-            }
-        }
-    }
-
     class BlogViewHolder(
         itemView: View,
         private val interaction: Interaction?

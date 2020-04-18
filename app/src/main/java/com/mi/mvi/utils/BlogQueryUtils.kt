@@ -10,17 +10,17 @@ import com.mi.mvi.utils.BlogQueryUtils.Companion.ORDER_BY_DESC_USERNAME
 
 class BlogQueryUtils {
 
-    companion object{
+    companion object {
         // values
         const val BLOG_ORDER_ASC: String = ""
         const val BLOG_ORDER_DESC: String = "-"
         const val BLOG_FILTER_USERNAME = "username"
         const val BLOG_FILTER_DATE_UPDATED = "date_updated"
 
-        val ORDER_BY_ASC_DATE_UPDATED = BLOG_ORDER_ASC + BLOG_FILTER_DATE_UPDATED
-        val ORDER_BY_DESC_DATE_UPDATED = BLOG_ORDER_DESC + BLOG_FILTER_DATE_UPDATED
-        val ORDER_BY_ASC_USERNAME = BLOG_ORDER_ASC + BLOG_FILTER_USERNAME
-        val ORDER_BY_DESC_USERNAME = BLOG_ORDER_DESC + BLOG_FILTER_USERNAME
+        const val ORDER_BY_ASC_DATE_UPDATED = BLOG_ORDER_ASC + BLOG_FILTER_DATE_UPDATED
+        const val ORDER_BY_DESC_DATE_UPDATED = BLOG_ORDER_DESC + BLOG_FILTER_DATE_UPDATED
+        const val ORDER_BY_ASC_USERNAME = BLOG_ORDER_ASC + BLOG_FILTER_USERNAME
+        const val ORDER_BY_DESC_USERNAME = BLOG_ORDER_DESC + BLOG_FILTER_USERNAME
     }
 }
 
@@ -31,30 +31,34 @@ suspend fun BlogCacheDataSource.returnOrderedBlogQuery(
     page: Int
 ): MutableList<BlogPost> {
 
-    when{
+    when {
 
-        filterAndOrder.contains(ORDER_BY_DESC_DATE_UPDATED) ->{
+        filterAndOrder.contains(ORDER_BY_DESC_DATE_UPDATED) -> {
             return searchBlogPostsOrderByDateDESC(
                 query = query,
-                page = page)
+                page = page
+            )
         }
 
-        filterAndOrder.contains(ORDER_BY_ASC_DATE_UPDATED) ->{
+        filterAndOrder.contains(ORDER_BY_ASC_DATE_UPDATED) -> {
             return searchBlogPostsOrderByDateASC(
                 query = query,
-                page = page)
+                page = page
+            )
         }
 
-        filterAndOrder.contains(ORDER_BY_DESC_USERNAME) ->{
+        filterAndOrder.contains(ORDER_BY_DESC_USERNAME) -> {
             return searchBlogPostsOrderByAuthorDESC(
                 query = query,
-                page = page)
+                page = page
+            )
         }
 
-        filterAndOrder.contains(ORDER_BY_ASC_USERNAME) ->{
+        filterAndOrder.contains(ORDER_BY_ASC_USERNAME) -> {
             return searchBlogPostsOrderByAuthorASC(
                 query = query,
-                page = page)
+                page = page
+            )
         }
         else ->
             return searchBlogPostsOrderByDateASC(

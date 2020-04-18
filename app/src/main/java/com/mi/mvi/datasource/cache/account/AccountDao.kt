@@ -10,15 +10,15 @@ import com.mi.mvi.datasource.model.AccountProperties
 interface AccountDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertOrIgnore(accountProperties: AccountProperties): Long
+    suspend fun insertOrIgnore(accountProperties: AccountProperties): Long
 
     @Query("SELECT * FROM account WHERE pk = :pk")
-    fun searchByPk(pk: Int): AccountProperties?
+    suspend fun searchByPk(pk: Int): AccountProperties?
 
     @Query("SELECT * FROM account WHERE email = :email")
-    fun searchByEmail(email: String): AccountProperties?
+    suspend fun searchByEmail(email: String): AccountProperties?
 
     @Query("Update account Set email = :email, username = :username WHERE pk = :pk ")
-    fun updateAccountProperties(pk: Int, email: String, username: String)
+    suspend fun updateAccountProperties(pk: Int, email: String, username: String)
 
 }

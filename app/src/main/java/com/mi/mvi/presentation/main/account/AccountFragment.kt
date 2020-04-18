@@ -8,15 +8,9 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
-import com.mi.mvi.presentation.BaseFragment
-import com.mi.mvi.presentation.main.account.state.ACCOUNT_VIEW_STATE_BUNDLE_KEY
 import com.mi.mvi.presentation.main.account.state.AccountEventState
-import com.mi.mvi.presentation.main.account.state.AccountViewState
-import com.mi.mvi.presentation.main.blog.state.BLOG_VIEW_STATE_BUNDLE_KEY
-import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
 class AccountFragment : BaseAccountFragment(R.layout.fragment_account) {
@@ -26,7 +20,7 @@ class AccountFragment : BaseAccountFragment(R.layout.fragment_account) {
         setHasOptionsMenu(true)
 
         subscribeObservers()
-        viewModel.setEventState(AccountEventState.GetAccountEvent())
+        viewModel.setEventState(AccountEventState.GetAccountEvent)
 
         change_password.setOnClickListener { findNavController().navigate(R.id.action_accountFragment_to_changePasswordFragment) }
         logout_button.setOnClickListener { viewModel.logout() }
@@ -36,11 +30,9 @@ class AccountFragment : BaseAccountFragment(R.layout.fragment_account) {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             dataState?.let {
                 dataStateChangeListener?.onDataStateChangeListener(dataState)
-                dataState.data?.let {
-                    it.data?.getContentIfNotHandled()?.let { viewState ->
-                        viewState.accountProperties?.let { account ->
-                            viewModel.setAccountData(account)
-                        }
+                dataState.data?.let { viewState ->
+                    viewState.accountProperties?.let { account ->
+                        viewModel.setAccountData(account)
                     }
                 }
             }

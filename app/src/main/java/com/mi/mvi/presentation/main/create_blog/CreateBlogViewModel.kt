@@ -54,9 +54,9 @@ class CreateBlogViewModel(
     fun setNewBlogFields(title: String?, body: String?, uri: Uri?) {
         val update = getCurrentViewStateOrNew()
         val newBlogFields = update.newBlogField
-        title?.let { newBlogFields.newBlogTitle = it }
-        body?.let { newBlogFields.newBlogBody = it }
-        uri?.let { newBlogFields.newImageUri = it }
+        title?.let { newBlogFields?.newBlogTitle = it }
+        body?.let { newBlogFields?.newBlogBody = it }
+        uri?.let { newBlogFields?.newImageUri = it }
         update.newBlogField = newBlogFields
         setViewState(update)
     }
@@ -70,7 +70,7 @@ class CreateBlogViewModel(
     fun getNewImageUri(): Uri? {
         getCurrentViewStateOrNew().let { viewState ->
             viewState.newBlogField.let { newBlogFields ->
-                return newBlogFields.newImageUri
+                return newBlogFields?.newImageUri
             }
         }
     }

@@ -2,7 +2,7 @@ package com.mi.mvi.presentation.main.account.state
 
 sealed class AccountEventState {
 
-    class GetAccountEvent : AccountEventState()
+    object GetAccountEvent : AccountEventState()
 
     data class UpdateAccountEvent(
         val email: String,
@@ -15,5 +15,5 @@ sealed class AccountEventState {
         val confirmNewPassword: String
     ) : AccountEventState()
 
-    class None(): AccountEventState()
+    object None : AccountEventState()
 }

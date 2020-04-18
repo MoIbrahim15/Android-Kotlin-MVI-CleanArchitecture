@@ -2,50 +2,44 @@ package com.mi.mvi.presentation.main.blog.viewmodel
 
 import android.net.Uri
 import com.mi.mvi.datasource.model.BlogPost
+import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_FILTER_DATE_UPDATED
+import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_ORDER_DESC
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
+fun BlogViewModel.getIsQueryExhausted(): Boolean {
+    return getCurrentViewStateOrNew().blogFields?.isQueryExhausted
+        ?: false
+}
 
 @ExperimentalCoroutinesApi
 fun BlogViewModel.getFilter(): String {
-    getCurrentViewStateOrNew()?.let {
-        return it.blogsFields.filter
-    }
+    return getCurrentViewStateOrNew().blogFields?.filter
+        ?: BLOG_FILTER_DATE_UPDATED
 }
 
 @ExperimentalCoroutinesApi
 fun BlogViewModel.getOrder(): String {
-    getCurrentViewStateOrNew()?.let {
-        return it.blogsFields.order
-    }
+    return getCurrentViewStateOrNew().blogFields?.order
+        ?: BLOG_ORDER_DESC
 }
-
 
 @ExperimentalCoroutinesApi
 fun BlogViewModel.getSearchQuery(): String {
-    getCurrentViewStateOrNew()?.let {
-        return it.blogsFields.searchQuery
-    }
+    return getCurrentViewStateOrNew().blogFields?.searchQuery
+        ?: return ""
 }
 
 @ExperimentalCoroutinesApi
 fun BlogViewModel.getPage(): Int {
-    getCurrentViewStateOrNew()?.let {
-        return it.blogsFields.page
-    }
+    return getCurrentViewStateOrNew().blogFields?.page
+        ?: return 1
 }
-
-@ExperimentalCoroutinesApi
-fun BlogViewModel.getIsQueryExhausted(): Boolean {
-    getCurrentViewStateOrNew()?.let {
-        return it.blogsFields.isQueryExhausted
-    }
-}
-
 
 @ExperimentalCoroutinesApi
 fun BlogViewModel.getSlug(): String {
     getCurrentViewStateOrNew().let {
-        it.viewBlogFields.blogPost?.let {
+        it.viewBlogFields?.blogPost?.let {
             return it.slug
         }
     }
@@ -54,21 +48,20 @@ fun BlogViewModel.getSlug(): String {
 
 @ExperimentalCoroutinesApi
 fun BlogViewModel.isAuthorOfBlogPost(): Boolean {
-    getCurrentViewStateOrNew().let {
-        return it.viewBlogFields.isAuthor
-    }
+    return getCurrentViewStateOrNew().viewBlogFields?.isAuthor
+        ?: false
 }
-
 
 @ExperimentalCoroutinesApi
 fun BlogViewModel.getBlogPost(): BlogPost {
     getCurrentViewStateOrNew().let {
-        return it.viewBlogFields.blogPost?.let {
+        return it.viewBlogFields?.blogPost?.let {
             return it
         } ?: getDummyBlogPost()
     }
 }
 
+@ExperimentalCoroutinesApi
 fun BlogViewModel.getDummyBlogPost(): BlogPost {
     return BlogPost(-1, "", "", "", "", 1, "")
 }
@@ -76,7 +69,7 @@ fun BlogViewModel.getDummyBlogPost(): BlogPost {
 @ExperimentalCoroutinesApi
 fun BlogViewModel.getUpdatedBlogUri(): Uri? {
     getCurrentViewStateOrNew().let {
-        it.updatedBlogFields.updatedImageUri?.let {
+        it.updatedBlogFields?.updatedImageUri?.let {
             return it
         }
     }

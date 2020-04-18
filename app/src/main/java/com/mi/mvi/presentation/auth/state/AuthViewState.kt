@@ -1,13 +1,14 @@
 package com.mi.mvi.presentation.auth.state
 
-import com.mi.mvi.R
 import com.mi.mvi.datasource.model.AuthToken
-import com.mi.mvi.utils.response_handler.ErrorConstants.Companion.SUCCESS_CODE
+import com.mi.mvi.utils.ErrorHandling.Companion.ERROR_ALL_FIELDS_ARE_REQUIRED
+import com.mi.mvi.utils.ErrorHandling.Companion.ERROR_PASSWORD_DOESNOT_MATCH
+import com.mi.mvi.utils.SuccessHandling.Companion.SUCCESS
 
 
 data class AuthViewState(
-    var registrationFields: RegistrationFields? = RegistrationFields(),
-    var loginFields: LoginFields? = LoginFields(),
+    var registrationFields: RegistrationFields? = null,
+    var loginFields: LoginFields? = null,
     var authToken: AuthToken? = null
 )
 
@@ -19,23 +20,24 @@ data class RegistrationFields(
 ) {
 
     class RegistrationError {
-        companion object{
+        companion object {
 
-            fun mustFillAllFields(): Int{
-                return  R.string.error_all_fields_are_required
+            fun mustFillAllFields(): String {
+                return ERROR_ALL_FIELDS_ARE_REQUIRED
             }
 
-            fun passwordsDoNotMatch(): Int{
-                return R.string.error_passwords_must_same
+            fun passwordsDoNotMatch(): String {
+                return ERROR_PASSWORD_DOESNOT_MATCH
             }
 
-            fun none():Int{
-                return SUCCESS_CODE
+            fun none(): String {
+                return SUCCESS
             }
 
         }
     }
-    fun isValidForRegistration(): Int {
+
+    fun isValidForRegistration(): String {
         return if (email.isNullOrEmpty()
             || username.isNullOrEmpty()
             || password.isNullOrEmpty()
@@ -57,17 +59,17 @@ data class LoginFields(
 
     class LoginError {
         companion object {
-            fun mustFillAllFields(): Int {
-                return R.string.error_all_fields_are_required
+            fun mustFillAllFields(): String {
+                return ERROR_ALL_FIELDS_ARE_REQUIRED
             }
 
-            fun none(): Int {
-                return SUCCESS_CODE
+            fun none(): String {
+                return SUCCESS
             }
         }
     }
 
-    fun isValidForLogin(): Int {
+    fun isValidForLogin(): String {
         return if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
             LoginError.mustFillAllFields()
         } else LoginError.none()

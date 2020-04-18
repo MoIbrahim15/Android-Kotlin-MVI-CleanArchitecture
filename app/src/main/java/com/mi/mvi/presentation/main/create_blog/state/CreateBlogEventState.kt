@@ -10,5 +10,5 @@ sealed class CreateBlogEventState {
         val image: MultipartBody.Part
     ) : CreateBlogEventState()
 
-    class None() : CreateBlogEventState()
+    object None : CreateBlogEventState()
 }

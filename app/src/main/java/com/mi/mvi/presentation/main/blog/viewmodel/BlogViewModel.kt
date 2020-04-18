@@ -19,7 +19,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 @ExperimentalCoroutinesApi
 class BlogViewModel(
     private val searchBlogUseCase: SearchBlogUseCase,
-    private val restoreBlogListUSeCase: RestoreBlogListUseCase,
     private val isAuthorBlogPostUseCase: IsAuthorBlogPostUseCase,
     private val deleteBlogPostUseCase: DeleteBlogPostUseCase,
     private val updateBlogPostUseCase: UpdateBlogPostUseCase,
@@ -29,14 +28,14 @@ class BlogViewModel(
 ) : BaseViewModel<BlogEventState, BlogViewState>() {
 
     init {
-        setFilter(
+        setBlogFilter(
             sheredPreferences.getString(
                 BLOG_FILTER,
                 BlogQueryUtils.BLOG_FILTER_DATE_UPDATED
             )
         )
 
-        setOrder(
+        setBlogOrder(
             sheredPreferences.getString(
                 BLOG_ORDER,
                 BlogQueryUtils.BLOG_ORDER_ASC
@@ -47,7 +46,9 @@ class BlogViewModel(
     override fun handleEventState(eventState: BlogEventState): LiveData<DataState<BlogViewState>> {
         return when (eventState) {
             is BlogEventState.BlogSearchEvent -> {
-                clearLayoutManagerState()
+                if(eventState.clearLayoutManagerState) {
+                    clearLayoutManagerState()
+                }
                 sessionManager.cachedToken.value?.let { authToken ->
                     searchBlogUseCase.invoke(
                         token = authToken,
@@ -56,13 +57,6 @@ class BlogViewModel(
                         page = getPage()
                     )
                 } ?: AbsentLiveData.create()
-            }
-            is BlogEventState.RestoreBlogListFromCacheEvent -> {
-                restoreBlogListUSeCase.invoke(
-                    query = getSearchQuery(),
-                    filterAndOrder = getOrder() + getFilter(),
-                    page = getPage()
-                )
             }
             is BlogEventState.CheckAuthorBlogPostEvent -> {
                 sessionManager.cachedToken.value?.let { authToken ->

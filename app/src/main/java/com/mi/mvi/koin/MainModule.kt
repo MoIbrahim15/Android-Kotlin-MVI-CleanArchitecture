@@ -34,15 +34,12 @@ import retrofit2.Retrofit
 val mainModule = module {
     scope(named<MainActivity>()) {
 
-
         //Account Scope
         factory { provideAccountAPI(get()) }
         factory<AccountRemoteDataSource> { AccountRemoteDataSourceImpl(get()) }
         factory<AccountCacheDataSource> { AccountCacheDataSourceImpl(get()) }
         factory<AccountRepository> {
             AccountRepositoryImpl(
-                get(),
-                get(),
                 get(),
                 get()
             )
@@ -60,21 +57,16 @@ val mainModule = module {
         factory<BlogRepository> {
             BlogRepositoryImpl(
                 get(),
-                get(),
-                get(),
                 get()
             )
         }
         factory<CreateBlogRepository> {
             CreateBlogRepositoryImpl(
                 get(),
-                get(),
-                get(),
                 get()
             )
         }
         factory { SearchBlogUseCase(get()) }
-        factory { RestoreBlogListUseCase(get()) }
         factory { IsAuthorBlogPostUseCase(get()) }
         factory { DeleteBlogPostUseCase(get()) }
         factory { UpdateBlogPostUseCase(get()) }
@@ -87,9 +79,7 @@ val mainModule = module {
                 get(),
                 get(),
                 get(),
-                get(),
-                get()
-            )
+                get())
         }
         viewModel {
             CreateBlogViewModel(

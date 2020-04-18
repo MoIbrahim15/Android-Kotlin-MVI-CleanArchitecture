@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.os.Parcelable
 import androidx.annotation.IdRes
-import androidx.annotation.NavigationRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -31,8 +30,7 @@ class BottomNavController(
     val context: Context,
     @IdRes val containerId: Int,
     @IdRes val appStartDestinationId: Int,
-    val graphChangeListener: OnNavigationGraphChanged?,
-    val navGraphProvider: NavGraphProvider
+    val graphChangeListener: OnNavigationGraphChanged?
 ) {
     lateinit var navigationBackStack: BackStack
     lateinit var activity: Activity
@@ -51,11 +49,11 @@ class BottomNavController(
     }
 
 
-    fun onNavigationItemSelected(itemId: Int = navigationBackStack.last()): Boolean {
+    fun onNavigationItemSelected(menuItemId: Int = navigationBackStack.last()): Boolean {
 
         // Replace fragment representing a navigation item
-        val fragment = fragmentManager.findFragmentByTag(itemId.toString())
-            ?: NavHostFragment.create(navGraphProvider.getNavGraphId(itemId))
+        val fragment = fragmentManager.findFragmentByTag(menuItemId.toString())
+            ?: NavHostFragment.create(createNavHost(menuItemId))
         fragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.fade_in,
@@ -63,20 +61,35 @@ class BottomNavController(
                 R.anim.fade_in,
                 R.anim.fade_out
             )
-            .replace(containerId, fragment, itemId.toString())
+            .replace(containerId, fragment, menuItemId.toString())
             .addToBackStack(null)
             .commit()
 
         // Add to back stack
-        navigationBackStack.moveLast(itemId)
+        navigationBackStack.moveLast(menuItemId)
 
         // Update checked icon
-        navItemChangeListener.onItemChanged(itemId)
+        navItemChangeListener.onItemChanged(menuItemId)
 
         // communicate with Activity
         graphChangeListener?.onGraphChange()
 
         return true
+    }
+
+    private fun createNavHost(menuItemId: Int) = when (menuItemId) {
+        R.id.menu_nav_blog -> {
+            R.navigation.nav_blog
+        }
+        R.id.menu_nav_create_blog -> {
+            R.navigation.nav_create_blog
+        }
+        R.id.menu_nav_account -> {
+            R.navigation.nav_account
+        }
+        else -> {
+            R.navigation.nav_blog
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -90,7 +103,7 @@ class BottomNavController(
             // supportFragmentManager may mess up with the NavController child fragment manager back
             // stack
 
-            navController.backStack.size > 2 ->{
+            navController.backStack.size > 2 -> {
                 navController.popBackStack()
             }
 
@@ -138,14 +151,6 @@ class BottomNavController(
     // For setting the checked icon in the bottom nav
     interface OnNavigationItemChanged {
         fun onItemChanged(itemId: Int)
-    }
-
-    // Get id of each graph
-    // ex: R.navigation.nav_blog
-    // ex: R.navigation.nav_create_blog
-    interface NavGraphProvider {
-        @NavigationRes
-        fun getNavGraphId(itemId: Int): Int
     }
 
     // Execute when Navigation Graph changes.

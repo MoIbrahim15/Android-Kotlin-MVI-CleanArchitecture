@@ -1,6 +1,11 @@
 package com.mi.mvi.presentation
 
-interface UICommunicationListener {
+import com.mi.mvi.utils.response_handler.StateMessage
 
-    fun onUIMessageReceived(uiMessage: UIMessage)
+
+interface UICommunicationListener {
+    fun onUIMessageReceived(stateMessage: StateMessage)
+    fun hideSoftKeyboard()
+    fun isStoragePermissionGranted(): Boolean
+    fun displayLoading(isLoading: Boolean)
 }

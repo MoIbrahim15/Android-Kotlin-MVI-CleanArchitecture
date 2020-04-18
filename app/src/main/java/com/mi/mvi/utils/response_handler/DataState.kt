@@ -1,25 +1,32 @@
 package com.mi.mvi.utils.response_handler
 
-import com.mi.mvi.utils.SingleLiveData
-
 sealed class DataState<T>(
-    var loading: Loading = Loading(false),
-    var data: Data<T>? = null,
-    var error: SingleLiveData<Error>? = null
+    var loading: Boolean,
+    var data: T? = null,
+    var stateMessage: StateMessage? = null
 ) {
     class LOADING<T>(
         isLoading: Boolean,
         cachedData: T? = null
     ) : DataState<T>(
-        loading = Loading(isLoading),
-        data = Data(data = SingleLiveData.dataEvent(cachedData))
+        loading = isLoading,
+        data = cachedData
     )
 
-    class SUCCESS<T>(data: T? = null, response: Response? = null) : DataState<T>(
-        data = Data(SingleLiveData.dataEvent(data), SingleLiveData.dataEvent(response))
+    class SUCCESS<T>(
+        data: T? = null,
+        stateMessage: StateMessage? = null
+    ) : DataState<T>(
+        loading = false,
+        data = data,
+        stateMessage = stateMessage
     )
 
-    class ERROR<T>(response: Response? = null) : DataState<T>(
-        error = SingleLiveData.dataEvent(Error(response))
+    class ERROR<T>(
+        stateMessage: StateMessage
+    ) : DataState<T>(
+        loading = false,
+        data = null,
+        stateMessage = stateMessage
     )
 }

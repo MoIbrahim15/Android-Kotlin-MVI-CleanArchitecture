@@ -15,13 +15,15 @@ import com.bumptech.glide.Glide
 import com.mi.mvi.R
 import com.mi.mvi.presentation.AreYouSureCallBack
 import com.mi.mvi.presentation.BaseFragment
-import com.mi.mvi.presentation.UIMessage
-import com.mi.mvi.presentation.UIMessageType
 import com.mi.mvi.presentation.main.create_blog.state.CREATE_BLOG_VIEW_STATE_BUNDLE_KEY
 import com.mi.mvi.presentation.main.create_blog.state.CreateBlogEventState
 import com.mi.mvi.presentation.main.create_blog.state.CreateBlogViewState
 import com.mi.mvi.presentation.main.create_blog.state.NewBlogFields
 import com.mi.mvi.utils.Constants.Companion.GALLERY_REQUEST_CODE
+import com.mi.mvi.utils.SuccessHandling.Companion.SUCCESS
+import com.mi.mvi.utils.response_handler.MessageType
+import com.mi.mvi.utils.response_handler.StateMessage
+import com.mi.mvi.utils.response_handler.UIComponentType
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.fragment_create_blog.*
@@ -42,14 +44,14 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
         setHasOptionsMenu(true)
 
         blog_image.setOnClickListener {
-            dataStateChangeListener?.let {
+            uiCommunicationListener?.let {
                 if (it.isStoragePermissionGranted()) {
                     pickFromGallery()
                 }
             }
         }
         update_textview.setOnClickListener {
-            dataStateChangeListener?.let {
+            uiCommunicationListener?.let {
                 if (it.isStoragePermissionGranted()) {
                     pickFromGallery()
                 }
@@ -80,22 +82,19 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             dataState?.let {
                 dataStateChangeListener?.onDataStateChangeListener(dataState = dataState)
-                dataState.data?.let { data ->
-                    data.response?.let { event ->
-                        event.peekContent().let { response ->
-                            response.messageRes?.let { messageRes ->
-                                if (messageRes == R.string.text_success) {
-                                    viewModel.clearNewBlogFields()
-                                }
-                            }
+                dataState.stateMessage?.let { stateMessage ->
+                    stateMessage.message.let { message ->
+                        if (message == SUCCESS) {
+                            viewModel.clearNewBlogFields()
                         }
-
                     }
                 }
             }
         })
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
-            setBlogProperties(viewState.newBlogField)
+            viewState.newBlogField?.let {
+                setBlogProperties(it)
+            }
         })
     }
 
@@ -104,13 +103,13 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
             Glide.with(this)
                 .load(it)
                 .into(blog_image)
-        } ?: setDefualtImage()
+        } ?: setDefaultImage()
 
         blog_title.setText(blogFields.newBlogTitle)
         blog_body.setText(blogFields.newBlogBody)
     }
 
-    private fun setDefualtImage() {
+    private fun setDefaultImage() {
         Glide.with(this)
             .load(R.drawable.default_image)
             .into(blog_image)
@@ -190,7 +189,7 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
                 )
             )
 
-            dataStateChangeListener?.hideSoftKeyboard()
+            uiCommunicationListener?.hideSoftKeyboard()
         } ?: showErrorDialog("")
     }
 
@@ -212,9 +211,10 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
 
                 }
                 uiCommunicationListener?.onUIMessageReceived(
-                    UIMessage(
+                    StateMessage(
                         getString(R.string.are_you_sure_publish),
-                        UIMessageType.AreYouSureDialog(callback)
+                        UIComponentType.AreYouSureDialog(callback),
+                        MessageType.INFO
                     )
                 )
             }

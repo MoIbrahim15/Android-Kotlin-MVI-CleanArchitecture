@@ -9,13 +9,9 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.mi.mvi.R
 import com.mi.mvi.datasource.model.AccountProperties
-import com.mi.mvi.presentation.BaseFragment
-import com.mi.mvi.presentation.main.account.state.ACCOUNT_VIEW_STATE_BUNDLE_KEY
 import com.mi.mvi.presentation.main.account.state.AccountEventState
-import com.mi.mvi.presentation.main.account.state.AccountViewState
 import kotlinx.android.synthetic.main.fragment_update_account.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
 class UpdateAccountFragment : BaseAccountFragment(R.layout.fragment_update_account) {
@@ -55,7 +51,7 @@ class UpdateAccountFragment : BaseAccountFragment(R.layout.fragment_update_accou
                 input_username.text.toString()
             )
         )
-        dataStateChangeListener?.hideSoftKeyboard()
+        uiCommunicationListener?.hideSoftKeyboard()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

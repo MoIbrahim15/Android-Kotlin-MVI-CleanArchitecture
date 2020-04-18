@@ -19,6 +19,13 @@ abstract class BaseViewModel<EventState, ViewState> : ViewModel() {
             handleEventState(_eventState)
         }
 
+//    init {
+//        Transformations
+//            .map(dataState) { dataState ->
+//                handleNewData(dataState)
+//            }
+//    }
+
     fun setEventState(eventState: EventState) {
         _eventState.value = eventState
     }
@@ -34,6 +41,8 @@ abstract class BaseViewModel<EventState, ViewState> : ViewModel() {
     }
 
     abstract fun handleEventState(eventState: EventState): LiveData<DataState<ViewState>>
+
+//    abstract fun handleNewData(data: DataState<ViewState>)
 
     abstract fun initNewViewState(): ViewState
 }

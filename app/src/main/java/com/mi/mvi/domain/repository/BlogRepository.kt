@@ -17,23 +17,15 @@ interface BlogRepository {
         page: Int
     ): Flow<DataState<BlogViewState>>
 
-    fun restoreBlogListFromCache(
-        query: String,
-        filterAndOrder: String,
-        page: Int
-    ): Flow<DataState<BlogViewState>>
-
     fun isAuthorOfBlogPosts(
         authToken: AuthToken,
         slug: String
     ): Flow<DataState<BlogViewState>>
 
-
     fun deleteBlogPost(
         authToken: AuthToken,
         blogPost: BlogPost
     ): Flow<DataState<BlogViewState>>
-
 
     fun updateBlogPost(
         authToken: AuthToken,

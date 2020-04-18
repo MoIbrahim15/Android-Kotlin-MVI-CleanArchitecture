@@ -25,13 +25,11 @@ abstract class BaseBlogFragment(contentLayoutId: Int) : BaseFragment(contentLayo
     override fun onSaveInstanceState(outState: Bundle) {
         val viewState = viewModel.viewState.value
 
-        viewState?.blogsFields?.blogList = ArrayList()
+        viewState?.blogFields?.blogList = ArrayList()
         outState.putParcelable(
             BLOG_VIEW_STATE_BUNDLE_KEY,
             viewState
         )
         super.onSaveInstanceState(outState)
     }
-
-
 }

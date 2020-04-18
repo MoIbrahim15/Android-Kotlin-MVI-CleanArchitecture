@@ -13,28 +13,16 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.mi.mvi.R
-import com.mi.mvi.presentation.BaseFragment
-import com.mi.mvi.presentation.main.blog.state.BLOG_VIEW_STATE_BUNDLE_KEY
 import com.mi.mvi.presentation.main.blog.state.BlogEventState
-import com.mi.mvi.presentation.main.blog.state.BlogViewState
-import com.mi.mvi.presentation.main.blog.viewmodel.BlogViewModel
-import com.mi.mvi.presentation.main.blog.viewmodel.getUpdatedBlogUri
-import com.mi.mvi.presentation.main.blog.viewmodel.onBlogPostUpdatedSuccess
-import com.mi.mvi.presentation.main.blog.viewmodel.setUpdatedBlogFields
-import com.mi.mvi.presentation.main.create_blog.state.CreateBlogEventState
+import com.mi.mvi.presentation.main.blog.viewmodel.*
 import com.mi.mvi.utils.Constants
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import kotlinx.android.synthetic.main.fragment_create_blog.*
 import kotlinx.android.synthetic.main.fragment_update_blog.*
-import kotlinx.android.synthetic.main.fragment_update_blog.blog_body
-import kotlinx.android.synthetic.main.fragment_update_blog.blog_image
-import kotlinx.android.synthetic.main.fragment_update_blog.blog_title
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.io.File
 
 @ExperimentalCoroutinesApi
@@ -44,8 +32,8 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         subscribeObservers()
-        image_container.setOnClickListener{
-            dataStateChangeListener?.let {
+        image_container.setOnClickListener {
+            uiCommunicationListener?.let {
                 if (it.isStoragePermissionGranted()) {
                     pickFromGallery()
                 }
@@ -57,15 +45,13 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             dataState?.let {
                 dataStateChangeListener?.onDataStateChangeListener(dataState)
-                dataState.data?.let { data ->
-                    data.data?.getContentIfNotHandled()?.let { viewState ->
-
-                        // if this is not null, the blogpost was updated
-                        viewState.viewBlogFields.blogPost?.let { blogPost ->
-                            viewModel.onBlogPostUpdatedSuccess(blogPost)
-                            findNavController().popBackStack()
-                        }
+                dataState.data?.let { viewState ->
+                    // if this is not null, the blogpost was updated
+                    viewState.viewBlogFields?.blogPost?.let { blogPost ->
+                        viewModel.updateListItem()
+                        findNavController().popBackStack()
                     }
+
                 }
             }
         })
@@ -73,9 +59,9 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             viewState.updatedBlogFields.let { updatedBlogFields ->
                 setBlogProperties(
-                    updatedBlogFields.updatedBlogTitle,
-                    updatedBlogFields.updatedBlogBody,
-                    updatedBlogFields.updatedImageUri
+                    updatedBlogFields?.updatedBlogTitle,
+                    updatedBlogFields?.updatedBlogBody,
+                    updatedBlogFields?.updatedImageUri
                 )
             }
         })
@@ -109,7 +95,7 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
                 )
             )
 
-            dataStateChangeListener?.hideSoftKeyboard()
+            uiCommunicationListener?.hideSoftKeyboard()
         } ?: showErrorDialog("")
     }
 
@@ -146,11 +132,7 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
                     val resultUri = result.uri
-                    viewModel.setUpdatedBlogFields(
-                        title = null,
-                        body = null,
-                        uri = resultUri
-                    )
+                    viewModel.setUpdatedUri(resultUri)
                 }
                 CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE -> {
                     showErrorDialog("")
@@ -176,10 +158,7 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
 
     override fun onPause() {
         super.onPause()
-        viewModel.setUpdatedBlogFields(
-            uri = null,
-            title = blog_title.text.toString(),
-            body = blog_body.text.toString()
-        )
+        viewModel.setUpdatedTitle(blog_title.text.toString())
+        viewModel.setUpdatedBody(blog_body.text.toString())
     }
 }

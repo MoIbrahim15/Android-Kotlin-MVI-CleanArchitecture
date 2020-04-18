@@ -12,13 +12,16 @@ import com.mi.mvi.R
 import com.mi.mvi.presentation.BaseFragment
 import com.mi.mvi.utils.Constants
 import com.mi.mvi.utils.response_handler.DataState
-import com.mi.mvi.utils.response_handler.Response
-import com.mi.mvi.utils.response_handler.ResponseView
+import com.mi.mvi.utils.response_handler.MessageType
+import com.mi.mvi.utils.response_handler.StateMessage
+import com.mi.mvi.utils.response_handler.UIComponentType
 import kotlinx.android.synthetic.main.fragment_forget_password.*
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+@ExperimentalCoroutinesApi
 class ForgetPasswordFragment : BaseFragment(R.layout.fragment_forget_password) {
 
     private val webInteractionCallback: WebAppInterface.OnWebInteractionCallback =
@@ -33,9 +36,10 @@ class ForgetPasswordFragment : BaseFragment(R.layout.fragment_forget_password) {
                 GlobalScope.launch(Main) {
                     dataStateChangeListener?.onDataStateChangeListener(
                         dataState = DataState.ERROR<Any>(
-                            response = Response(
-                                R.string.error_something_went_wrong,
-                                ResponseView.DIALOG()
+                            stateMessage = StateMessage(
+                                errorMessage,
+                                UIComponentType.DIALOG,
+                                MessageType.ERROR
                             )
                         )
                     )

@@ -1,22 +1,22 @@
 package com.mi.mvi.presentation.main.blog.viewmodel
 
-import com.mi.mvi.presentation.main.blog.state.BlogEventState
 import com.mi.mvi.presentation.main.blog.state.BlogEventState.BlogSearchEvent
 import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+
 
 @ExperimentalCoroutinesApi
 fun BlogViewModel.resetPage() {
     val update = getCurrentViewStateOrNew()
-    update.blogsFields.page = 1
+    update.blogFields.page = 1
     setViewState(update)
 }
-
 
 @ExperimentalCoroutinesApi
 fun BlogViewModel.refreshFromCache() {
     setQueryExhausted(false)
-    setEventState(BlogEventState.RestoreBlogListFromCacheEvent())
+    setEventState(BlogSearchEvent(false))
 }
 
 @ExperimentalCoroutinesApi
@@ -27,10 +27,10 @@ fun BlogViewModel.loadFirstPage() {
 }
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.incrementPageNumber() {
+private fun BlogViewModel.incrementPageNumber() {
     val update = getCurrentViewStateOrNew()
-    val page = update.copy().blogsFields.page
-    update.blogsFields.page = page + 1
+    val page = update.copy().blogFields.page ?: 1
+    update.blogFields.page = page.plus(1)
     setViewState(update)
 }
 
@@ -44,6 +44,7 @@ fun BlogViewModel.nextPage() {
 
 @ExperimentalCoroutinesApi
 fun BlogViewModel.handleIncomingBlogListData(viewState: BlogViewState) {
-    setQueryExhausted(viewState.blogsFields.isQueryExhausted)
-    setBlogList(viewState.blogsFields.blogList)
+    viewState.blogFields.let { blogFields ->
+        blogFields.blogList?.let { setBlogListData(it) }
+    }
 }

@@ -31,7 +31,6 @@ import org.koin.android.viewmodel.scope.getViewModel
 
 @ExperimentalCoroutinesApi
 class MainActivity : BaseActivity(R.layout.activity_main),
-    NavGraphProvider,
     OnNavigationGraphChanged,
     OnNavigationReselectedListener {
 
@@ -44,24 +43,7 @@ class MainActivity : BaseActivity(R.layout.activity_main),
             this,
             R.id.main_nav_host_fragment,
             R.id.menu_nav_blog,
-            this,
-            this
-        )
-    }
-
-    override fun getNavGraphId(itemId: Int) = when (itemId) {
-        R.id.menu_nav_blog -> {
-            R.navigation.nav_blog
-        }
-        R.id.menu_nav_create_blog -> {
-            R.navigation.nav_create_blog
-        }
-        R.id.menu_nav_account -> {
-            R.navigation.nav_account
-        }
-        else -> {
-            R.navigation.nav_blog
-        }
+            this)
     }
 
     override fun onGraphChange() {
@@ -83,10 +65,6 @@ class MainActivity : BaseActivity(R.layout.activity_main),
             is ChangePasswordFragment -> {
                 navController.navigate(R.id.action_changePasswordFragment_to_home)
             }
-            else -> {
-                //do nothing
-            }
-
         }
     }
 

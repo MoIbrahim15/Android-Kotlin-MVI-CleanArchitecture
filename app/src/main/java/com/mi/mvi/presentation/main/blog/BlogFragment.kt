@@ -29,7 +29,8 @@ import com.mi.mvi.presentation.main.blog.viewmodel.*
 import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_FILTER_DATE_UPDATED
 import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_FILTER_USERNAME
 import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_ORDER_ASC
-import com.mi.mvi.utils.Constants.Companion.PAGINATION_PAGE_SIZE
+import com.mi.mvi.utils.ErrorHandling.Companion.INVALID_PAGE_NUMBER
+import com.mi.mvi.utils.ErrorHandling.Companion.isPaginationDone
 import com.mi.mvi.utils.TopSpacingItemDecoration
 import com.mi.mvi.utils.response_handler.DataState
 import kotlinx.android.synthetic.main.fragment_blog.*
@@ -75,28 +76,29 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
 
     private fun resetUI() {
         blog_post_recyclerview.smoothScrollToPosition(0)
-        dataStateChangeListener?.hideSoftKeyboard()
+        uiCommunicationListener?.hideSoftKeyboard()
         focusable_view.requestFocus()
     }
 
     private fun subscribeObservers() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             dataState?.let {
-                handlePagination(dataState)
                 dataStateChangeListener?.onDataStateChangeListener(dataState)
+
+                if (isPaginationDone(dataState.stateMessage?.message)) {
+                    viewModel.setQueryExhausted(true)
+                } else {
+                    handlePagination(dataState)
+                }
             }
         })
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             viewState?.let {
-                if (viewModel.getPage() * PAGINATION_PAGE_SIZE > viewState.blogsFields.blogList.size) {
-                    viewState.blogsFields.isQueryExhausted = true
-                }
                 recyclerAdapter.apply {
-                    preloadGlideImages(this@BlogFragment.context, viewState.blogsFields.blogList)
                     submitList(
-                        list = viewState.blogsFields.blogList,
-                        isQueryExhausted = viewState.blogsFields.isQueryExhausted
+                        list = viewState.blogFields.blogList,
+                        isQueryExhausted = viewState.blogFields.isQueryExhausted ?: false
                     )
                 }
 
@@ -117,7 +119,7 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
 
         //case 1 : ENTER ON ARROW
         val searchPlate = searchView.findViewById(R.id.search_src_text) as EditText
-        searchPlate.setOnEditorActionListener { v, actionId, event ->
+        searchPlate.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED
                 || actionId == EditorInfo.IME_ACTION_SEARCH
             ) {
@@ -138,25 +140,16 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
 
     private fun handlePagination(dataState: DataState<BlogViewState>?) {
         //handle incomming data from data state
-        dataState?.data?.let { data ->
-            data.data?.let { event ->
-                event.getContentIfNotHandled()?.let {
-                    viewModel.handleIncomingBlogListData(it)
-                }
-            }
+        dataState?.data?.let { viewState ->
+            viewModel.handleIncomingBlogListData(viewState)
         }
 
         //check for pagination end
-        dataState?.error?.let { event ->
-            event.peekContent().response?.messageRes?.let {
-                if (it == R.string.invalid_page) {
-                    // handle the error message event so it doesn't display in UI
-                    event.getContentIfNotHandled()
-
-                    // set query exhausted to update RecyclerView with
-                    // "No more results..." list item
-                    viewModel.setQueryExhausted(true)
-                }
+        dataState?.stateMessage?.let { stateMessage ->
+            if (stateMessage.message == INVALID_PAGE_NUMBER) {
+                // set query exhausted to update RecyclerView with
+                // "No more results..." list item
+                viewModel.setQueryExhausted(true)
             }
         }
     }
@@ -199,7 +192,7 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
     }
 
     override fun restoreListPosition() {
-        viewModel.viewState.value?.blogsFields?.layoutManagerState?.let { lmState ->
+        viewModel.viewState.value?.blogFields?.layoutManagerState?.let { lmState ->
             blog_post_recyclerview.layoutManager?.onRestoreInstanceState(lmState)
         }
     }
@@ -269,8 +262,8 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
                     order = "-"
                 }
                 viewModel.saveFilterOptions(filter, order)
-                viewModel.setFilter(filter)
-                viewModel.setOrder(order)
+                viewModel.setBlogFilter(filter)
+                viewModel.setBlogOrder(order)
                 onBlogSearchOrFilter()
                 dialog.dismiss()
             }

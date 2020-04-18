@@ -11,8 +11,8 @@ import androidx.core.content.ContextCompat
 import com.mi.mvi.utils.Constants.Companion.PERMISSION_REQUEST_READ_STORAGE
 import com.mi.mvi.utils.SessionManager
 import com.mi.mvi.utils.response_handler.DataState
-import com.mi.mvi.utils.response_handler.Response
-import com.mi.mvi.utils.response_handler.ResponseView
+import com.mi.mvi.utils.response_handler.StateMessage
+import com.mi.mvi.utils.response_handler.UIComponentType
 import org.koin.android.ext.android.inject
 
 abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity(contentLayoutId),
@@ -20,18 +20,18 @@ abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity
 
     val sessionManager: SessionManager by inject()
 
-    override fun onUIMessageReceived(uiMessage: UIMessage) {
-        when (uiMessage.uiMessageType) {
-            is UIMessageType.AreYouSureDialog -> {
-                areYouSureDialog(uiMessage.message, uiMessage.uiMessageType.callBack)
+    override fun onUIMessageReceived(stateMessage: StateMessage) {
+        when (stateMessage.uiComponentType) {
+            is UIComponentType.AreYouSureDialog -> {
+                areYouSureDialog(stateMessage.message, stateMessage.uiComponentType.callBack)
             }
-            is UIMessageType.Dialog -> {
-                displayInfoDialog(uiMessage.message)
+            is UIComponentType.DIALOG -> {
+                displayInfoDialog(stateMessage.message)
             }
-            is UIMessageType.Toast -> {
-                displayToast(uiMessage.message)
+            is UIComponentType.TOAST -> {
+                displayToast(stateMessage.message)
             }
-            is UIMessageType.None -> {
+            is UIComponentType.NONE -> {
 
             }
         }
@@ -39,27 +39,20 @@ abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity
 
     override fun onDataStateChangeListener(dataState: DataState<*>?) {
         dataState?.let {
-            displayLoading(it.loading.isLoading)
-            it.error?.getContentIfNotHandled()?.let { error ->
-                handleResponseState(error.response)
-            }
-            it.data?.response?.getContentIfNotHandled()?.let { response ->
-                handleResponseState(response)
+            displayLoading(it.loading)
+            it.stateMessage?.let { stateMessage ->
+                handleResponseState(stateMessage)
             }
         }
     }
 
-    private fun handleResponseState(response: Response?) {
-        response?.messageRes?.let { messageRes ->
-            val message = getString(messageRes)
-            when (response.responseView) {
-                is ResponseView.NONE -> {
-
-                }
-                is ResponseView.DIALOG -> {
+    private fun handleResponseState(stateMessage: StateMessage?) {
+        stateMessage?.message?.let { message ->
+            when (stateMessage.uiComponentType) {
+                is UIComponentType.DIALOG -> {
                     displayErrorDialog(message)
                 }
-                is ResponseView.TOAST -> {
+                is UIComponentType.TOAST -> {
                     displayToast(message)
                 }
             }
@@ -96,6 +89,4 @@ abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity
             return true
         }
     }
-
-    abstract fun displayLoading(isLoading: Boolean)
 }
