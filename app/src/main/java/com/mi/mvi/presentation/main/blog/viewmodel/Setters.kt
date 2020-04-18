@@ -2,7 +2,7 @@ package com.mi.mvi.presentation.main.blog.viewmodel
 
 import android.net.Uri
 import android.os.Parcelable
-import com.mi.mvi.datasource.model.BlogPost
+import com.mi.mvi.cache.entity.BlogPostEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -13,16 +13,16 @@ fun BlogViewModel.setQuery(query: String){
 }
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.setBlogListData(blogList: MutableList<BlogPost>){
+fun BlogViewModel.setBlogListData(blogListEntity: MutableList<BlogPostEntity>){
     val update = getCurrentViewStateOrNew()
-    update.blogFields?.blogList = blogList
+    update.blogFields?.blogListEntity = blogListEntity
     setViewState(update)
 }
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.setBlogPost(blogPost: BlogPost){
+fun BlogViewModel.setBlogPost(blogPostEntity: BlogPostEntity){
     val update = getCurrentViewStateOrNew()
-    update.viewBlogFields?.blogPost = blogPost
+    update.viewBlogFields?.blogPostEntity = blogPostEntity
     setViewState(update)
 }
 
@@ -77,7 +77,7 @@ fun BlogViewModel.clearLayoutManagerState(){
 @ExperimentalCoroutinesApi
 fun BlogViewModel.removeDeletedBlogPost() {
     val update = getCurrentViewStateOrNew()
-    val list = update.blogFields?.blogList?.toMutableList()
+    val list = update.blogFields?.blogListEntity?.toMutableList()
     if(list != null){
         for(i in 0..(list.size - 1)){
             if(list[i] == getBlogPost()){
@@ -92,7 +92,7 @@ fun BlogViewModel.removeDeletedBlogPost() {
 @ExperimentalCoroutinesApi
 fun BlogViewModel.updateListItem(){
     val update = getCurrentViewStateOrNew()
-    val list = update.blogFields?.blogList?.toMutableList()
+    val list = update.blogFields?.blogListEntity?.toMutableList()
     if(list != null){
         val newBlogPost = getBlogPost()
         for(i in 0..(list.size - 1)){
@@ -101,7 +101,7 @@ fun BlogViewModel.updateListItem(){
                 break
             }
         }
-        update.blogFields?.blogList = list
+        update.blogFields?.blogListEntity = list
         setViewState(update)
     }
 }

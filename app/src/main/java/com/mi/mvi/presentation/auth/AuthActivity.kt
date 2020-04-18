@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.mi.mvi.R
-import com.mi.mvi.presentation.BaseActivity
+import com.mi.mvi.presentation.base.BaseActivity
 import com.mi.mvi.presentation.auth.state.AuthEventState
 import com.mi.mvi.presentation.main.MainActivity
 import kotlinx.android.synthetic.main.activity_auth.*
@@ -29,19 +29,19 @@ class AuthActivity : BaseActivity(R.layout.activity_auth) {
         authViewModel.dataState.observe(this, Observer { dataState ->
             onDataStateChangeListener(dataState)
             dataState.data?.let { viewState ->
-                viewState.authToken?.let { authToken ->
+                viewState.authTokenEntity?.let { authToken ->
                     authViewModel.setAuthToken(authToken)
                 }
             }
         })
 
         authViewModel.viewState.observe(this, Observer {
-            it.authToken?.let { authToken ->
+            it.authTokenEntity?.let { authToken ->
                 sessionManager.login(authToken)
             }
         })
 
-        sessionManager.cachedToken.observe(
+        sessionManager.cachedTokenEntity.observe(
             this,
             Observer { authToken ->
                 authToken?.let {

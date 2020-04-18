@@ -7,12 +7,12 @@ import com.mi.mvi.data.datasource.remote.BlogRemoteDataSource
 import com.mi.mvi.data.repository.AccountRepositoryImpl
 import com.mi.mvi.data.repository.BlogRepositoryImpl
 import com.mi.mvi.data.repository.CreateBlogRepositoryImpl
-import com.mi.mvi.datasource.cache.account.AccountCacheDataSourceImpl
-import com.mi.mvi.datasource.cache.blog.BlogCacheDataSourceImpl
-import com.mi.mvi.datasource.remote.account.AccountAPIService
-import com.mi.mvi.datasource.remote.account.AccountRemoteDataSourceImpl
-import com.mi.mvi.datasource.remote.blog.BlogAPIService
-import com.mi.mvi.datasource.remote.blog.BlogRemoteDataSourceImpl
+import com.mi.mvi.cache.source.AccountCacheDataSourceImpl
+import com.mi.mvi.cache.source.BlogCacheDataSourceImpl
+import com.mi.mvi.remote.service.AccountAPIService
+import com.mi.mvi.remote.source.AccountRemoteDataSourceImpl
+import com.mi.mvi.remote.service.BlogAPIService
+import com.mi.mvi.remote.source.BlogRemoteDataSourceImpl
 import com.mi.mvi.domain.repository.AccountRepository
 import com.mi.mvi.domain.repository.BlogRepository
 import com.mi.mvi.domain.repository.CreateBlogRepository
@@ -36,8 +36,16 @@ val mainModule = module {
 
         //Account Scope
         factory { provideAccountAPI(get()) }
-        factory<AccountRemoteDataSource> { AccountRemoteDataSourceImpl(get()) }
-        factory<AccountCacheDataSource> { AccountCacheDataSourceImpl(get()) }
+        factory<AccountRemoteDataSource> {
+            AccountRemoteDataSourceImpl(
+                get()
+            )
+        }
+        factory<AccountCacheDataSource> {
+            AccountCacheDataSourceImpl(
+                get()
+            )
+        }
         factory<AccountRepository> {
             AccountRepositoryImpl(
                 get(),
@@ -52,8 +60,16 @@ val mainModule = module {
 
         //Blogs Scope
         factory { provideBlogAPI(get()) }
-        factory<BlogRemoteDataSource> { BlogRemoteDataSourceImpl(get()) }
-        factory<BlogCacheDataSource> { BlogCacheDataSourceImpl(get()) }
+        factory<BlogRemoteDataSource> {
+            BlogRemoteDataSourceImpl(
+                get()
+            )
+        }
+        factory<BlogCacheDataSource> {
+            BlogCacheDataSourceImpl(
+                get()
+            )
+        }
         factory<BlogRepository> {
             BlogRepositoryImpl(
                 get(),

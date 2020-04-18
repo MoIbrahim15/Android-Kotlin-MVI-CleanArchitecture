@@ -31,7 +31,7 @@ class AccountFragment : BaseAccountFragment(R.layout.fragment_account) {
             dataState?.let {
                 dataStateChangeListener?.onDataStateChangeListener(dataState)
                 dataState.data?.let { viewState ->
-                    viewState.accountProperties?.let { account ->
+                    viewState.userEntity?.let { account ->
                         viewModel.setAccountData(account)
                     }
                 }
@@ -39,7 +39,7 @@ class AccountFragment : BaseAccountFragment(R.layout.fragment_account) {
         })
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
-            it.accountProperties?.let { account ->
+            it.userEntity?.let { account ->
                 email.text = account.email
                 username.text = account.username
             }

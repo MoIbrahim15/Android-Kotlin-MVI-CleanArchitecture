@@ -8,7 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
 import com.mi.mvi.R
-import com.mi.mvi.datasource.model.AccountProperties
+import com.mi.mvi.cache.entity.UserEntity
 import com.mi.mvi.presentation.main.account.state.AccountEventState
 import kotlinx.android.synthetic.main.fragment_update_account.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,17 +31,17 @@ class UpdateAccountFragment : BaseAccountFragment(R.layout.fragment_update_accou
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             if (viewState != null) {
-                viewState.accountProperties?.let { accountProperties ->
-                    setAccountProperties(accountProperties = accountProperties)
+                viewState.userEntity?.let { accountProperties ->
+                    setAccountProperties(userEntity = accountProperties)
                 }
             }
         })
     }
 
-    private fun setAccountProperties(accountProperties: AccountProperties) {
-        input_email.setText(accountProperties.email)
-        input_username.setText(accountProperties.username)
-        input_email.setText(accountProperties.email)
+    private fun setAccountProperties(userEntity: UserEntity) {
+        input_email.setText(userEntity.email)
+        input_username.setText(userEntity.username)
+        input_email.setText(userEntity.email)
     }
 
     private fun saveChanges() {

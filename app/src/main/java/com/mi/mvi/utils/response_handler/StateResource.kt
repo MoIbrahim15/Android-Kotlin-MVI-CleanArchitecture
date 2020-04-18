@@ -1,6 +1,6 @@
 package com.mi.mvi.utils.response_handler
 
-import com.mi.mvi.presentation.AreYouSureCallBack
+import com.mi.mvi.presentation.common.AreYouSureCallBack
 
 data class StateMessage(
     val message: String?,

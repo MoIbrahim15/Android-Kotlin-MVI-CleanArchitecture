@@ -1,13 +1,13 @@
 package com.mi.mvi.data.datasource.remote
 
-import com.mi.mvi.datasource.model.AccountProperties
-import com.mi.mvi.datasource.model.BaseResponse
+import com.mi.mvi.cache.entity.UserEntity
+import com.mi.mvi.remote.entity.BaseResponse
 
 interface AccountRemoteDataSource {
 
     suspend fun getAccountProperties(
         authorization: String
-    ): AccountProperties
+    ): UserEntity
 
     suspend fun updateAccountProperties(
         authorization: String,

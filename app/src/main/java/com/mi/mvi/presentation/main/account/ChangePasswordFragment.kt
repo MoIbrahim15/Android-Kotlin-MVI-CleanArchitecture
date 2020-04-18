@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
 import com.mi.mvi.presentation.main.account.state.AccountEventState
-import com.mi.mvi.utils.SuccessHandling
+import com.mi.mvi.utils.Constants.Companion.SUCCESS
 import kotlinx.android.synthetic.main.fragment_change_password.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -34,7 +34,7 @@ class ChangePasswordFragment : BaseAccountFragment(R.layout.fragment_change_pass
             dataState?.let {
                 dataStateChangeListener?.onDataStateChangeListener(dataState)
                 dataState.stateMessage?.let { stateMessage ->
-                    if (stateMessage.message == SuccessHandling.SUCCESS) {
+                    if (stateMessage.message == SUCCESS) {
                         uiCommunicationListener?.hideSoftKeyboard()
                         findNavController().popBackStack()
                     }

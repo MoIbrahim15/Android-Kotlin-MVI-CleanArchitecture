@@ -2,15 +2,19 @@ package com.mi.mvi.presentation.main.blog.viewmodel
 
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
-import com.mi.mvi.domain.usecase.blogs.*
-import com.mi.mvi.presentation.BaseViewModel
+import com.mi.mvi.domain.usecase.blogs.DeleteBlogPostUseCase
+import com.mi.mvi.domain.usecase.blogs.IsAuthorBlogPostUseCase
+import com.mi.mvi.domain.usecase.blogs.SearchBlogUseCase
+import com.mi.mvi.domain.usecase.blogs.UpdateBlogPostUseCase
+import com.mi.mvi.presentation.base.BaseViewModel
 import com.mi.mvi.presentation.main.blog.state.BlogEventState
 import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import com.mi.mvi.utils.AbsentLiveData
-import com.mi.mvi.utils.BlogQueryUtils
+import com.mi.mvi.utils.Constants.Companion.BLOG_FILTER
+import com.mi.mvi.utils.Constants.Companion.BLOG_FILTER_DATE_UPDATED
+import com.mi.mvi.utils.Constants.Companion.BLOG_ORDER
+import com.mi.mvi.utils.Constants.Companion.BLOG_ORDER_ASC
 import com.mi.mvi.utils.SessionManager
-import com.mi.mvi.utils.SharedPreferenceKeys.Companion.BLOG_FILTER
-import com.mi.mvi.utils.SharedPreferenceKeys.Companion.BLOG_ORDER
 import com.mi.mvi.utils.response_handler.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -31,14 +35,14 @@ class BlogViewModel(
         setBlogFilter(
             sheredPreferences.getString(
                 BLOG_FILTER,
-                BlogQueryUtils.BLOG_FILTER_DATE_UPDATED
+                BLOG_FILTER_DATE_UPDATED
             )
         )
 
         setBlogOrder(
             sheredPreferences.getString(
                 BLOG_ORDER,
-                BlogQueryUtils.BLOG_ORDER_ASC
+                BLOG_ORDER_ASC
             )
         )
     }
@@ -49,9 +53,9 @@ class BlogViewModel(
                 if(eventState.clearLayoutManagerState) {
                     clearLayoutManagerState()
                 }
-                sessionManager.cachedToken.value?.let { authToken ->
+                sessionManager.cachedTokenEntity.value?.let { authToken ->
                     searchBlogUseCase.invoke(
-                        token = authToken,
+                        tokenEntity = authToken,
                         query = getSearchQuery(),
                         filterAndOrder = getOrder() + getFilter(),
                         page = getPage()
@@ -59,25 +63,25 @@ class BlogViewModel(
                 } ?: AbsentLiveData.create()
             }
             is BlogEventState.CheckAuthorBlogPostEvent -> {
-                sessionManager.cachedToken.value?.let { authToken ->
+                sessionManager.cachedTokenEntity.value?.let { authToken ->
                     isAuthorBlogPostUseCase.invoke(
-                        token = authToken,
+                        tokenEntity = authToken,
                         slug = getSlug()
                     )
                 } ?: AbsentLiveData.create()
             }
             is BlogEventState.DeleteBlogPostEvent -> {
-                sessionManager.cachedToken.value?.let { authToken ->
+                sessionManager.cachedTokenEntity.value?.let { authToken ->
                     deleteBlogPostUseCase.invoke(
-                        token = authToken,
-                        blogPost = getBlogPost()
+                        tokenEntity = authToken,
+                        blogPostEntity = getBlogPost()
                     )
                 } ?: AbsentLiveData.create()
             }
 
             is BlogEventState.UpdateBlogPostEvent -> {
 
-                return sessionManager.cachedToken.value?.let { authToken ->
+                return sessionManager.cachedTokenEntity.value?.let { authToken ->
 
                     val title = eventState.title
                         .toRequestBody("text/plain".toMediaTypeOrNull())
@@ -85,7 +89,7 @@ class BlogViewModel(
                         .toRequestBody("text/plain".toMediaTypeOrNull())
 
                     updateBlogPostUseCase.invoke(
-                        authToken = authToken,
+                        authTokenEntity = authToken,
                         slug = getSlug(),
                         title = title,
                         body = body,

@@ -2,8 +2,8 @@ package com.mi.mvi.domain.usecase.blogs
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
-import com.mi.mvi.datasource.model.AuthToken
-import com.mi.mvi.datasource.model.BlogPost
+import com.mi.mvi.cache.entity.AuthTokenEntity
+import com.mi.mvi.cache.entity.BlogPostEntity
 import com.mi.mvi.domain.repository.BlogRepository
 import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import com.mi.mvi.utils.response_handler.DataState
@@ -15,10 +15,10 @@ import kotlinx.coroutines.flow.flowOn
 class DeleteBlogPostUseCase(private val repository: BlogRepository) {
 
     fun invoke(
-        token: AuthToken,
-        blogPost: BlogPost
+        tokenEntity: AuthTokenEntity,
+        blogPostEntity: BlogPostEntity
     ): LiveData<DataState<BlogViewState>> {
-        return repository.deleteBlogPost(token, blogPost)
+        return repository.deleteBlogPost(tokenEntity, blogPostEntity)
             .flowOn(Dispatchers.IO)
             .asLiveData()
     }

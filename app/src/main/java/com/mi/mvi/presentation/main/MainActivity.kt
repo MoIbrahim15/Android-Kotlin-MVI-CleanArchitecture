@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.mi.mvi.R
-import com.mi.mvi.datasource.model.AUTH_TOKEN_BUNDLE_KEY
-import com.mi.mvi.datasource.model.AuthToken
-import com.mi.mvi.presentation.BOTTOM_NAV_BACKSTACK_KEY
-import com.mi.mvi.presentation.BaseActivity
-import com.mi.mvi.presentation.BottomNavController
-import com.mi.mvi.presentation.BottomNavController.*
+import com.mi.mvi.cache.entity.AUTH_TOKEN_BUNDLE_KEY
+import com.mi.mvi.cache.entity.AuthTokenEntity
+import com.mi.mvi.presentation.common.BOTTOM_NAV_BACKSTACK_KEY
+import com.mi.mvi.presentation.base.BaseActivity
+import com.mi.mvi.presentation.common.BottomNavController
+import com.mi.mvi.presentation.common.BottomNavController.*
 import com.mi.mvi.presentation.auth.AuthActivity
 import com.mi.mvi.presentation.main.account.AccountViewModel
 import com.mi.mvi.presentation.main.account.ChangePasswordFragment
@@ -22,7 +22,7 @@ import com.mi.mvi.presentation.main.blog.UpdateBlogFragment
 import com.mi.mvi.presentation.main.blog.ViewBlogFragment
 import com.mi.mvi.presentation.main.blog.viewmodel.BlogViewModel
 import com.mi.mvi.presentation.main.create_blog.CreateBlogViewModel
-import com.mi.mvi.presentation.setUpNavigation
+import com.mi.mvi.presentation.common.setUpNavigation
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.scope.currentScope
@@ -43,7 +43,8 @@ class MainActivity : BaseActivity(R.layout.activity_main),
             this,
             R.id.main_nav_host_fragment,
             R.id.menu_nav_blog,
-            this)
+            this
+        )
     }
 
     override fun onGraphChange() {
@@ -85,7 +86,7 @@ class MainActivity : BaseActivity(R.layout.activity_main),
     private fun restoreSession(savedInstanceState: Bundle?) {
         savedInstanceState?.let { inState ->
             inState[AUTH_TOKEN_BUNDLE_KEY]?.let { authToken ->
-                sessionManager.setValue(authToken as AuthToken)
+                sessionManager.setValue(authToken as AuthTokenEntity)
             }
         }
     }
@@ -94,7 +95,7 @@ class MainActivity : BaseActivity(R.layout.activity_main),
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelable(
             AUTH_TOKEN_BUNDLE_KEY,
-            sessionManager.cachedToken.value
+            sessionManager.cachedTokenEntity.value
         )
         // save backstack for bottom nav
         outState.putIntArray(
@@ -128,7 +129,7 @@ class MainActivity : BaseActivity(R.layout.activity_main),
     override fun onBackPressed() = bottomNavController.onBackPressed()
 
     private fun subscriberObservers() {
-        sessionManager.cachedToken.observe(this, Observer { authToken ->
+        sessionManager.cachedTokenEntity.observe(this, Observer { authToken ->
             if (authToken == null || authToken.account_pk == -1 || authToken.token == null) {
                 navAuthActivity()
             }

@@ -1,8 +1,8 @@
 package com.mi.mvi.data.datasource.remote
 
-import com.mi.mvi.datasource.model.BaseResponse
-import com.mi.mvi.datasource.model.BlogCreateUpdateResponse
-import com.mi.mvi.datasource.model.BlogListSearchResponse
+import com.mi.mvi.remote.entity.BaseResponse
+import com.mi.mvi.remote.entity.BlogListResponse
+import com.mi.mvi.remote.entity.BlogPostResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -13,7 +13,7 @@ interface BlogRemoteDataSource {
        query: String,
       ordering: String,
         page: Int
-    ): BlogListSearchResponse
+    ): BlogListResponse
 
 
     suspend fun isAuthorOfBlogPost(
@@ -34,7 +34,7 @@ interface BlogRemoteDataSource {
         title: RequestBody,
         body: RequestBody,
         image: MultipartBody.Part?
-    ): BlogCreateUpdateResponse
+    ): BlogPostResponse
 
 
     suspend fun createBlog(
@@ -42,5 +42,5 @@ interface BlogRemoteDataSource {
         title: RequestBody,
         body: RequestBody,
         image: MultipartBody.Part?
-    ): BlogCreateUpdateResponse
+    ): BlogPostResponse
 }

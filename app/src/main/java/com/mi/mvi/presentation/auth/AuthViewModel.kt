@@ -1,11 +1,11 @@
 package com.mi.mvi.presentation.auth
 
 import androidx.lifecycle.LiveData
-import com.mi.mvi.datasource.model.AuthToken
+import com.mi.mvi.cache.entity.AuthTokenEntity
 import com.mi.mvi.domain.usecase.auth.CheckTokenUseCase
 import com.mi.mvi.domain.usecase.auth.LoginUseCase
 import com.mi.mvi.domain.usecase.auth.RegisterUseCase
-import com.mi.mvi.presentation.BaseViewModel
+import com.mi.mvi.presentation.base.BaseViewModel
 import com.mi.mvi.presentation.auth.state.AuthEventState
 import com.mi.mvi.presentation.auth.state.AuthEventState.*
 import com.mi.mvi.presentation.auth.state.AuthViewState
@@ -62,10 +62,10 @@ class AuthViewModel(
         _viewState.value = update
     }
 
-    fun setAuthToken(authToken: AuthToken) {
+    fun setAuthToken(authTokenEntity: AuthTokenEntity) {
         val update = getCurrentViewStateOrNew()
-        if (update.authToken != authToken)
-            update.authToken = authToken
+        if (update.authTokenEntity != authTokenEntity)
+            update.authTokenEntity = authTokenEntity
         _viewState.value = update
     }
 

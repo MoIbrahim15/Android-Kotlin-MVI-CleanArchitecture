@@ -2,14 +2,14 @@ package com.mi.mvi.data.repository
 
 import com.mi.mvi.data.datasource.cache.AccountCacheDataSource
 import com.mi.mvi.data.datasource.remote.AccountRemoteDataSource
-import com.mi.mvi.datasource.model.AccountProperties
-import com.mi.mvi.datasource.model.AuthToken
-import com.mi.mvi.datasource.model.BaseResponse
+import com.mi.mvi.cache.entity.UserEntity
+import com.mi.mvi.cache.entity.AuthTokenEntity
+import com.mi.mvi.remote.entity.BaseResponse
 import com.mi.mvi.domain.repository.AccountRepository
 import com.mi.mvi.presentation.main.account.state.AccountViewState
-import com.mi.mvi.utils.ErrorHandling.Companion.SOMETHING_WRONG_WITH_IMAGE
-import com.mi.mvi.utils.SuccessHandling.Companion.RESPONSE_PASSWORD_UPDATE_SUCCESS
-import com.mi.mvi.utils.SuccessHandling.Companion.SUCCESS
+import com.mi.mvi.utils.Constants.Companion.RESPONSE_PASSWORD_UPDATE_SUCCESS
+import com.mi.mvi.utils.Constants.Companion.SOMETHING_WRONG_WITH_IMAGE
+import com.mi.mvi.utils.Constants.Companion.SUCCESS
 import com.mi.mvi.utils.response_handler.DataState
 import com.mi.mvi.utils.response_handler.MessageType
 import com.mi.mvi.utils.response_handler.StateMessage
@@ -24,18 +24,18 @@ class AccountRepositoryImpl(
     private val accountCacheDataSource: AccountCacheDataSource
 ) : AccountRepository {
 
-    override fun getAccountProperties(authToken: AuthToken): Flow<DataState<AccountViewState>> {
+    override fun getAccountProperties(authTokenEntity: AuthTokenEntity): Flow<DataState<AccountViewState>> {
         return object :
-            NetworkBoundResource<AccountProperties, AccountProperties, AccountViewState>(
+            NetworkBoundResource<UserEntity, UserEntity, AccountViewState>(
                 IO,
-                apiCall = { accountRemoteDataSource.getAccountProperties("Token ${authToken.token}") },
-                cacheCall = { accountCacheDataSource.searchByPk(authToken.account_pk!!) }
+                apiCall = { accountRemoteDataSource.getAccountProperties("Token ${authTokenEntity.token}") },
+                cacheCall = { accountCacheDataSource.searchByPk(authTokenEntity.account_pk!!) }
             ) {
-            override suspend fun handleCacheSuccess(response: AccountProperties?): DataState<AccountViewState>? {
+            override suspend fun handleCacheSuccess(response: UserEntity?): DataState<AccountViewState>? {
                 return DataState.LOADING(false, AccountViewState(response))
             }
 
-            override suspend fun updateCache(networkObject: AccountProperties) {
+            override suspend fun updateCache(networkObject: UserEntity) {
                 accountCacheDataSource.updateAccountProperties(
                     networkObject.pk,
                     networkObject.email,
@@ -43,7 +43,7 @@ class AccountRepositoryImpl(
                 )
             }
 
-            override suspend fun handleNetworkSuccess(response: AccountProperties): DataState<AccountViewState>? {
+            override suspend fun handleNetworkSuccess(response: UserEntity): DataState<AccountViewState>? {
                 return DataState.SUCCESS(AccountViewState(response))
             }
 
@@ -51,26 +51,26 @@ class AccountRepositoryImpl(
     }
 
     override fun updateAccountProperties(
-        authToken: AuthToken,
-        accountProperties: AccountProperties
+        authTokenEntity: AuthTokenEntity,
+        userEntity: UserEntity
     ): Flow<DataState<AccountViewState>> {
         return object :
             NetworkBoundResource<BaseResponse, Any, AccountViewState>(
                 IO,
                 apiCall = {
                     accountRemoteDataSource.updateAccountProperties(
-                        "Token ${authToken.token}",
-                        accountProperties.email,
-                        accountProperties.username
+                        "Token ${authTokenEntity.token}",
+                        userEntity.email,
+                        userEntity.username
                     )
                 }
             ) {
 
             override suspend fun updateCache(networkObject: BaseResponse) {
                 accountCacheDataSource.updateAccountProperties(
-                    accountProperties.pk,
-                    accountProperties.email,
-                    accountProperties.username
+                    userEntity.pk,
+                    userEntity.email,
+                    userEntity.username
                 )
             }
 
@@ -84,7 +84,7 @@ class AccountRepositoryImpl(
     }
 
     override fun changePassword(
-        authToken: AuthToken,
+        authTokenEntity: AuthTokenEntity,
         currentPassword: String,
         newPassword: String,
         confirmNewPassword: String
@@ -93,7 +93,7 @@ class AccountRepositoryImpl(
             IO,
             apiCall = {
                 accountRemoteDataSource.changePassword(
-                    "Token ${authToken.token}",
+                    "Token ${authTokenEntity.token}",
                     currentPassword,
                     newPassword, confirmNewPassword
                 )

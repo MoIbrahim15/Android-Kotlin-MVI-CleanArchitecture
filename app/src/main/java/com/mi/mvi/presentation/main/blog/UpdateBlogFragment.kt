@@ -47,7 +47,7 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
                 dataStateChangeListener?.onDataStateChangeListener(dataState)
                 dataState.data?.let { viewState ->
                     // if this is not null, the blogpost was updated
-                    viewState.viewBlogFields?.blogPost?.let { blogPost ->
+                    viewState.viewBlogFields?.blogPostEntity?.let { blogPost ->
                         viewModel.updateListItem()
                         findNavController().popBackStack()
                     }

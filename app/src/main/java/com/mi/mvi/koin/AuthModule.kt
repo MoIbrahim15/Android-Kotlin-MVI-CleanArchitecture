@@ -4,10 +4,10 @@ import com.mi.mvi.data.datasource.cache.AccountCacheDataSource
 import com.mi.mvi.data.datasource.cache.AuthCacheDataSource
 import com.mi.mvi.data.datasource.remote.AuthRemoteDataSource
 import com.mi.mvi.data.repository.AuthRepositoryImpl
-import com.mi.mvi.datasource.cache.account.AccountCacheDataSourceImpl
-import com.mi.mvi.datasource.cache.auth.AuthCacheDataSourceImpl
-import com.mi.mvi.datasource.remote.auth.AuthAPIService
-import com.mi.mvi.datasource.remote.auth.AuthRemoteDataSourceImpl
+import com.mi.mvi.cache.source.AccountCacheDataSourceImpl
+import com.mi.mvi.cache.source.AuthCacheDataSourceImpl
+import com.mi.mvi.remote.service.AuthAPIService
+import com.mi.mvi.remote.source.AuthRemoteDataSourceImpl
 import com.mi.mvi.domain.repository.AuthRepository
 import com.mi.mvi.domain.usecase.auth.CheckTokenUseCase
 import com.mi.mvi.domain.usecase.auth.LoginUseCase
@@ -24,9 +24,21 @@ import retrofit2.Retrofit
 val authModule = module {
     scope(named<AuthActivity>()) {
         factory { provideAuthAPI(get()) }
-        factory<AuthRemoteDataSource> { AuthRemoteDataSourceImpl(get()) }
-        factory<AuthCacheDataSource> { AuthCacheDataSourceImpl(get()) }
-        factory<AccountCacheDataSource> { AccountCacheDataSourceImpl(get()) }
+        factory<AuthRemoteDataSource> {
+            AuthRemoteDataSourceImpl(
+                get()
+            )
+        }
+        factory<AuthCacheDataSource> {
+            AuthCacheDataSourceImpl(
+                get()
+            )
+        }
+        factory<AccountCacheDataSource> {
+            AccountCacheDataSourceImpl(
+                get()
+            )
+        }
         factory<AuthRepository> {
             AuthRepositoryImpl(
                 get(),

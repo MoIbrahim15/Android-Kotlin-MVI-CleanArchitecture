@@ -3,7 +3,6 @@ package com.mi.mvi.presentation.main.blog.viewmodel
 import com.mi.mvi.presentation.main.blog.state.BlogEventState.BlogSearchEvent
 import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 
 
 @ExperimentalCoroutinesApi
@@ -45,6 +44,6 @@ fun BlogViewModel.nextPage() {
 @ExperimentalCoroutinesApi
 fun BlogViewModel.handleIncomingBlogListData(viewState: BlogViewState) {
     viewState.blogFields.let { blogFields ->
-        blogFields.blogList?.let { setBlogListData(it) }
+        blogFields.blogListEntity?.let { setBlogListData(it) }
     }
 }

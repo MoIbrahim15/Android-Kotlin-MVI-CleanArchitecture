@@ -3,7 +3,7 @@ package com.mi.mvi.presentation.main.create_blog
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import com.mi.mvi.domain.usecase.blogs.CreateBlogUseCase
-import com.mi.mvi.presentation.BaseViewModel
+import com.mi.mvi.presentation.base.BaseViewModel
 import com.mi.mvi.presentation.main.create_blog.state.CreateBlogEventState
 import com.mi.mvi.presentation.main.create_blog.state.CreateBlogEventState.CreateNewBlogEvent
 import com.mi.mvi.presentation.main.create_blog.state.CreateBlogEventState.None
@@ -25,7 +25,7 @@ class CreateBlogViewModel(
     override fun handleEventState(eventState: CreateBlogEventState): LiveData<DataState<CreateBlogViewState>> {
         return when (eventState) {
             is CreateNewBlogEvent -> {
-                sessionManager.cachedToken.value?.let { authToken ->
+                sessionManager.cachedTokenEntity.value?.let { authToken ->
                     val title = eventState.title
                         .toRequestBody("text/plain".toMediaTypeOrNull())
                     val body = eventState.body

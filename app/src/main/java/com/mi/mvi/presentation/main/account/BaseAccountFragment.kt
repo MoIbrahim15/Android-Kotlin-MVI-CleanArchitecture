@@ -1,7 +1,7 @@
 package com.mi.mvi.presentation.main.account
 
 import android.os.Bundle
-import com.mi.mvi.presentation.BaseFragment
+import com.mi.mvi.presentation.base.BaseFragment
 import com.mi.mvi.presentation.main.account.state.ACCOUNT_VIEW_STATE_BUNDLE_KEY
 import com.mi.mvi.presentation.main.account.state.AccountViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi

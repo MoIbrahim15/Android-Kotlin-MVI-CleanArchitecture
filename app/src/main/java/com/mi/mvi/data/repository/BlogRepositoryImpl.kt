@@ -1,21 +1,24 @@
 package com.mi.mvi.data.repository
 
+import com.mi.mvi.cache.entity.AuthTokenEntity
 import com.mi.mvi.data.datasource.cache.BlogCacheDataSource
 import com.mi.mvi.data.datasource.remote.BlogRemoteDataSource
-import com.mi.mvi.datasource.model.*
+import com.mi.mvi.remote.entity.BlogListResponse
+import com.mi.mvi.cache.entity.BlogPostEntity
+import com.mi.mvi.data.datasource.cache.returnOrderedBlogQuery
+import com.mi.mvi.remote.entity.BlogPostResponse
 import com.mi.mvi.domain.repository.BlogRepository
 import com.mi.mvi.presentation.main.blog.state.BlogFields
 import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import com.mi.mvi.presentation.main.blog.state.ViewBlogFields
-import com.mi.mvi.utils.DateUtils
-import com.mi.mvi.utils.ErrorHandling
-import com.mi.mvi.utils.SuccessHandling.Companion.RESPONSE_HAS_PERMISSION_TO_EDIT
-import com.mi.mvi.utils.SuccessHandling.Companion.SUCCESS_BLOG_DELETED
+import com.mi.mvi.remote.entity.BaseResponse
+import com.mi.mvi.utils.Constants.Companion.RESPONSE_HAS_PERMISSION_TO_EDIT
+import com.mi.mvi.utils.Constants.Companion.SUCCESS_BLOG_DELETED
+import com.mi.mvi.utils.Constants.Companion.UNKNOWN_ERROR
 import com.mi.mvi.utils.response_handler.DataState
 import com.mi.mvi.utils.response_handler.MessageType
 import com.mi.mvi.utils.response_handler.StateMessage
 import com.mi.mvi.utils.response_handler.UIComponentType
-import com.mi.mvi.utils.returnOrderedBlogQuery
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -29,17 +32,17 @@ class BlogRepositoryImpl(
 ) : BlogRepository {
 
     override fun searchBlogPosts(
-        authToken: AuthToken,
+        authTokenEntity: AuthTokenEntity,
         query: String,
         filterAndOrder: String,
         page: Int
     ): Flow<DataState<BlogViewState>> {
         return object :
-            NetworkBoundResource<BlogListSearchResponse, MutableList<BlogPost>, BlogViewState>(
+            NetworkBoundResource<BlogListResponse, MutableList<BlogPostEntity>, BlogViewState>(
                 IO,
                 apiCall = {
                     blogRemoteDataSource.searchListBlogPosts(
-                        authorization = "Token ${authToken.token}",
+                        authorization = "Token ${authTokenEntity.token}",
                         query = query,
                         ordering = filterAndOrder,
                         page = page
@@ -53,7 +56,7 @@ class BlogRepositoryImpl(
                     )
                 }) {
 
-            override suspend fun handleCacheSuccess(response: MutableList<BlogPost>?): DataState<BlogViewState>? {
+            override suspend fun handleCacheSuccess(response: MutableList<BlogPostEntity>?): DataState<BlogViewState>? {
                 response?.let { items ->
                     return DataState.SUCCESS(
                         BlogViewState(
@@ -62,22 +65,20 @@ class BlogRepositoryImpl(
                             )
                         )
                     )
-                } ?: return buildDialogError(ErrorHandling.UNKNOWN_ERROR)
+                } ?: return buildDialogError(UNKNOWN_ERROR)
             }
 
-            override suspend fun updateCache(networkObject: BlogListSearchResponse) {
-                val cachedItems: MutableList<BlogPost> = mutableListOf()
+            override suspend fun updateCache(networkObject: BlogListResponse) {
+                val cachedItems: MutableList<BlogPostEntity> = mutableListOf()
                 for (blogPostResponse in networkObject.results) {
                     cachedItems.add(
-                        BlogPost(
+                        BlogPostEntity(
                             pk = blogPostResponse.pk,
                             title = blogPostResponse.title,
                             slug = blogPostResponse.slug,
                             image = blogPostResponse.image,
                             body = blogPostResponse.body,
-                            date_updated = DateUtils.convertServerStringDateToLong(
-                                blogPostResponse.date_updated
-                            ),
+                            date_updated = blogPostResponse.getDateAsLong(),
                             username = blogPostResponse.username
                         )
                     )
@@ -87,7 +88,7 @@ class BlogRepositoryImpl(
                 }
             }
 
-            override suspend fun handleNetworkSuccess(response: BlogListSearchResponse): DataState<BlogViewState>? {
+            override suspend fun handleNetworkSuccess(response: BlogListResponse): DataState<BlogViewState>? {
                 val cacheResponse = cacheCall?.invoke()
                 return handleCacheSuccess(cacheResponse)
             }
@@ -96,7 +97,7 @@ class BlogRepositoryImpl(
     }
 
     override fun isAuthorOfBlogPosts(
-        authToken: AuthToken,
+        authTokenEntity: AuthTokenEntity,
         slug: String
     ): Flow<DataState<BlogViewState>> {
         return object :
@@ -104,7 +105,7 @@ class BlogRepositoryImpl(
                 IO,
                 apiCall = {
                     blogRemoteDataSource.isAuthorOfBlogPost(
-                        authorization = "Token ${authToken.token}",
+                        authorization = "Token ${authTokenEntity.token}",
                         slug = slug
                     )
                 }) {
@@ -124,22 +125,22 @@ class BlogRepositoryImpl(
     }
 
     override fun deleteBlogPost(
-        authToken: AuthToken,
-        blogPost: BlogPost
+        authTokenEntity: AuthTokenEntity,
+        blogPostEntity: BlogPostEntity
     ): Flow<DataState<BlogViewState>> {
         return object :
             NetworkBoundResource<BaseResponse, BaseResponse, BlogViewState>(
                 IO,
                 apiCall = {
                     blogRemoteDataSource.deleteBlogPost(
-                        authorization = "Token ${authToken.token}",
-                        slug = blogPost.slug
+                        authorization = "Token ${authTokenEntity.token}",
+                        slug = blogPostEntity.slug
                     )
                 }) {
             override suspend fun updateCache(networkObject: BaseResponse) {
                 val isDeleted = networkObject.response == SUCCESS_BLOG_DELETED
                 if (isDeleted)
-                    blogCacheDataSource.deleteBlogPost(blogPost)
+                    blogCacheDataSource.deleteBlogPost(blogPostEntity)
             }
 
             override suspend fun handleNetworkSuccess(response: BaseResponse): DataState<BlogViewState>? {
@@ -167,18 +168,18 @@ class BlogRepositoryImpl(
     }
 
     override fun updateBlogPost(
-        authToken: AuthToken,
+        authTokenEntity: AuthTokenEntity,
         slug: String,
         title: RequestBody,
         body: RequestBody,
         image: MultipartBody.Part?
     ): Flow<DataState<BlogViewState>> {
         return object :
-            NetworkBoundResource<BlogCreateUpdateResponse, BaseResponse, BlogViewState>(
+            NetworkBoundResource<BlogPostResponse, BaseResponse, BlogViewState>(
                 IO,
                 apiCall = {
                     blogRemoteDataSource.updateBlog(
-                        "Token ${authToken.token!!}",
+                        "Token ${authTokenEntity.token!!}",
                         slug,
                         title,
                         body,
@@ -186,14 +187,14 @@ class BlogRepositoryImpl(
                     )
                 }) {
 
-            override suspend fun updateCache(networkObject: BlogCreateUpdateResponse) {
-                val updatedBlogPost = BlogPost(
+            override suspend fun updateCache(networkObject: BlogPostResponse) {
+                val updatedBlogPost = BlogPostEntity(
                     networkObject.pk,
                     networkObject.title,
                     networkObject.slug,
                     networkObject.body,
                     networkObject.image,
-                    DateUtils.convertServerStringDateToLong(networkObject.date_updated),
+                    networkObject.getDateAsLong(),
                     networkObject.username
                 )
                 updatedBlogPost.let { blogPost ->
@@ -206,20 +207,20 @@ class BlogRepositoryImpl(
                 }
             }
 
-            override suspend fun handleNetworkSuccess(response: BlogCreateUpdateResponse): DataState<BlogViewState>? {
-                val updatedBlogPost = BlogPost(
+            override suspend fun handleNetworkSuccess(response: BlogPostResponse): DataState<BlogViewState>? {
+                val updatedBlogPost = BlogPostEntity(
                     response.pk,
                     response.title,
                     response.slug,
                     response.body,
                     response.image,
-                    DateUtils.convertServerStringDateToLong(response.date_updated),
+                    response.getDateAsLong(),
                     response.username
                 )
                 return DataState.SUCCESS(
                     BlogViewState(
                         viewBlogFields = ViewBlogFields(
-                            blogPost = updatedBlogPost
+                            blogPostEntity = updatedBlogPost
                         )
                     )
                 )

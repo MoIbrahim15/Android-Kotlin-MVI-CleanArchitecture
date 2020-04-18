@@ -1,9 +1,9 @@
 package com.mi.mvi.presentation.main.blog.viewmodel
 
 import android.net.Uri
-import com.mi.mvi.datasource.model.BlogPost
-import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_FILTER_DATE_UPDATED
-import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_ORDER_DESC
+import com.mi.mvi.cache.entity.BlogPostEntity
+import com.mi.mvi.utils.Constants.Companion.BLOG_FILTER_DATE_UPDATED
+import com.mi.mvi.utils.Constants.Companion.BLOG_ORDER_DESC
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -39,7 +39,7 @@ fun BlogViewModel.getPage(): Int {
 @ExperimentalCoroutinesApi
 fun BlogViewModel.getSlug(): String {
     getCurrentViewStateOrNew().let {
-        it.viewBlogFields?.blogPost?.let {
+        it.viewBlogFields?.blogPostEntity?.let {
             return it.slug
         }
     }
@@ -53,17 +53,17 @@ fun BlogViewModel.isAuthorOfBlogPost(): Boolean {
 }
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.getBlogPost(): BlogPost {
+fun BlogViewModel.getBlogPost(): BlogPostEntity {
     getCurrentViewStateOrNew().let {
-        return it.viewBlogFields?.blogPost?.let {
+        return it.viewBlogFields?.blogPostEntity?.let {
             return it
         } ?: getDummyBlogPost()
     }
 }
 
 @ExperimentalCoroutinesApi
-fun BlogViewModel.getDummyBlogPost(): BlogPost {
-    return BlogPost(-1, "", "", "", "", 1, "")
+fun BlogViewModel.getDummyBlogPost(): BlogPostEntity {
+    return BlogPostEntity(-1, "", "", "", "", 1, "")
 }
 
 @ExperimentalCoroutinesApi

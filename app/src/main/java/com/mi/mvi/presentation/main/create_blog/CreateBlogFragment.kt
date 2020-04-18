@@ -13,14 +13,14 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.mi.mvi.R
-import com.mi.mvi.presentation.AreYouSureCallBack
-import com.mi.mvi.presentation.BaseFragment
+import com.mi.mvi.presentation.base.BaseFragment
+import com.mi.mvi.presentation.common.AreYouSureCallBack
 import com.mi.mvi.presentation.main.create_blog.state.CREATE_BLOG_VIEW_STATE_BUNDLE_KEY
 import com.mi.mvi.presentation.main.create_blog.state.CreateBlogEventState
 import com.mi.mvi.presentation.main.create_blog.state.CreateBlogViewState
 import com.mi.mvi.presentation.main.create_blog.state.NewBlogFields
 import com.mi.mvi.utils.Constants.Companion.GALLERY_REQUEST_CODE
-import com.mi.mvi.utils.SuccessHandling.Companion.SUCCESS
+import com.mi.mvi.utils.Constants.Companion.SUCCESS
 import com.mi.mvi.utils.response_handler.MessageType
 import com.mi.mvi.utils.response_handler.StateMessage
 import com.mi.mvi.utils.response_handler.UIComponentType
@@ -201,7 +201,8 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.publish -> {
-                val callback: AreYouSureCallBack = object : AreYouSureCallBack {
+                val callback: AreYouSureCallBack = object :
+                    AreYouSureCallBack {
                     override fun proceed() {
                         publishNewBlogPost()
                     }

@@ -9,7 +9,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
-import com.mi.mvi.presentation.BaseFragment
+import com.mi.mvi.presentation.base.BaseFragment
 import com.mi.mvi.utils.Constants
 import com.mi.mvi.utils.response_handler.DataState
 import com.mi.mvi.utils.response_handler.MessageType

@@ -1,7 +1,7 @@
 package com.mi.mvi.koin
 
 import androidx.room.Room
-import com.mi.mvi.utils.AppDatabase
+import com.mi.mvi.cache.db.AppDatabase
 import com.mi.mvi.utils.SessionManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module

@@ -1,6 +1,5 @@
 package com.mi.mvi.presentation.main.blog
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +7,7 @@ import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.mi.mvi.R
-import com.mi.mvi.datasource.model.BlogPost
-import com.mi.mvi.presentation.GenericViewHolder
-import com.mi.mvi.utils.DateUtils
+import com.mi.mvi.cache.entity.BlogPostEntity
 import kotlinx.android.synthetic.main.layout_blog_list_item.view.*
 
 class BlogListAdapter(
@@ -19,23 +16,24 @@ class BlogListAdapter(
 
     private val NO_MORE_RESULTS = -1
     private val BLOG_ITEM = 0
-    private val NO_MORE_RESULTS_BLOG_MARKER = BlogPost(
-        NO_MORE_RESULTS,
-        "",
-        "",
-        "",
-        "",
-        0,
-        ""
-    )
+    private val NO_MORE_RESULTS_BLOG_MARKER =
+        BlogPostEntity(
+            NO_MORE_RESULTS,
+            "",
+            "",
+            "",
+            "",
+            0,
+            ""
+        )
 
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<BlogPost>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<BlogPostEntity>() {
 
-        override fun areItemsTheSame(oldItem: BlogPost, newItem: BlogPost): Boolean {
+        override fun areItemsTheSame(oldItem: BlogPostEntity, newItem: BlogPostEntity): Boolean {
             return oldItem.pk == newItem.pk
         }
 
-        override fun areContentsTheSame(oldItem: BlogPost, newItem: BlogPost): Boolean {
+        override fun areContentsTheSame(oldItem: BlogPostEntity, newItem: BlogPostEntity): Boolean {
             return oldItem == newItem
         }
 
@@ -121,7 +119,7 @@ class BlogListAdapter(
         return NO_MORE_RESULTS //-1
     }
 
-    fun submitList(list: List<BlogPost>?, isQueryExhausted: Boolean) {
+    fun submitList(list: List<BlogPostEntity>?, isQueryExhausted: Boolean) {
         val newList = list?.toMutableList()
         if (isQueryExhausted)
             newList?.add(NO_MORE_RESULTS_BLOG_MARKER)
@@ -136,7 +134,7 @@ class BlogListAdapter(
         private val interaction: Interaction?
     ) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: BlogPost) = with(itemView) {
+        fun bind(item: BlogPostEntity) = with(itemView) {
             itemView.setOnClickListener {
                 interaction?.onItemSelected(adapterPosition, item)
             }
@@ -149,13 +147,13 @@ class BlogListAdapter(
 
             itemView.tvBlogTitle.text = item.title
             itemView.tvBlogAuthor.text = item.username
-            itemView.tvBlogDate.text = DateUtils.convertLongToStringDate(item.date_updated)
+            itemView.tvBlogDate.text = item.getDateAsString()
 
         }
     }
 
     interface Interaction {
-        fun onItemSelected(position: Int, item: BlogPost)
+        fun onItemSelected(position: Int, item: BlogPostEntity)
         fun restoreListPosition()
     }
 }

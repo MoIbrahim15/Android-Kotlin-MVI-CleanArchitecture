@@ -2,14 +2,14 @@ package com.mi.mvi.koin
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.mi.mvi.utils.SharedPreferenceKeys
+import com.mi.mvi.utils.Constants.Companion.APP_PREFERENCES
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val sharedPrefsModule = module {
     single {
         androidContext().getSharedPreferences(
-            SharedPreferenceKeys.APP_PREFERENCES,
+            APP_PREFERENCES,
             Context.MODE_PRIVATE
         )
     }

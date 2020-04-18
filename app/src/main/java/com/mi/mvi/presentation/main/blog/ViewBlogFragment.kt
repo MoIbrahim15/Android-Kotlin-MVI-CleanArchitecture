@@ -11,12 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.mi.mvi.R
-import com.mi.mvi.datasource.model.BlogPost
-import com.mi.mvi.presentation.AreYouSureCallBack
+import com.mi.mvi.cache.entity.BlogPostEntity
+import com.mi.mvi.presentation.common.AreYouSureCallBack
 import com.mi.mvi.presentation.main.blog.state.BlogEventState
 import com.mi.mvi.presentation.main.blog.viewmodel.*
-import com.mi.mvi.utils.DateUtils
-import com.mi.mvi.utils.SuccessHandling.Companion.DELETE
+import com.mi.mvi.utils.Constants.Companion.DELETE
 import com.mi.mvi.utils.response_handler.MessageType
 import com.mi.mvi.utils.response_handler.StateMessage
 import com.mi.mvi.utils.response_handler.UIComponentType
@@ -75,7 +74,7 @@ class ViewBlogFragment : BaseBlogFragment(R.layout.fragment_view_blog) {
         })
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { blogViewState ->
-            blogViewState?.viewBlogFields?.blogPost?.let { blogPost ->
+            blogViewState?.viewBlogFields?.blogPostEntity?.let { blogPost ->
                 setBlogProperties(blogPost)
             }
 
@@ -92,15 +91,15 @@ class ViewBlogFragment : BaseBlogFragment(R.layout.fragment_view_blog) {
         delete_button.visibility = View.VISIBLE
     }
 
-    private fun setBlogProperties(blogPost: BlogPost) {
+    private fun setBlogProperties(blogPostEntity: BlogPostEntity) {
         Glide.with(this)
-            .load(blogPost.image)
+            .load(blogPostEntity.image)
             .into(blog_image)
 
-        blog_title.text = blogPost.title
-        blog_author.text = blogPost.username
-        blog_update_date.text = DateUtils.convertLongToStringDate(blogPost.date_updated)
-        blog_body.text = blogPost.body
+        blog_title.text = blogPostEntity.title
+        blog_author.text = blogPostEntity.username
+        blog_update_date.text = blogPostEntity.getDateAsString()
+        blog_body.text = blogPostEntity.body
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -1,11 +1,11 @@
 package com.mi.mvi.presentation.main.account
 
 import androidx.lifecycle.LiveData
-import com.mi.mvi.datasource.model.AccountProperties
+import com.mi.mvi.cache.entity.UserEntity
 import com.mi.mvi.domain.usecase.account.ChangePasswordUseCase
 import com.mi.mvi.domain.usecase.account.GetAccountUseCase
 import com.mi.mvi.domain.usecase.account.UpdateAccountUseCase
-import com.mi.mvi.presentation.BaseViewModel
+import com.mi.mvi.presentation.base.BaseViewModel
 import com.mi.mvi.presentation.main.account.state.AccountEventState
 import com.mi.mvi.presentation.main.account.state.AccountEventState.*
 import com.mi.mvi.presentation.main.account.state.AccountViewState
@@ -25,15 +25,15 @@ class AccountViewModel(
     override fun handleEventState(eventState: AccountEventState): LiveData<DataState<AccountViewState>> {
         return when (eventState) {
             is GetAccountEvent -> {
-                sessionManager.cachedToken.value?.let { accountUseCase.invoke(it) }
+                sessionManager.cachedTokenEntity.value?.let { accountUseCase.invoke(it) }
                     ?: AbsentLiveData.create()
             }
             is UpdateAccountEvent -> {
-                sessionManager.cachedToken.value?.let { authToken ->
+                sessionManager.cachedTokenEntity.value?.let { authToken ->
                     authToken.account_pk?.let { pk ->
                         updateAccountUseCase.invoke(
                             authToken,
-                            AccountProperties(
+                            UserEntity(
                                 pk,
                                 eventState.email,
                                 eventState.username
@@ -44,7 +44,7 @@ class AccountViewModel(
                 } ?: AbsentLiveData.create()
             }
             is ChangePasswordEvent -> {
-                sessionManager.cachedToken.value?.let { authToken ->
+                sessionManager.cachedTokenEntity.value?.let { authToken ->
                     changePasswordUseCase.invoke(
                         authToken,
                         eventState.currentPassword,
@@ -69,10 +69,10 @@ class AccountViewModel(
         return AccountViewState()
     }
 
-    fun setAccountData(accountProperties: AccountProperties) {
+    fun setAccountData(userEntity: UserEntity) {
         val update = getCurrentViewStateOrNew()
-        if (update.accountProperties != accountProperties) {
-            update.accountProperties = accountProperties
+        if (update.userEntity != userEntity) {
+            update.userEntity = userEntity
             _viewState.value = update
         }
     }

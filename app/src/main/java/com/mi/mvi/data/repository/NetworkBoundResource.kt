@@ -1,11 +1,10 @@
 package com.mi.mvi.data.repository
 
+import com.mi.mvi.utils.Constants.Companion.CACHE_ERROR_TIMEOUT
 import com.mi.mvi.utils.Constants.Companion.CACHE_TIMEOUT
+import com.mi.mvi.utils.Constants.Companion.NETWORK_ERROR_TIMEOUT
 import com.mi.mvi.utils.Constants.Companion.NETWORK_TIMEOUT
-import com.mi.mvi.utils.ErrorHandling.Companion.CACHE_ERROR_TIMEOUT
-import com.mi.mvi.utils.ErrorHandling.Companion.NETWORK_ERROR
-import com.mi.mvi.utils.ErrorHandling.Companion.NETWORK_ERROR_TIMEOUT
-import com.mi.mvi.utils.ErrorHandling.Companion.UNKNOWN_ERROR
+import com.mi.mvi.utils.Constants.Companion.UNKNOWN_ERROR
 import com.mi.mvi.utils.response_handler.DataState
 import com.mi.mvi.utils.response_handler.MessageType
 import com.mi.mvi.utils.response_handler.StateMessage
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
+import com.mi.mvi.utils.Constants.Companion.NETWORK_ERROR as NETWORK_ERROR1
 
 @ExperimentalCoroutinesApi
 abstract class NetworkBoundResource<NetworkObj, CacheObj, ViewState>(
@@ -57,7 +57,7 @@ abstract class NetworkBoundResource<NetworkObj, CacheObj, ViewState>(
                         emit(buildDialogError(NETWORK_ERROR_TIMEOUT))
                     }
                     is IOException -> {
-                        emit(buildDialogError(NETWORK_ERROR))
+                        emit(buildDialogError(NETWORK_ERROR1))
                     }
                     is HttpException -> {
                         emit(buildDialogError(convertErrorBody(throwable)))

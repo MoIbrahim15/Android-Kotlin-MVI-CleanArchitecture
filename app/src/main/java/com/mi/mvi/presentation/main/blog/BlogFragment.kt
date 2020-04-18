@@ -23,15 +23,15 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.mi.mvi.R
-import com.mi.mvi.datasource.model.BlogPost
+import com.mi.mvi.cache.entity.BlogPostEntity
+import com.mi.mvi.presentation.common.TopSpacingItemDecoration
 import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import com.mi.mvi.presentation.main.blog.viewmodel.*
-import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_FILTER_DATE_UPDATED
-import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_FILTER_USERNAME
-import com.mi.mvi.utils.BlogQueryUtils.Companion.BLOG_ORDER_ASC
-import com.mi.mvi.utils.ErrorHandling.Companion.INVALID_PAGE_NUMBER
-import com.mi.mvi.utils.ErrorHandling.Companion.isPaginationDone
-import com.mi.mvi.utils.TopSpacingItemDecoration
+import com.mi.mvi.utils.Constants.Companion.BLOG_FILTER_DATE_UPDATED
+import com.mi.mvi.utils.Constants.Companion.BLOG_FILTER_USERNAME
+import com.mi.mvi.utils.Constants.Companion.BLOG_ORDER_ASC
+import com.mi.mvi.utils.Constants.Companion.INVALID_PAGE_NUMBER
+import com.mi.mvi.utils.Constants.Companion.isPaginationDone
 import com.mi.mvi.utils.response_handler.DataState
 import kotlinx.android.synthetic.main.fragment_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -97,7 +97,7 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
             viewState?.let {
                 recyclerAdapter.apply {
                     submitList(
-                        list = viewState.blogFields.blogList,
+                        list = viewState.blogFields.blogListEntity,
                         isQueryExhausted = viewState.blogFields.isQueryExhausted ?: false
                     )
                 }
@@ -158,7 +158,8 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
     private fun initRecyclerView() {
         blog_post_recyclerview.apply {
             layoutManager = LinearLayoutManager(this@BlogFragment.context)
-            val topSpacingItemDecoration = TopSpacingItemDecoration(30)
+            val topSpacingItemDecoration =
+                TopSpacingItemDecoration(30)
             removeItemDecoration(topSpacingItemDecoration)
             addItemDecoration(topSpacingItemDecoration)
 
@@ -186,7 +187,7 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
         blog_post_recyclerview.adapter = null //clean references for memory leaks
     }
 
-    override fun onItemSelected(position: Int, item: BlogPost) {
+    override fun onItemSelected(position: Int, item: BlogPostEntity) {
         viewModel.setBlogPost(item)
         findNavController().navigate(R.id.action_blogFragment_to_viewBlogFragment)
     }

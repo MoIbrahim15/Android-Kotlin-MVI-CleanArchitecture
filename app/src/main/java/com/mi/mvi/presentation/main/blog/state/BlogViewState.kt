@@ -2,7 +2,7 @@ package com.mi.mvi.presentation.main.blog.state
 
 import android.net.Uri
 import android.os.Parcelable
-import com.mi.mvi.datasource.model.BlogPost
+import com.mi.mvi.cache.entity.BlogPostEntity
 import kotlinx.android.parcel.Parcelize
 
 const val BLOG_VIEW_STATE_BUNDLE_KEY = "BLOG_VIEW_STATE_BUNDLE_KEY"
@@ -22,7 +22,7 @@ data class BlogViewState(
 
 @Parcelize
 data class BlogFields(
-    var blogList: MutableList<BlogPost>? = null,
+    var blogListEntity: MutableList<BlogPostEntity>? = null,
     var searchQuery: String? = null,
     var page: Int? = null,
     var isQueryExhausted: Boolean? = null,
@@ -34,7 +34,7 @@ data class BlogFields(
 
 @Parcelize
 data class ViewBlogFields(
-    var blogPost: BlogPost? = null,
+    var blogPostEntity: BlogPostEntity? = null,
     var isAuthor: Boolean? = null
 ) : Parcelable
 

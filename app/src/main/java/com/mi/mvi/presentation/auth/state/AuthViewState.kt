@@ -1,15 +1,15 @@
 package com.mi.mvi.presentation.auth.state
 
-import com.mi.mvi.datasource.model.AuthToken
-import com.mi.mvi.utils.ErrorHandling.Companion.ERROR_ALL_FIELDS_ARE_REQUIRED
-import com.mi.mvi.utils.ErrorHandling.Companion.ERROR_PASSWORD_DOESNOT_MATCH
-import com.mi.mvi.utils.SuccessHandling.Companion.SUCCESS
+import com.mi.mvi.cache.entity.AuthTokenEntity
+import com.mi.mvi.utils.Constants.Companion.ERROR_ALL_FIELDS_ARE_REQUIRED
+import com.mi.mvi.utils.Constants.Companion.ERROR_PASSWORD_DOESNOT_MATCH
+import com.mi.mvi.utils.Constants.Companion.SUCCESS
 
 
 data class AuthViewState(
     var registrationFields: RegistrationFields? = null,
     var loginFields: LoginFields? = null,
-    var authToken: AuthToken? = null
+    var authTokenEntity: AuthTokenEntity? = null
 )
 
 data class RegistrationFields(
