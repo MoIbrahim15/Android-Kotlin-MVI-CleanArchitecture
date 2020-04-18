@@ -2,7 +2,6 @@ package com.mi.mvi.remote.entity
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.mi.mvi.remote.entity.BaseResponse
 
 data class UserResponse(
     @SerializedName("email")

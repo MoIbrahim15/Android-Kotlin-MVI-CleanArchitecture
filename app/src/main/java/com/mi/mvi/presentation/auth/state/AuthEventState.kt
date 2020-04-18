@@ -15,8 +15,8 @@ sealed class AuthEventState {
     ) : AuthEventState()
 
 
-    class CheckTokenEvent : AuthEventState()
+    object CheckTokenEvent : AuthEventState()
 
-    class None : AuthEventState()
+    object None : AuthEventState()
 
 }

@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".presentation.auth.AuthActivity"
+            android:name=".presentation.auth.SplashActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,6 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".presentation.auth.AuthActivity"
+            android:windowSoftInputMode="adjustPan"/>
 
         <activity android:name=".presentation.main.MainActivity"
             android:windowSoftInputMode="adjustPan"/>

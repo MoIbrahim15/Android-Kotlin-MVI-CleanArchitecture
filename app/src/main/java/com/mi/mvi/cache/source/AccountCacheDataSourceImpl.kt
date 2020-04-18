@@ -1,8 +1,8 @@
 package com.mi.mvi.cache.source
 
 import com.mi.mvi.cache.db.AccountDao
-import com.mi.mvi.data.datasource.cache.AccountCacheDataSource
 import com.mi.mvi.cache.entity.UserEntity
+import com.mi.mvi.data.datasource.cache.AccountCacheDataSource
 
 class AccountCacheDataSourceImpl(
     private val accountDao: AccountDao

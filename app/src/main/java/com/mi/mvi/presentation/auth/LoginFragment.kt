@@ -5,9 +5,9 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
-import com.mi.mvi.presentation.base.BaseFragment
 import com.mi.mvi.presentation.auth.state.AuthEventState
 import com.mi.mvi.presentation.auth.state.LoginFields
+import com.mi.mvi.presentation.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.ext.android.sharedViewModel

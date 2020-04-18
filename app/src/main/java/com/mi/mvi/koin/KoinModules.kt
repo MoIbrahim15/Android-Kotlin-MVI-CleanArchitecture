@@ -8,6 +8,7 @@ val koinModules = listOf(
     sharedPrefsModule,
     networkModule,
     glideModule,
+    sessionModule,
     authModule,
     mainModule
 )

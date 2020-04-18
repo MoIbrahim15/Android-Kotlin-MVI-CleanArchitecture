@@ -10,19 +10,18 @@ import com.mi.mvi.domain.repository.AuthRepository
 import com.mi.mvi.domain.usecase.auth.CheckTokenUseCase
 import com.mi.mvi.domain.usecase.auth.LoginUseCase
 import com.mi.mvi.domain.usecase.auth.RegisterUseCase
-import com.mi.mvi.presentation.auth.AuthActivity
 import com.mi.mvi.presentation.auth.AuthViewModel
-import com.mi.mvi.remote.service.AuthAPIService
+import com.mi.mvi.presentation.auth.SplashActivity
 import com.mi.mvi.remote.source.AuthRemoteDataSourceImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import retrofit2.Retrofit
+
 
 @ExperimentalCoroutinesApi
-val authModule = module {
-    scope(named<AuthActivity>()) {
+val sessionModule = module {
+    scope(named<SplashActivity>()) {
         factory { provideAuthAPI(get()) }
         factory<AuthRemoteDataSource> {
             AuthRemoteDataSourceImpl(
@@ -54,8 +53,3 @@ val authModule = module {
         viewModel { AuthViewModel(get(), get(), get()) }
     }
 }
-
-
-fun provideAuthAPI(retrofit: Retrofit): AuthAPIService =
-    retrofit.create(AuthAPIService::class.java)
-

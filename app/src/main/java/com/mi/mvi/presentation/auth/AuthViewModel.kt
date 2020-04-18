@@ -5,12 +5,12 @@ import com.mi.mvi.cache.entity.AuthTokenEntity
 import com.mi.mvi.domain.usecase.auth.CheckTokenUseCase
 import com.mi.mvi.domain.usecase.auth.LoginUseCase
 import com.mi.mvi.domain.usecase.auth.RegisterUseCase
-import com.mi.mvi.presentation.base.BaseViewModel
 import com.mi.mvi.presentation.auth.state.AuthEventState
 import com.mi.mvi.presentation.auth.state.AuthEventState.*
 import com.mi.mvi.presentation.auth.state.AuthViewState
 import com.mi.mvi.presentation.auth.state.LoginFields
 import com.mi.mvi.presentation.auth.state.RegistrationFields
+import com.mi.mvi.presentation.base.BaseViewModel
 import com.mi.mvi.utils.response_handler.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

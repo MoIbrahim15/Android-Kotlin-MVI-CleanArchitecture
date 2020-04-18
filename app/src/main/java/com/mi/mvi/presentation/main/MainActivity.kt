@@ -10,11 +10,12 @@ import androidx.navigation.NavController
 import com.mi.mvi.R
 import com.mi.mvi.cache.entity.AUTH_TOKEN_BUNDLE_KEY
 import com.mi.mvi.cache.entity.AuthTokenEntity
-import com.mi.mvi.presentation.common.BOTTOM_NAV_BACKSTACK_KEY
+import com.mi.mvi.presentation.auth.AuthActivity
 import com.mi.mvi.presentation.base.BaseActivity
+import com.mi.mvi.presentation.common.BOTTOM_NAV_BACKSTACK_KEY
 import com.mi.mvi.presentation.common.BottomNavController
 import com.mi.mvi.presentation.common.BottomNavController.*
-import com.mi.mvi.presentation.auth.AuthActivity
+import com.mi.mvi.presentation.common.setUpNavigation
 import com.mi.mvi.presentation.main.account.AccountViewModel
 import com.mi.mvi.presentation.main.account.ChangePasswordFragment
 import com.mi.mvi.presentation.main.account.UpdateAccountFragment
@@ -22,7 +23,6 @@ import com.mi.mvi.presentation.main.blog.UpdateBlogFragment
 import com.mi.mvi.presentation.main.blog.ViewBlogFragment
 import com.mi.mvi.presentation.main.blog.viewmodel.BlogViewModel
 import com.mi.mvi.presentation.main.create_blog.CreateBlogViewModel
-import com.mi.mvi.presentation.common.setUpNavigation
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.scope.currentScope

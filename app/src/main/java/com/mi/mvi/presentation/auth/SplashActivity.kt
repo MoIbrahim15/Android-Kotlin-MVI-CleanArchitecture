@@ -6,21 +6,23 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.mi.mvi.R
+import com.mi.mvi.presentation.auth.state.AuthEventState
 import com.mi.mvi.presentation.base.BaseActivity
 import com.mi.mvi.presentation.main.MainActivity
-import kotlinx.android.synthetic.main.activity_auth.*
+import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.scope.viewModel
 
 @ExperimentalCoroutinesApi
-class AuthActivity : BaseActivity(R.layout.activity_auth) {
+class SplashActivity : BaseActivity(R.layout.activity_splash) {
 
     private val authViewModel: AuthViewModel by currentScope.viewModel(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         subscribeObservers()
+        checkPreviousAuthUser()
     }
 
     private fun subscribeObservers() {
@@ -45,13 +47,24 @@ class AuthActivity : BaseActivity(R.layout.activity_auth) {
                 authToken?.let {
                     if (it.account_pk != -1 && it.token != null) {
                         navMainActivity()
+                    }else{
+                        navLoginActivity()
                     }
                 }
             })
     }
 
+    private fun checkPreviousAuthUser() {
+        authViewModel.setEventState(AuthEventState.CheckTokenEvent)
+    }
+
     private fun navMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
+    private fun navLoginActivity() {
+        startActivity(Intent(this, AuthActivity::class.java))
         finish()
     }
 
