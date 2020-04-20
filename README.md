@@ -7,6 +7,10 @@
 - Model View Intent Architecture - MVI.
 - Repository pattern (NetworkBoundResource)
 - Clean Architecture approach.
+- [Ktlint](https://github.com/jlleitschuh/ktlint-gradle "Ktlint") This plugin creates convenient tasks in your Gradle project that run ktlint checks or do code auto format.
+
+
+
 
 Discussions
 -
