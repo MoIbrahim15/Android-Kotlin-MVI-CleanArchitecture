@@ -6,10 +6,10 @@ import com.mi.mvi.utils.Constants.Companion.NETWORK_ERROR as NETWORK_ERROR1
 import com.mi.mvi.utils.Constants.Companion.NETWORK_ERROR_TIMEOUT
 import com.mi.mvi.utils.Constants.Companion.NETWORK_TIMEOUT
 import com.mi.mvi.utils.Constants.Companion.UNKNOWN_ERROR
-import com.mi.mvi.utils.response_handler.DataState
-import com.mi.mvi.utils.response_handler.MessageType
-import com.mi.mvi.utils.response_handler.StateMessage
-import com.mi.mvi.utils.response_handler.UIComponentType
+import com.mi.mvi.utils.DataState
+import com.mi.mvi.utils.MessageType
+import com.mi.mvi.utils.StateMessage
+import com.mi.mvi.utils.UIComponentType
 import kotlinx.coroutines.*
 import java.io.IOException
 import kotlinx.coroutines.flow.Flow

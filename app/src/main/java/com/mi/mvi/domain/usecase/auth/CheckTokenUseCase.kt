@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import com.mi.mvi.domain.repository.AuthRepository
 import com.mi.mvi.presentation.auth.state.AuthViewState
-import com.mi.mvi.utils.response_handler.DataState
+import com.mi.mvi.utils.DataState
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOn

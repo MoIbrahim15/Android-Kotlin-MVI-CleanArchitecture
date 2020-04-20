@@ -1,7 +1,7 @@
 package com.mi.mvi.domain.repository
 
 import com.mi.mvi.presentation.auth.state.AuthViewState
-import com.mi.mvi.utils.response_handler.DataState
+import com.mi.mvi.utils.DataState
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository : BaseRepository {

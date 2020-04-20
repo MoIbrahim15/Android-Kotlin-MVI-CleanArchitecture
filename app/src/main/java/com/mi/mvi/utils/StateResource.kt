@@ -1,4 +1,4 @@
-package com.mi.mvi.utils.response_handler
+package com.mi.mvi.utils
 
 import com.mi.mvi.presentation.common.AreYouSureCallBack
 

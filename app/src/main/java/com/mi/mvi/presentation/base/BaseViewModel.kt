@@ -1,7 +1,7 @@
 package com.mi.mvi.presentation.base
 
 import androidx.lifecycle.*
-import com.mi.mvi.utils.response_handler.DataState
+import com.mi.mvi.utils.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel

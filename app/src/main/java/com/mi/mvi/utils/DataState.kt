@@ -1,4 +1,4 @@
-package com.mi.mvi.utils.response_handler
+package com.mi.mvi.utils
 
 sealed class DataState<T>(
     var loading: Boolean,

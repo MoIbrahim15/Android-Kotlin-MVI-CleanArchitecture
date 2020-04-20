@@ -6,7 +6,7 @@ import com.mi.mvi.cache.entity.AuthTokenEntity
 import com.mi.mvi.cache.entity.UserEntity
 import com.mi.mvi.domain.repository.AccountRepository
 import com.mi.mvi.presentation.main.account.state.AccountViewState
-import com.mi.mvi.utils.response_handler.DataState
+import com.mi.mvi.utils.DataState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOn

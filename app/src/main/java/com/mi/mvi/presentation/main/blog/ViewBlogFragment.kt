@@ -16,9 +16,9 @@ import com.mi.mvi.presentation.common.AreYouSureCallBack
 import com.mi.mvi.presentation.main.blog.state.BlogEventState
 import com.mi.mvi.presentation.main.blog.viewmodel.*
 import com.mi.mvi.utils.Constants.Companion.DELETE
-import com.mi.mvi.utils.response_handler.MessageType
-import com.mi.mvi.utils.response_handler.StateMessage
-import com.mi.mvi.utils.response_handler.UIComponentType
+import com.mi.mvi.utils.MessageType
+import com.mi.mvi.utils.StateMessage
+import com.mi.mvi.utils.UIComponentType
 import kotlinx.android.synthetic.main.fragment_view_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -36,7 +36,8 @@ class ViewBlogFragment : BaseBlogFragment(R.layout.fragment_view_blog) {
 
     private fun deleteBlogPost() {
         uiCommunicationListener?.onUIMessageReceived(StateMessage(
-            getString(R.string.are_you_sure_delete), UIComponentType.AreYouSureDialog(
+            getString(R.string.are_you_sure_delete),
+            UIComponentType.AreYouSureDialog(
                 object : AreYouSureCallBack {
                     override fun proceed() {
                         viewModel.setEventState(BlogEventState.DeleteBlogPostEvent)
@@ -45,7 +46,8 @@ class ViewBlogFragment : BaseBlogFragment(R.layout.fragment_view_blog) {
                     override fun cancel() {
                     }
                 }
-            ), MessageType.INFO
+            ),
+            MessageType.INFO
         ))
     }
 

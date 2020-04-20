@@ -20,9 +20,9 @@ import com.mi.mvi.presentation.main.create_blog.state.CreateBlogViewState
 import com.mi.mvi.presentation.main.create_blog.state.NewBlogFields
 import com.mi.mvi.utils.Constants.Companion.GALLERY_REQUEST_CODE
 import com.mi.mvi.utils.Constants.Companion.SUCCESS
-import com.mi.mvi.utils.response_handler.MessageType
-import com.mi.mvi.utils.response_handler.StateMessage
-import com.mi.mvi.utils.response_handler.UIComponentType
+import com.mi.mvi.utils.MessageType
+import com.mi.mvi.utils.StateMessage
+import com.mi.mvi.utils.UIComponentType
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import java.io.File
@@ -210,7 +210,9 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
                 uiCommunicationListener?.onUIMessageReceived(
                     StateMessage(
                         getString(R.string.are_you_sure_publish),
-                        UIComponentType.AreYouSureDialog(callback),
+                        UIComponentType.AreYouSureDialog(
+                            callback
+                        ),
                         MessageType.INFO
                     )
                 )

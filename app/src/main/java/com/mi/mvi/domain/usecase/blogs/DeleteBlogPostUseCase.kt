@@ -6,7 +6,7 @@ import com.mi.mvi.cache.entity.AuthTokenEntity
 import com.mi.mvi.cache.entity.BlogPostEntity
 import com.mi.mvi.domain.repository.BlogRepository
 import com.mi.mvi.presentation.main.blog.state.BlogViewState
-import com.mi.mvi.utils.response_handler.DataState
+import com.mi.mvi.utils.DataState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOn

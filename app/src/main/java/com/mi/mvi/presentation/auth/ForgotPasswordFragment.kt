@@ -11,10 +11,10 @@ import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
 import com.mi.mvi.presentation.base.BaseFragment
 import com.mi.mvi.utils.Constants
-import com.mi.mvi.utils.response_handler.DataState
-import com.mi.mvi.utils.response_handler.MessageType
-import com.mi.mvi.utils.response_handler.StateMessage
-import com.mi.mvi.utils.response_handler.UIComponentType
+import com.mi.mvi.utils.DataState
+import com.mi.mvi.utils.MessageType
+import com.mi.mvi.utils.StateMessage
+import com.mi.mvi.utils.UIComponentType
 import kotlinx.android.synthetic.main.fragment_forget_password.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -8,10 +8,10 @@ import com.mi.mvi.domain.repository.CreateBlogRepository
 import com.mi.mvi.presentation.main.create_blog.state.CreateBlogViewState
 import com.mi.mvi.remote.entity.BlogPostResponse
 import com.mi.mvi.utils.Constants.Companion.RESPONSE_MUST_BECOME_CODINGWITHMITCH_MEMBER
-import com.mi.mvi.utils.response_handler.DataState
-import com.mi.mvi.utils.response_handler.MessageType
-import com.mi.mvi.utils.response_handler.StateMessage
-import com.mi.mvi.utils.response_handler.UIComponentType
+import com.mi.mvi.utils.DataState
+import com.mi.mvi.utils.MessageType
+import com.mi.mvi.utils.StateMessage
+import com.mi.mvi.utils.UIComponentType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -60,11 +60,11 @@ class CreateBlogRepositoryImpl(
             override suspend fun handleNetworkSuccess(response: BlogPostResponse): DataState<CreateBlogViewState>? {
                 return if (response.response == RESPONSE_MUST_BECOME_CODINGWITHMITCH_MEMBER) {
                     DataState.ERROR(
-                            StateMessage(
-                                    "SUCCESS",
-                                    UIComponentType.DIALOG,
-                                    MessageType.SUCCESS
-                            )
+                        StateMessage(
+                            "SUCCESS",
+                            UIComponentType.DIALOG,
+                            MessageType.SUCCESS
+                        )
                     )
                 } else null
             }

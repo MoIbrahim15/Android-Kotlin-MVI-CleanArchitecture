@@ -13,10 +13,10 @@ import com.mi.mvi.presentation.common.UICommunicationListener
 import com.mi.mvi.presentation.main.MainActivity
 import com.mi.mvi.presentation.main.blog.BlogFragment
 import com.mi.mvi.presentation.main.create_blog.state.CreateBlogViewState
-import com.mi.mvi.utils.response_handler.DataState
-import com.mi.mvi.utils.response_handler.MessageType
-import com.mi.mvi.utils.response_handler.StateMessage
-import com.mi.mvi.utils.response_handler.UIComponentType
+import com.mi.mvi.utils.DataState
+import com.mi.mvi.utils.MessageType
+import com.mi.mvi.utils.StateMessage
+import com.mi.mvi.utils.UIComponentType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi

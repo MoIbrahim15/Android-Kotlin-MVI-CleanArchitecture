@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "MviCleanArchitecture"
+rootProject.name = "Android-Kotlin-MVI-CleanArchitectur"

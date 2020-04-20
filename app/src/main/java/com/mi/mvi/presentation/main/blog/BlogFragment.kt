@@ -32,7 +32,7 @@ import com.mi.mvi.utils.Constants.Companion.BLOG_FILTER_USERNAME
 import com.mi.mvi.utils.Constants.Companion.BLOG_ORDER_ASC
 import com.mi.mvi.utils.Constants.Companion.INVALID_PAGE_NUMBER
 import com.mi.mvi.utils.Constants.Companion.isPaginationDone
-import com.mi.mvi.utils.response_handler.DataState
+import com.mi.mvi.utils.DataState
 import kotlinx.android.synthetic.main.fragment_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

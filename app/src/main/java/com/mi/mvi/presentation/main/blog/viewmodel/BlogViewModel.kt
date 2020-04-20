@@ -15,7 +15,7 @@ import com.mi.mvi.utils.Constants.Companion.BLOG_FILTER_DATE_UPDATED
 import com.mi.mvi.utils.Constants.Companion.BLOG_ORDER
 import com.mi.mvi.utils.Constants.Companion.BLOG_ORDER_ASC
 import com.mi.mvi.utils.SessionManager
-import com.mi.mvi.utils.response_handler.DataState
+import com.mi.mvi.utils.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody

@@ -11,7 +11,7 @@ import com.mi.mvi.presentation.main.account.state.AccountEventState.*
 import com.mi.mvi.presentation.main.account.state.AccountViewState
 import com.mi.mvi.utils.AbsentLiveData
 import com.mi.mvi.utils.SessionManager
-import com.mi.mvi.utils.response_handler.DataState
+import com.mi.mvi.utils.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi

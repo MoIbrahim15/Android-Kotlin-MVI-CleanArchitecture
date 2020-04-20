@@ -10,10 +10,10 @@ import com.mi.mvi.remote.entity.BaseResponse
 import com.mi.mvi.utils.Constants.Companion.RESPONSE_PASSWORD_UPDATE_SUCCESS
 import com.mi.mvi.utils.Constants.Companion.SOMETHING_WRONG_WITH_IMAGE
 import com.mi.mvi.utils.Constants.Companion.SUCCESS
-import com.mi.mvi.utils.response_handler.DataState
-import com.mi.mvi.utils.response_handler.MessageType
-import com.mi.mvi.utils.response_handler.StateMessage
-import com.mi.mvi.utils.response_handler.UIComponentType
+import com.mi.mvi.utils.DataState
+import com.mi.mvi.utils.MessageType
+import com.mi.mvi.utils.StateMessage
+import com.mi.mvi.utils.UIComponentType
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -75,7 +75,11 @@ class AccountRepositoryImpl(
 
             override suspend fun handleNetworkSuccess(response: BaseResponse): DataState<AccountViewState>? {
                 return DataState.ERROR(
-                    StateMessage("SUCCESS", UIComponentType.TOAST, MessageType.SUCCESS)
+                    StateMessage(
+                        "SUCCESS",
+                        UIComponentType.TOAST,
+                        MessageType.SUCCESS
+                    )
                 )
             }
         }.result
@@ -101,7 +105,11 @@ class AccountRepositoryImpl(
 
                 return if (response.response == RESPONSE_PASSWORD_UPDATE_SUCCESS)
                     DataState.ERROR(
-                        StateMessage(SUCCESS, UIComponentType.TOAST, MessageType.SUCCESS)
+                        StateMessage(
+                            SUCCESS,
+                            UIComponentType.TOAST,
+                            MessageType.SUCCESS
+                        )
                     )
                 else {
                     DataState.ERROR(

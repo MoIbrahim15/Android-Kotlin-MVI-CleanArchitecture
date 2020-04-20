@@ -1,6 +1,6 @@
 package com.mi.mvi.presentation.common
 
-import com.mi.mvi.utils.response_handler.DataState
+import com.mi.mvi.utils.DataState
 
 interface DataStateChangeListener {
     fun onDataStateChangeListener(dataState: DataState<*>?)

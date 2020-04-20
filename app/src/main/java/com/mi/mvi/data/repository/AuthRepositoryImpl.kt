@@ -15,10 +15,10 @@ import com.mi.mvi.remote.entity.UserResponse
 import com.mi.mvi.utils.Constants.Companion.GENERIC_AUTH_ERROR
 import com.mi.mvi.utils.Constants.Companion.PREVIOUS_AUTH_USER
 import com.mi.mvi.utils.Constants.Companion.UNKNOWN_ERROR
-import com.mi.mvi.utils.response_handler.DataState
-import com.mi.mvi.utils.response_handler.MessageType
-import com.mi.mvi.utils.response_handler.StateMessage
-import com.mi.mvi.utils.response_handler.UIComponentType
+import com.mi.mvi.utils.DataState
+import com.mi.mvi.utils.MessageType
+import com.mi.mvi.utils.StateMessage
+import com.mi.mvi.utils.UIComponentType
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

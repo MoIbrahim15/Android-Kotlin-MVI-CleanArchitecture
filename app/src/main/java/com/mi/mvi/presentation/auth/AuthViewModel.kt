@@ -11,7 +11,7 @@ import com.mi.mvi.presentation.auth.state.AuthViewState
 import com.mi.mvi.presentation.auth.state.LoginFields
 import com.mi.mvi.presentation.auth.state.RegistrationFields
 import com.mi.mvi.presentation.base.BaseViewModel
-import com.mi.mvi.utils.response_handler.DataState
+import com.mi.mvi.utils.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
