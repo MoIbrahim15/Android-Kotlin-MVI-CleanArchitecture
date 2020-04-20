@@ -194,7 +194,7 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
 
     override fun restoreListPosition() {
         viewModel.viewState.value?.blogFields?.layoutManagerState?.let { lmState ->
-            blog_post_recyclerview.layoutManager?.onRestoreInstanceState(lmState)
+            blog_post_recyclerview?.layoutManager?.onRestoreInstanceState(lmState)
         }
     }
 

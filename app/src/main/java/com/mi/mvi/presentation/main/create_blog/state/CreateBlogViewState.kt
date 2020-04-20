@@ -8,7 +8,7 @@ const val CREATE_BLOG_VIEW_STATE_BUNDLE_KEY = "CREATE_BLOG_VIEW_STATE_BUNDLE_KEY
 
 @Parcelize
 data class CreateBlogViewState(
-    var newBlogField: NewBlogFields? = null
+    var newBlogField: NewBlogFields = NewBlogFields()
 ) : Parcelable
 
 @Parcelize

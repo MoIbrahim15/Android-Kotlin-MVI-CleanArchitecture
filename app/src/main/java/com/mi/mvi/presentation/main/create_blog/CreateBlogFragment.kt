@@ -140,7 +140,6 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
                     data?.data?.let { uri ->
                         activity?.let {
                             launchImageCrop(uri)
-
                         }
                     } ?: showErrorDialog("")
                 }

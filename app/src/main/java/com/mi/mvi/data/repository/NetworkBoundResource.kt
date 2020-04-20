@@ -33,6 +33,7 @@ abstract class NetworkBoundResource<NetworkObj, CacheObj, ViewState>(
         apiCall?.let {
             emitAll(safeAPICall())
         }
+        emit(DataState.LOADING(isLoading = false))
     }
 
     private suspend fun safeAPICall() = flow<DataState<ViewState>> {
