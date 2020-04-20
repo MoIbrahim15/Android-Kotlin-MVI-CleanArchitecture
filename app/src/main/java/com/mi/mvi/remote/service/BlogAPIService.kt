@@ -17,20 +17,17 @@ interface BlogAPIService {
         @Query("page") page: Int
     ): BlogListResponse
 
-
     @GET("blog/{slug}/is_author")
     suspend fun isAuthorOfBlogPost(
         @Header("Authorization") authorization: String,
         @Path("slug") slug: String
     ): BaseResponse
 
-
     @DELETE("blog/{slug}/delete")
     suspend fun deleteBlogPost(
         @Header("Authorization") authorization: String,
         @Path("slug") slug: String
     ): BaseResponse
-
 
     @Multipart
     @PUT("blog/{slug}/update")

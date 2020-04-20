@@ -68,8 +68,6 @@ class CreateBlogRepositoryImpl(
                     )
                 } else null
             }
-
-
         }.result
     }
 }

@@ -34,7 +34,6 @@ abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity
                 displayToast(stateMessage.message)
             }
             is UIComponentType.NONE -> {
-
             }
         }
     }
@@ -69,13 +68,11 @@ abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity
 
             inputMethodManager.hideSoftInputFromWindow(currentFocus.windowToken, 0)
         }
-
     }
 
     override fun isStoragePermissionGranted(): Boolean {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
-            &&
+            != PackageManager.PERMISSION_GRANTED &&
             ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED
         ) {

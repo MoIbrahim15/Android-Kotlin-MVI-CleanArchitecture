@@ -19,7 +19,7 @@ abstract class BaseViewModel<EventState, ViewState> : ViewModel() {
     protected val _viewState: MutableLiveData<ViewState> = MutableLiveData()
     // Create a publicly accessible LiveData object that can be observed
     val viewState: LiveData<ViewState>
-        get() =  _viewState
+        get() = _viewState
 
     // keep this protected so that only the ViewModel can modify the state
     protected val _dataState: MutableLiveData<DataState<ViewState>> = MutableLiveData()

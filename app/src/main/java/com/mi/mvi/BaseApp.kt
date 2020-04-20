@@ -18,5 +18,4 @@ class BaseApp : Application() {
             modules(koinModules)
         }
     }
-
 }

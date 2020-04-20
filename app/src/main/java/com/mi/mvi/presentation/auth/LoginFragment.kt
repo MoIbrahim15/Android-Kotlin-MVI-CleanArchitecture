@@ -25,7 +25,6 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
         }
         btnRegister.setOnClickListener { navRegistration() }
 
-
         btnLogin.setOnClickListener { login() }
 
         subscribeObservers()

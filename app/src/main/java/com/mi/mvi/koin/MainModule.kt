@@ -34,7 +34,7 @@ import retrofit2.Retrofit
 val mainModule = module {
     scope(named<MainActivity>()) {
 
-        //Account Scope
+        // Account Scope
         factory { provideAccountAPI(get()) }
         factory<AccountRemoteDataSource> {
             AccountRemoteDataSourceImpl(
@@ -57,8 +57,7 @@ val mainModule = module {
         factory { ChangePasswordUseCase(get()) }
         viewModel { AccountViewModel(get(), get(), get(), get()) }
 
-
-        //Blogs Scope
+        // Blogs Scope
         factory { provideBlogAPI(get()) }
         factory<BlogRemoteDataSource> {
             BlogRemoteDataSourceImpl(

@@ -11,7 +11,6 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-
 class SessionManager(
     val authTokenDao: AuthTokenDao,
     val context: Context
@@ -20,7 +19,6 @@ class SessionManager(
 
     val cachedTokenEntity: LiveData<AuthTokenEntity>
         get() = _cachedToken
-
 
     fun login(newValue: AuthTokenEntity) {
         setValue(newValue)
@@ -39,7 +37,6 @@ class SessionManager(
             } catch (e: Exception) {
                 errorMessage = errorMessage + "\n" + e.message
             } finally {
-
             }
             setValue(null)
         }

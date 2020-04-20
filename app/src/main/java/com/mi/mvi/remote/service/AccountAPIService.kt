@@ -10,7 +10,6 @@ interface AccountAPIService {
         @Header("Authorization") authorization: String
     ): UserEntity
 
-
     @PUT("account/properties/update")
     @FormUrlEncoded
     suspend fun updateAccountProperties(
@@ -18,7 +17,6 @@ interface AccountAPIService {
         @Field("email") email: String,
         @Field("username") username: String
     ): BaseResponse
-
 
     @PUT("account/change_password/")
     @FormUrlEncoded

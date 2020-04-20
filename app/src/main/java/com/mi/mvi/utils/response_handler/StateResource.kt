@@ -5,7 +5,7 @@ import com.mi.mvi.presentation.common.AreYouSureCallBack
 data class StateMessage(
     val message: String?,
     val uiComponentType: UIComponentType,
-    val messageType : MessageType
+    val messageType: MessageType
 )
 
 sealed class UIComponentType {

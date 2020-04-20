@@ -4,13 +4,13 @@ class Constants {
 
     companion object {
 
-        //-----------------------------NETWORK-----------------------
+        // -----------------------------NETWORK-----------------------
         const val BASE_URL = "https://open-api.xyz/api/"
         const val PASSWORD_RESET_URL: String = "https://open-api.xyz/password_reset/"
         const val NETWORK_TIMEOUT = 6000L
         const val CACHE_TIMEOUT = 2000L
 
-        //-----------------------------CACHE-----------------------
+        // -----------------------------CACHE-----------------------
         const val BLOG_ORDER_ASC: String = ""
         const val BLOG_ORDER_DESC: String = "-"
         const val BLOG_FILTER_USERNAME = "username"
@@ -21,8 +21,7 @@ class Constants {
         const val ORDER_BY_ASC_USERNAME = BLOG_ORDER_ASC + BLOG_FILTER_USERNAME
         const val ORDER_BY_DESC_USERNAME = BLOG_ORDER_DESC + BLOG_FILTER_USERNAME
 
-
-        //-----------------------------SHARED_PREF-----------------------
+        // -----------------------------SHARED_PREF-----------------------
         // Shared Preference Files:
         const val APP_PREFERENCES: String = "com.mi.mvi.APP_PREFERENCES"
 
@@ -32,14 +31,12 @@ class Constants {
         const val BLOG_FILTER: String = "com.mi.mvi.BLOG_FILTER"
         const val BLOG_ORDER: String = "com.mi.mvi.BLOG_ORDER"
 
-
-        //-----------------------------UI-----------------------
+        // -----------------------------UI-----------------------
         const val PAGINATION_PAGE_SIZE = 10
         const val GALLERY_REQUEST_CODE = 201
         const val PERMISSION_REQUEST_READ_STORAGE: Int = 301
 
-
-        //-----------------------------SUCCESS-----------------------
+        // -----------------------------SUCCESS-----------------------
         const val SUCCESS = "success"
         const val DELETE = "delete"
         const val RESPONSE_PASSWORD_UPDATE_SUCCESS = "successfully changed password"
@@ -51,8 +48,7 @@ class Constants {
         const val SUCCESS_BLOG_DELETED = "deleted"
         const val SUCCESS_BLOG_UPDATED = "updated"
 
-
-        //-----------------------------ERROR-----------------------
+        // -----------------------------ERROR-----------------------
         private val TAG: String = "AppDebug"
 
         const val UNABLE_TO_RESOLVE_HOST = "Unable to resolve host"
@@ -79,9 +75,9 @@ class Constants {
         const val ERROR_PASSWORD_DOESNOT_MATCH = "Password and confirm password must be same"
         const val INVALID_PAGE_NUMBER = "invalid page number"
 
-        fun isPaginationDone(errorResponse: String?): Boolean{
+        fun isPaginationDone(errorResponse: String?): Boolean {
             // if error response = '{"detail":"Invalid page."}' then pagination is finished
-            return errorResponse?.contains(INVALID_PAGE)?: false
+            return errorResponse?.contains(INVALID_PAGE) ?: false
         }
     }
 }

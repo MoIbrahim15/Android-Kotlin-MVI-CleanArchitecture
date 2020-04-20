@@ -14,7 +14,7 @@ fun Activity.displayToast(@StringRes msg: Int) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
-//fixed leak memory
+// fixed leak memory
 var materialDialog: MaterialDialog? = null
 
 fun Activity.displaySuccessDialog(message: String) {
@@ -51,7 +51,6 @@ fun Activity.areYouSureDialog(message: String?, callback: AreYouSureCallBack) {
             message(text = message)
             positiveButton(R.string.text_yes) {
                 callback.proceed()
-
             }
             negativeButton(R.string.text_cancel) {
                 callback.cancel()

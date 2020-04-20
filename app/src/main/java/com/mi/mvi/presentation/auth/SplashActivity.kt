@@ -1,6 +1,5 @@
 package com.mi.mvi.presentation.auth
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -47,7 +46,7 @@ class SplashActivity : BaseActivity(R.layout.activity_splash) {
                 authToken?.let {
                     if (it.account_pk != -1 && it.token != null) {
                         navMainActivity()
-                    }else{
+                    } else {
                         navLoginActivity()
                     }
                 }

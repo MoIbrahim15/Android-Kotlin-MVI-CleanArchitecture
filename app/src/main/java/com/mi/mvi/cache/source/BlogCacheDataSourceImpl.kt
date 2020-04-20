@@ -42,7 +42,6 @@ class BlogCacheDataSourceImpl(
         pageSize: Int
     ): MutableList<BlogPostEntity> {
         return blogPostDao.searchBlogPostsOrderByDateASC(query, page, pageSize)
-
     }
 
     override suspend fun searchBlogPostsOrderByAuthorDESC(

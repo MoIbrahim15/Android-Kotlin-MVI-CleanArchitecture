@@ -40,7 +40,6 @@ class AccountViewModel(
                             )
                         )
                     }
-
                 } ?: AbsentLiveData.create()
             }
             is ChangePasswordEvent -> {

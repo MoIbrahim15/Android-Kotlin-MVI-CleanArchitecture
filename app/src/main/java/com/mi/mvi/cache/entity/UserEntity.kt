@@ -11,11 +11,11 @@ import kotlinx.android.parcel.Parcelize
 data class UserEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "pk")
-    var pk : Int,
+    var pk: Int,
 
     @ColumnInfo(name = "email")
-    var email : String,
+    var email: String,
 
     @ColumnInfo(name = "username")
-    var username : String
+    var username: String
 ) : Parcelable

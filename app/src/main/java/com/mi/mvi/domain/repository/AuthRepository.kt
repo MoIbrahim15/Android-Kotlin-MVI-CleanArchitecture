@@ -18,10 +18,8 @@ interface AuthRepository : BaseRepository {
         confirmPassword: String
     ): Flow<DataState<AuthViewState>>
 
-
-    fun checkPreviousAuthUser()
-            : Flow<DataState<AuthViewState>>
-
+    fun checkPreviousAuthUser():
+            Flow<DataState<AuthViewState>>
 
     fun saveAuthUserToPrefs(email: String)
 }

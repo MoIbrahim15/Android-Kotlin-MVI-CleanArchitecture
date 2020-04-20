@@ -17,5 +17,4 @@ interface AuthTokenDao {
 
     @Query("SELECT * FROM auth_token WHERE account_pk = :pk")
     suspend fun searchTokenByPk(pk: Int): AuthTokenEntity?
-
 }

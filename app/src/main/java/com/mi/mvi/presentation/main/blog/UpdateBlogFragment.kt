@@ -18,12 +18,12 @@ import com.mi.mvi.presentation.main.blog.viewmodel.*
 import com.mi.mvi.utils.Constants
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import java.io.File
 import kotlinx.android.synthetic.main.fragment_update_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 
 @ExperimentalCoroutinesApi
 class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
@@ -51,7 +51,6 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
                         viewModel.updateListItem()
                         findNavController().popBackStack()
                     }
-
                 }
             }
         })
@@ -108,7 +107,6 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
         startActivityForResult(intent, Constants.GALLERY_REQUEST_CODE)
     }
 
-
     private fun launchImageCrop(uri: Uri?) {
         context?.let {
             CropImage.activity(uri)
@@ -125,7 +123,6 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
                     data?.data?.let { uri ->
                         activity?.let {
                             launchImageCrop(uri)
-
                         }
                     } ?: showErrorDialog("")
                 }
@@ -140,7 +137,6 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
             }
         }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.update_menu, menu)

@@ -50,7 +50,7 @@ class BlogViewModel(
     override fun handleEventState(eventState: BlogEventState): LiveData<DataState<BlogViewState>> {
         return when (eventState) {
             is BlogEventState.BlogSearchEvent -> {
-                if(eventState.clearLayoutManagerState) {
+                if (eventState.clearLayoutManagerState) {
                     clearLayoutManagerState()
                 }
                 sessionManager.cachedTokenEntity.value?.let { authToken ->

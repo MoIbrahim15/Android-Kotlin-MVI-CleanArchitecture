@@ -1,6 +1,5 @@
 package com.mi.mvi.presentation.main.account
 
-
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -38,7 +37,6 @@ class ChangePasswordFragment : BaseAccountFragment(R.layout.fragment_change_pass
                         uiCommunicationListener?.hideSoftKeyboard()
                         findNavController().popBackStack()
                     }
-
                 }
             }
         })

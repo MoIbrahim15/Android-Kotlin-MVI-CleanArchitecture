@@ -9,16 +9,15 @@ const val BLOG_VIEW_STATE_BUNDLE_KEY = "BLOG_VIEW_STATE_BUNDLE_KEY"
 
 @Parcelize
 data class BlogViewState(
-    //BlogFragment vars
+    // BlogFragment vars
     var blogFields: BlogFields = BlogFields(),
 
-    //ViewBlogFragment vars
+    // ViewBlogFragment vars
     var viewBlogFields: ViewBlogFields = ViewBlogFields(),
 
-    //UpdateBlogFragment vars
+    // UpdateBlogFragment vars
     var updatedBlogFields: UpdatedBlogFields = UpdatedBlogFields()
 ) : Parcelable
-
 
 @Parcelize
 data class BlogFields(
@@ -30,7 +29,6 @@ data class BlogFields(
     var order: String? = null,
     var layoutManagerState: Parcelable? = null
 ) : Parcelable
-
 
 @Parcelize
 data class ViewBlogFields(

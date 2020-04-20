@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: "org.jlleitschuh.gradle.ktlint"
 
 android {
     compileSdkVersion 29
@@ -129,5 +130,6 @@ dependencies {
 
 
     implementation "com.theartofdev.edmodo:android-image-cropper:2.8.0"
+
 
 }

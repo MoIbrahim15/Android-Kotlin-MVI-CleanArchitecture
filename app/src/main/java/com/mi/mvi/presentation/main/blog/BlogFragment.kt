@@ -101,11 +101,9 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
                         isQueryExhausted = viewState.blogFields.isQueryExhausted ?: false
                     )
                 }
-
             }
         })
     }
-
 
     private fun initSearchView(menu: Menu) {
         activity?.apply {
@@ -117,11 +115,11 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
             searchView.isSubmitButtonEnabled = true
         }
 
-        //case 1 : ENTER ON ARROW
+        // case 1 : ENTER ON ARROW
         val searchPlate = searchView.findViewById(R.id.search_src_text) as EditText
         searchPlate.setOnEditorActionListener { v, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED
-                || actionId == EditorInfo.IME_ACTION_SEARCH
+            if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED ||
+                actionId == EditorInfo.IME_ACTION_SEARCH
             ) {
                 val searchQuery = v.text.toString()
                 viewModel.setQuery(searchQuery)
@@ -129,22 +127,21 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
             }
             true
         }
-        //cas2: SEARCH BUTTON CLICKED (in toolbar)
+        // cas2: SEARCH BUTTON CLICKED (in toolbar)
         (searchView.findViewById(R.id.search_go_btn) as View).setOnClickListener {
             val searchQuery = searchPlate.text.toString()
             viewModel.setQuery(searchQuery)
             onBlogSearchOrFilter()
         }
-
     }
 
     private fun handlePagination(dataState: DataState<BlogViewState>?) {
-        //handle incomming data from data state
+        // handle incomming data from data state
         dataState?.data?.let { viewState ->
             viewModel.handleIncomingBlogListData(viewState)
         }
 
-        //check for pagination end
+        // check for pagination end
         dataState?.stateMessage?.let { stateMessage ->
             if (stateMessage.message == INVALID_PAGE_NUMBER) {
                 // set query exhausted to update RecyclerView with
@@ -153,7 +150,6 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
             }
         }
     }
-
 
     private fun initRecyclerView() {
         blog_post_recyclerview.apply {
@@ -184,7 +180,7 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
 
     override fun onDestroyView() {
         super.onDestroyView()
-        blog_post_recyclerview.adapter = null //clean references for memory leaks
+        blog_post_recyclerview.adapter = null // clean references for memory leaks
     }
 
     override fun onItemSelected(position: Int, item: BlogPostEntity) {
@@ -252,7 +248,6 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
                     view.findViewById<RadioGroup>(R.id.order_group).checkedRadioButtonId
                 )
 
-
                 var filter = BLOG_FILTER_DATE_UPDATED
                 if (selectedFilter.text.toString() == getString(R.string.filter_author)) {
                     filter = BLOG_FILTER_USERNAME
@@ -273,6 +268,5 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
             }
             dialog.show()
         }
-
     }
 }

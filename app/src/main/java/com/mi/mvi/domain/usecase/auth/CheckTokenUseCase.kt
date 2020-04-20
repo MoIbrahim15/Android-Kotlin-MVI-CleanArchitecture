@@ -10,7 +10,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOn
 
 @ExperimentalCoroutinesApi
-class CheckTokenUseCase (private val repository: AuthRepository) {
+class CheckTokenUseCase(private val repository: AuthRepository) {
 
     fun invoke(): LiveData<DataState<AuthViewState>> {
         return repository.checkPreviousAuthUser().flowOn(IO).asLiveData()

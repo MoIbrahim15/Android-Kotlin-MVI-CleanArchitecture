@@ -20,4 +20,3 @@ data class UserResponse(
     @Expose
     var token: String
 ) : BaseResponse()
-

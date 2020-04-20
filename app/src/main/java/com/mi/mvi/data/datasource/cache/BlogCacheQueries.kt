@@ -6,7 +6,6 @@ import com.mi.mvi.utils.Constants.Companion.ORDER_BY_ASC_USERNAME
 import com.mi.mvi.utils.Constants.Companion.ORDER_BY_DESC_DATE_UPDATED
 import com.mi.mvi.utils.Constants.Companion.ORDER_BY_DESC_USERNAME
 
-
 suspend fun BlogCacheDataSource.returnOrderedBlogQuery(
     filterAndOrder: String,
     query: String,

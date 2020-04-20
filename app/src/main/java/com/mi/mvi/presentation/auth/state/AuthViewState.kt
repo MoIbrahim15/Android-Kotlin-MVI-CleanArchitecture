@@ -5,7 +5,6 @@ import com.mi.mvi.utils.Constants.Companion.ERROR_ALL_FIELDS_ARE_REQUIRED
 import com.mi.mvi.utils.Constants.Companion.ERROR_PASSWORD_DOESNOT_MATCH
 import com.mi.mvi.utils.Constants.Companion.SUCCESS
 
-
 data class AuthViewState(
     var registrationFields: RegistrationFields? = null,
     var loginFields: LoginFields? = null,
@@ -33,15 +32,14 @@ data class RegistrationFields(
             fun none(): String {
                 return SUCCESS
             }
-
         }
     }
 
     fun isValidForRegistration(): String {
-        return if (email.isNullOrEmpty()
-            || username.isNullOrEmpty()
-            || password.isNullOrEmpty()
-            || confirmPassword.isNullOrEmpty()
+        return if (email.isNullOrEmpty() ||
+            username.isNullOrEmpty() ||
+            password.isNullOrEmpty() ||
+            confirmPassword.isNullOrEmpty()
         ) {
             RegistrationError.mustFillAllFields()
         } else if (!password.equals(confirmPassword)) {

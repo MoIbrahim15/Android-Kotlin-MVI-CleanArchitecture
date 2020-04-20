@@ -4,8 +4,8 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.Parcelize
 import java.text.SimpleDateFormat
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
@@ -33,9 +33,9 @@ data class BlogPostEntity(
 
     @ColumnInfo(name = "username")
     var username: String
-) : Parcelable{
+) : Parcelable {
 
-    fun getDateAsString(): String{
+    fun getDateAsString(): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
         try {
             val date = sdf.format(Date(date_updated))

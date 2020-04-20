@@ -36,7 +36,6 @@ class BlogListAdapter(
         override fun areContentsTheSame(oldItem: BlogPostEntity, newItem: BlogPostEntity): Boolean {
             return oldItem == newItem
         }
-
     }
     private val differ = AsyncListDiffer(
         BlogRecyclerChangeCallback(this),
@@ -61,7 +60,6 @@ class BlogListAdapter(
         override fun onRemoved(position: Int, count: Int) {
             adapter.notifyDataSetChanged()
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -97,7 +95,6 @@ class BlogListAdapter(
                 )
             }
         }
-
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -116,7 +113,7 @@ class BlogListAdapter(
         if (differ.currentList[position].pk > -1) {
             return BLOG_ITEM
         }
-        return NO_MORE_RESULTS //-1
+        return NO_MORE_RESULTS // -1
     }
 
     fun submitList(list: List<BlogPostEntity>?, isQueryExhausted: Boolean) {
@@ -148,7 +145,6 @@ class BlogListAdapter(
             itemView.tvBlogTitle.text = item.title
             itemView.tvBlogAuthor.text = item.username
             itemView.tvBlogDate.text = item.getDateAsString()
-
         }
     }
 

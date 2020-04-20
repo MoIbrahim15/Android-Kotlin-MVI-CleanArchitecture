@@ -60,5 +60,4 @@ class RegisterFragment : BaseFragment(R.layout.fragment_register) {
             )
         )
     }
-
 }

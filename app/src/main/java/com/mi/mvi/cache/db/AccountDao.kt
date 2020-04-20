@@ -20,5 +20,4 @@ interface AccountDao {
 
     @Query("Update account Set email = :email, username = :username WHERE pk = :pk ")
     suspend fun updateAccountProperties(pk: Int, email: String, username: String)
-
 }

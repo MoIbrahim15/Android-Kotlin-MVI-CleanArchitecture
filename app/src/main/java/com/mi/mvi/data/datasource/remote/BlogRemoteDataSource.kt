@@ -10,32 +10,28 @@ interface BlogRemoteDataSource {
 
     suspend fun searchListBlogPosts(
         authorization: String,
-       query: String,
-      ordering: String,
+        query: String,
+        ordering: String,
         page: Int
     ): BlogListResponse
 
-
     suspend fun isAuthorOfBlogPost(
-      authorization: String,
-       slug: String
+        authorization: String,
+        slug: String
     ): BaseResponse
-
 
     suspend fun deleteBlogPost(
-       authorization: String,
-       slug: String
+        authorization: String,
+        slug: String
     ): BaseResponse
 
-
     suspend fun updateBlog(
-       authorization: String,
-       slug: String,
+        authorization: String,
+        slug: String,
         title: RequestBody,
         body: RequestBody,
         image: MultipartBody.Part?
     ): BlogPostResponse
-
 
     suspend fun createBlog(
         authorization: String,

@@ -4,7 +4,6 @@ import com.mi.mvi.presentation.main.blog.state.BlogEventState.BlogSearchEvent
 import com.mi.mvi.presentation.main.blog.state.BlogViewState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-
 @ExperimentalCoroutinesApi
 fun BlogViewModel.resetPage() {
     val update = getCurrentViewStateOrNew()

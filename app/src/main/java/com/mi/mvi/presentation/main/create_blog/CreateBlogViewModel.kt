@@ -37,7 +37,6 @@ class CreateBlogViewModel(
                         body,
                         eventState.image
                     )
-
                 } ?: AbsentLiveData.create()
             }
             is None -> {
@@ -49,7 +48,6 @@ class CreateBlogViewModel(
     override fun initNewViewState(): CreateBlogViewState {
         return CreateBlogViewState()
     }
-
 
     fun setNewBlogFields(title: String?, body: String?, uri: Uri?) {
         val update = getCurrentViewStateOrNew()

@@ -47,7 +47,6 @@ abstract class BaseFragment(private val contentLayoutId: Int) : Fragment(content
             dataStateChangeListener = context as DataStateChangeListener
             uiCommunicationListener = context as UICommunicationListener
         } catch (e: ClassCastException) {
-
         }
     }
 
@@ -62,5 +61,4 @@ abstract class BaseFragment(private val contentLayoutId: Int) : Fragment(content
             )
         )
     }
-
 }

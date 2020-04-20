@@ -29,7 +29,6 @@ interface BlogCacheDataSource {
         pageSize: Int = Constants.PAGINATION_PAGE_SIZE
     ): MutableList<BlogPostEntity>
 
-
     suspend fun searchBlogPostsOrderByAuthorDESC(
         query: String,
         page: Int,

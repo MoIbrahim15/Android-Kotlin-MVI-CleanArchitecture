@@ -15,12 +15,10 @@ interface AccountRemoteDataSource {
         username: String
     ): BaseResponse
 
-
     suspend fun changePassword(
         authorization: String,
         currentPassword: String,
         newPassword: String,
         confirmNewPassword: String
     ): BaseResponse
-
 }

@@ -55,7 +55,5 @@ val authModule = module {
     }
 }
 
-
 fun provideAuthAPI(retrofit: Retrofit): AuthAPIService =
     retrofit.create(AuthAPIService::class.java)
-

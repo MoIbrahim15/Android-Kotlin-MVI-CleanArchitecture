@@ -15,5 +15,4 @@ interface AuthRemoteDataSource {
         password: String,
         password2: String
     ): UserResponse
-
 }

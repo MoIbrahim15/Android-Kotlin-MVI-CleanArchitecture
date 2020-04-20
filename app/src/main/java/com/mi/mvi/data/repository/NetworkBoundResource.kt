@@ -2,6 +2,7 @@ package com.mi.mvi.data.repository
 
 import com.mi.mvi.utils.Constants.Companion.CACHE_ERROR_TIMEOUT
 import com.mi.mvi.utils.Constants.Companion.CACHE_TIMEOUT
+import com.mi.mvi.utils.Constants.Companion.NETWORK_ERROR as NETWORK_ERROR1
 import com.mi.mvi.utils.Constants.Companion.NETWORK_ERROR_TIMEOUT
 import com.mi.mvi.utils.Constants.Companion.NETWORK_TIMEOUT
 import com.mi.mvi.utils.Constants.Companion.UNKNOWN_ERROR
@@ -10,12 +11,11 @@ import com.mi.mvi.utils.response_handler.MessageType
 import com.mi.mvi.utils.response_handler.StateMessage
 import com.mi.mvi.utils.response_handler.UIComponentType
 import kotlinx.coroutines.*
+import java.io.IOException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
-import java.io.IOException
-import com.mi.mvi.utils.Constants.Companion.NETWORK_ERROR as NETWORK_ERROR1
 
 @ExperimentalCoroutinesApi
 abstract class NetworkBoundResource<NetworkObj, CacheObj, ViewState>(
@@ -71,7 +71,6 @@ abstract class NetworkBoundResource<NetworkObj, CacheObj, ViewState>(
         }
     }
 
-
     private suspend fun safeCacheCall() = flow<DataState<ViewState>> {
         withContext(dispatcher) {
             try {
@@ -95,7 +94,6 @@ abstract class NetworkBoundResource<NetworkObj, CacheObj, ViewState>(
         }
     }
 
-
     fun buildDialogError(
         message: String?
     ): DataState<ViewState> {
@@ -108,7 +106,6 @@ abstract class NetworkBoundResource<NetworkObj, CacheObj, ViewState>(
         )
     }
 
-
     private fun convertErrorBody(throwable: HttpException): String {
         return try {
             throwable.response()?.errorBody()?.string() ?: UNKNOWN_ERROR
@@ -117,16 +114,15 @@ abstract class NetworkBoundResource<NetworkObj, CacheObj, ViewState>(
         }
     }
 
-    open suspend fun handleNetworkSuccess(response: NetworkObj)
-            : DataState<ViewState>? {
+    open suspend fun handleNetworkSuccess(response: NetworkObj):
+            DataState<ViewState>? {
         return null
     }
 
-    open suspend fun handleCacheSuccess(response: CacheObj?)
-            : DataState<ViewState>? {
+    open suspend fun handleCacheSuccess(response: CacheObj?):
+            DataState<ViewState>? {
         return null
     }
 
     open suspend fun updateCache(networkObject: NetworkObj) {}
-
 }

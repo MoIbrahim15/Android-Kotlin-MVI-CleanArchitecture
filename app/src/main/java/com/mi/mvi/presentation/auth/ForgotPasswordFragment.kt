@@ -98,7 +98,6 @@ class ForgetPasswordFragment : BaseFragment(R.layout.fragment_forget_password) {
             WebAppInterface(webInteractionCallback),
             "AndroidTextListener"
         )
-
     }
 
     class WebAppInterface
@@ -127,5 +126,4 @@ class ForgetPasswordFragment : BaseFragment(R.layout.fragment_forget_password) {
             fun onLoading(isLoading: Boolean)
         }
     }
-
 }

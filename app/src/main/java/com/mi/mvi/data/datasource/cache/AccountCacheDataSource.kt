@@ -11,5 +11,4 @@ interface AccountCacheDataSource {
     suspend fun searchByEmail(email: String): UserEntity?
 
     suspend fun updateAccountProperties(pk: Int, email: String, username: String)
-
 }

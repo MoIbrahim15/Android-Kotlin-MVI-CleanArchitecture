@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface AccountRepository : BaseRepository {
 
-    fun getAccountProperties(authTokenEntity: AuthTokenEntity)
-            : Flow<DataState<AccountViewState>>
+    fun getAccountProperties(authTokenEntity: AuthTokenEntity):
+            Flow<DataState<AccountViewState>>
 
     fun updateAccountProperties(
         authTokenEntity: AuthTokenEntity,

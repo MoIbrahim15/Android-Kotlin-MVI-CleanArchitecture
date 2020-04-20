@@ -16,7 +16,7 @@ sealed class BlogEventState {
         val title: String,
         val body: String,
         val image: MultipartBody.Part?
-    ): BlogEventState()
+    ) : BlogEventState()
 
     object None : BlogEventState()
 }

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class BlogPostResponse (
+data class BlogPostResponse(
     @SerializedName("response")
     @Expose
     var response: String,
@@ -37,10 +37,10 @@ data class BlogPostResponse (
     @SerializedName("username")
     @Expose
     var username: String
-){
+) {
 
     // dates from server look like this: "2019-07-23T03:28:01.406944Z"
-    fun getDateAsLong(): Long{
+    fun getDateAsLong(): Long {
         val stringDate = date_updated.removeRange(date_updated.indexOf("T") until date_updated.length)
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
         try {

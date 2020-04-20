@@ -92,7 +92,6 @@ class BlogRepositoryImpl(
                 val cacheResponse = cacheCall?.invoke()
                 return handleCacheSuccess(cacheResponse)
             }
-
         }.result
     }
 
@@ -163,7 +162,6 @@ class BlogRepositoryImpl(
                     )
                 }
             }
-
         }.result
     }
 
@@ -225,7 +223,6 @@ class BlogRepositoryImpl(
                     )
                 )
             }
-
         }.result
     }
 }

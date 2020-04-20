@@ -1,6 +1,5 @@
 package com.mi.mvi.presentation.main.create_blog
 
-
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -26,13 +25,13 @@ import com.mi.mvi.utils.response_handler.StateMessage
 import com.mi.mvi.utils.response_handler.UIComponentType
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import java.io.File
 import kotlinx.android.synthetic.main.fragment_create_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import org.koin.android.viewmodel.ext.android.sharedViewModel
-import java.io.File
 
 @ExperimentalCoroutinesApi
 class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
@@ -56,7 +55,6 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
                     pickFromGallery()
                 }
             }
-
         }
         subscribeObservers()
     }
@@ -208,7 +206,6 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
 
                     override fun cancel() {
                     }
-
                 }
                 uiCommunicationListener?.onUIMessageReceived(
                     StateMessage(

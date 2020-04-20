@@ -23,5 +23,4 @@ class AccountCacheDataSourceImpl(
     override suspend fun updateAccountProperties(pk: Int, email: String, username: String) {
         return accountDao.updateAccountProperties(pk, email, username)
     }
-
 }

@@ -28,7 +28,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.scope.currentScope
 import org.koin.android.viewmodel.scope.getViewModel
 
-
 @ExperimentalCoroutinesApi
 class MainActivity : BaseActivity(R.layout.activity_main),
     OnNavigationGraphChanged,
@@ -90,7 +89,6 @@ class MainActivity : BaseActivity(R.layout.activity_main),
             }
         }
     }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putParcelable(

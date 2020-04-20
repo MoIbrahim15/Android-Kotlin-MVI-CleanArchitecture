@@ -10,7 +10,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOn
 
-
 @ExperimentalCoroutinesApi
 class IsAuthorBlogPostUseCase(private val repository: BlogRepository) {
 

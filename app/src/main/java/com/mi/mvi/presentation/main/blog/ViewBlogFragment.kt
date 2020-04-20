@@ -44,7 +44,6 @@ class ViewBlogFragment : BaseBlogFragment(R.layout.fragment_view_blog) {
 
                     override fun cancel() {
                     }
-
                 }
             ), MessageType.INFO
         ))
@@ -68,7 +67,6 @@ class ViewBlogFragment : BaseBlogFragment(R.layout.fragment_view_blog) {
                         viewModel.removeDeletedBlogPost()
                         findNavController().popBackStack()
                     }
-
                 }
             }
         })
@@ -81,9 +79,7 @@ class ViewBlogFragment : BaseBlogFragment(R.layout.fragment_view_blog) {
             if (blogViewState.viewBlogFields?.isAuthor == true) {
                 adaptViewToAuthorMode()
             }
-
         })
-
     }
 
     private fun adaptViewToAuthorMode() {

@@ -1,6 +1,5 @@
 package com.mi.mvi.presentation.main.account
 
-
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater

@@ -46,7 +46,6 @@ class AccountRepositoryImpl(
             override suspend fun handleNetworkSuccess(response: UserEntity): DataState<AccountViewState>? {
                 return DataState.SUCCESS(AccountViewState(response))
             }
-
         }.result
     }
 
@@ -79,7 +78,6 @@ class AccountRepositoryImpl(
                     StateMessage("SUCCESS", UIComponentType.TOAST, MessageType.SUCCESS)
                 )
             }
-
         }.result
     }
 

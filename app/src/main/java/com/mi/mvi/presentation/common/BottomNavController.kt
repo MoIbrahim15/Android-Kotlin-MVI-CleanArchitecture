@@ -50,7 +50,6 @@ class BottomNavController(
         )
     }
 
-
     fun onNavigationItemSelected(menuItemId: Int = navigationBackStack.last()): Boolean {
 
         // Replace fragment representing a navigation item
@@ -116,7 +115,6 @@ class BottomNavController(
 
                 // Update the container with new fragment
                 onNavigationItemSelected()
-
             }
             // If the stack has only one and it's not the navigation home we should
             // ensure that the application always leave from startDestination

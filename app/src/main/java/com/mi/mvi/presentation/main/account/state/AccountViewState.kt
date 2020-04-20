@@ -8,5 +8,5 @@ const val ACCOUNT_VIEW_STATE_BUNDLE_KEY = "ACCOUNT_VIEW_STATE_BUNDLE_KEY"
 
 @Parcelize
 class AccountViewState(
-    var userEntity : UserEntity? = null
+    var userEntity: UserEntity? = null
 ) : Parcelable

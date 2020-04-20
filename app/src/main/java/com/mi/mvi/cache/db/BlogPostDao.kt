@@ -12,7 +12,6 @@ interface BlogPostDao {
     @Delete
     suspend fun deleteBlogPost(blogPostEntity: BlogPostEntity)
 
-
     @Query("""
         UPDATE blog_post SET title = :title, body = :body, image = :image 
         WHERE pk = :pk
