@@ -9,5 +9,5 @@ import org.koin.dsl.module
 @FlowPreview
 @ExperimentalCoroutinesApi
 val authModule = module {
-    viewModel { AuthViewModel(get(), get(), get(), get()) }
+    viewModel { AuthViewModel(get(), get(), get()) }
 }

@@ -48,9 +48,7 @@ abstract class BaseViewModel<EventState, ViewState> : ViewModel() {
     }
 
     fun getCurrentViewStateOrNew(): ViewState {
-        return this.viewState.value?.let {
-            it
-        } ?: initNewViewState()
+        return this.viewState.value ?: initNewViewState()
     }
 
     abstract fun handleEventState(eventState: EventState): Flow<DataState<ViewState>>

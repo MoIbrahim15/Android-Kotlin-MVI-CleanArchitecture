@@ -18,7 +18,9 @@ import com.mi.mvi.features.common.UICommunicationListener
 import com.mi.mvi.features.main.MainActivity
 import com.mi.mvi.features.main.blog.BlogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
 @ExperimentalCoroutinesApi
 abstract class BaseFragment(private val contentLayoutId: Int) : Fragment(contentLayoutId) {
 

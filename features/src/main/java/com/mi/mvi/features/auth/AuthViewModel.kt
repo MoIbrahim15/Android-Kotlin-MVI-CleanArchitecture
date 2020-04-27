@@ -23,9 +23,7 @@ import kotlinx.coroutines.flow.flow
 class AuthViewModel(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase,
-    private val checkTokenUseCase: CheckTokenUseCase,
-    private val tokenMapper: TokenMapper
-) : BaseViewModel<AuthEventState, AuthViewState>() {
+    private val checkTokenUseCase: CheckTokenUseCase) : BaseViewModel<AuthEventState, AuthViewState>() {
 
     override fun handleEventState(eventState: AuthEventState): Flow<DataState<AuthViewState>> =
         flow {
@@ -48,27 +46,6 @@ class AuthViewModel(
                 }
             }
         }
-
-    fun setRegistrationFields(registrationFields: RegistrationFields) {
-        val update = getCurrentViewStateOrNew()
-        if (update.registrationFields != registrationFields)
-            update.registrationFields = registrationFields
-        _viewState.value = update
-    }
-
-    fun setLoginFields(loginFields: LoginFields) {
-        val update = getCurrentViewStateOrNew()
-        if (update.loginFields != loginFields)
-            update.loginFields = loginFields
-        _viewState.value = update
-    }
-
-    fun setAuthToken(token: Token) {
-        val update = getCurrentViewStateOrNew()
-        if (update.token != token)
-            update.token = token
-        _viewState.value = update
-    }
 
     override fun initNewViewState(): AuthViewState {
         return AuthViewState()

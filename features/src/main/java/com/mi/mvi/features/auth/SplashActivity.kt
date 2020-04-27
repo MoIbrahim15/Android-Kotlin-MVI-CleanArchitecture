@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.mi.mvi.R
+import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.eventstate.AuthEventState
 import com.mi.mvi.features.base.BaseActivity
 import com.mi.mvi.features.main.MainActivity
@@ -12,8 +13,6 @@ import com.mi.mvi.mapper.TokenMapper
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-
-import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @FlowPreview
@@ -31,19 +30,15 @@ class SplashActivity : BaseActivity(R.layout.activity_splash) {
     private fun subscribeObservers() {
         authViewModel.dataState.observe(this, Observer { dataState ->
             onDataStateChangeListener(dataState)
-            dataState.data?.let { viewState ->
-                viewState.token?.let { authToken ->
-                    authViewModel.setAuthToken(authToken)
+            when (dataState) {
+                is DataState.SUCCESS -> {
+                    dataState.data?.token?.let { token ->
+                        sessionManager.login(tokenMapper.mapToView(token))
+                    } ?: navLoginActivity()
                 }
-            }
-            dataState.stateMessage?.let {
-                navLoginActivity()
-            }
-        })
-
-        authViewModel.viewState.observe(this, Observer {
-            it.token?.let { authToken ->
-                sessionManager.login(tokenMapper.mapToView(authToken))
+                is DataState.ERROR -> {
+                    navLoginActivity()
+                }
             }
         })
 

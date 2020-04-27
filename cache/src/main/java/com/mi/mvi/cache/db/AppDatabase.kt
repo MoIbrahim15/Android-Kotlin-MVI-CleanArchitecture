@@ -9,7 +9,6 @@ import com.mi.mvi.cache.model.CachedUser
 @Database(entities = [CachedUser::class, CachedToken::class, CachedBlogPost::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
-    //TODO add shared preference to cache module
     abstract fun getAuthTokenDao(): AuthTokenDao
     abstract fun getAccountDao(): AccountDao
     abstract fun getBlogPostDao(): BlogPostDao

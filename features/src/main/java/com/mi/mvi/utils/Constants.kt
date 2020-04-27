@@ -6,12 +6,7 @@ class Constants {
 
     companion object {
 
-        // -----------------------------SHARED_PREF-----------------------
-        // Shared Preference Files:
-
         // Shared Preference Keys
-        const val PREVIOUS_AUTH_USER: String = "com.mi.mvi.PREVIOUS_AUTH_USER"
-
         const val BLOG_FILTER: String = "com.mi.mvi.BLOG_FILTER"
         const val BLOG_ORDER: String = "com.mi.mvi.BLOG_ORDER"
 

@@ -62,7 +62,7 @@ class AuthRepositoryImpl(
                         return if (result < 0) {
                             buildDialogError(UNKNOWN_ERROR)
                         } else {
-                            accountCacheDataSource. saveLoggedInEmail(response.email)
+                            accountCacheDataSource.saveLoggedInEmail(response.email)
                             DataState.SUCCESS(
                                 AuthViewState(
                                     token = Token(
@@ -113,31 +113,35 @@ class AuthRepositoryImpl(
                 ) {
 
                 override suspend fun handleNetworkSuccess(response: UserEntity): DataState<AuthViewState>? {
-                    accountCacheDataSource.insertOrIgnore(
-                        UserEntity(
-                            response.pk,
-                            response.email,
-                            ""
-                        )
-                    )
-                    val result = tokenCacheDataSource.insert(
-                        TokenEntity(
-                            response.pk,
-                            response.token
-                        )
-                    )
-                    return if (result < 0) {
-                        buildDialogError(UNKNOWN_ERROR)
-                    } else {
-                        accountCacheDataSource. saveLoggedInEmail(response.email)
-                        DataState.SUCCESS(
-                            AuthViewState(
-                                token = Token(
-                                    account_pk = response.pk,
-                                    token = response.token
-                                )
+                    if (response.response != GENERIC_AUTH_ERROR) {
+                        accountCacheDataSource.insertOrIgnore(
+                            UserEntity(
+                                response.pk,
+                                response.email,
+                                ""
                             )
                         )
+                        val result = tokenCacheDataSource.insert(
+                            TokenEntity(
+                                response.pk,
+                                response.token
+                            )
+                        )
+                        return if (result < 0) {
+                            buildDialogError(UNKNOWN_ERROR)
+                        } else {
+                            accountCacheDataSource.saveLoggedInEmail(response.email)
+                            DataState.SUCCESS(
+                                AuthViewState(
+                                    token = Token(
+                                        account_pk = response.pk,
+                                        token = response.token
+                                    )
+                                )
+                            )
+                        }
+                    } else {
+                        return buildDialogError(response.errorMessage)
                     }
                 }
             }.result)

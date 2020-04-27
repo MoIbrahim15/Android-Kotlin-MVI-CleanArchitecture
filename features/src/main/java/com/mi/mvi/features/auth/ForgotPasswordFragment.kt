@@ -15,13 +15,14 @@ import com.mi.mvi.domain.datastate.MessageType
 import com.mi.mvi.domain.datastate.StateMessage
 import com.mi.mvi.domain.datastate.UIComponentType
 import com.mi.mvi.features.base.BaseFragment
-import com.mi.mvi.utils.Constants
 import kotlinx.android.synthetic.main.fragment_forget_password.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+@FlowPreview
 @ExperimentalCoroutinesApi
 class ForgetPasswordFragment : BaseFragment(R.layout.fragment_forget_password) {
 

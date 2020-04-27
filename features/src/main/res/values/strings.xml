@@ -1,8 +1,5 @@
 <resources>
-    <string name="app_name">OpenAPI</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">MVI Clean Arch.</string>
 
     <!-- Intent extras -->
     <string name="auth_token">auth_token</string>

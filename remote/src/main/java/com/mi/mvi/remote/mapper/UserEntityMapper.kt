@@ -16,12 +16,15 @@ open class UserEntityMapper : EntityMapper<RemoteUser, UserEntity> {
      * Map an instance of a [RemoteUser] to a [BaseEntityMapper] model
      */
     override fun mapFromRemote(type: RemoteUser): UserEntity {
-        return UserEntity(
+        val userEntity =  UserEntity(
             type.pk,
             type.email,
             type.username,
             type.token
         )
+        userEntity.response = type.response
+        userEntity.errorMessage = type.errorMessage
+        return userEntity
     }
 
 }
