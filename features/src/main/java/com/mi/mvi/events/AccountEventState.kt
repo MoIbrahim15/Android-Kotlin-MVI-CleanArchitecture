@@ -1,4 +1,4 @@
-package com.mi.mvi.eventstate
+package com.mi.mvi.events
 
 sealed class AccountEventState {
 

@@ -1,4 +1,4 @@
-package com.mi.mvi.eventstate
+package com.mi.mvi.events
 
 import okhttp3.MultipartBody
 

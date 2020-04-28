@@ -3,7 +3,7 @@ package com.mi.mvi.features.auth
 import android.os.Bundle
 import android.view.View
 import com.mi.mvi.R
-import com.mi.mvi.eventstate.AuthEventState
+import com.mi.mvi.events.AuthEventState
 import com.mi.mvi.features.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi

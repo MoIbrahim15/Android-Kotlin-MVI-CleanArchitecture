@@ -4,9 +4,9 @@ import android.net.Uri
 import androidx.core.net.toUri
 import com.mi.mvi.domain.usecase.blogs.CreateBlogUseCase
 import com.mi.mvi.features.base.BaseViewModel
-import com.mi.mvi.eventstate.CreateBlogEventState
-import com.mi.mvi.eventstate.CreateBlogEventState.CreateNewBlogEvent
-import com.mi.mvi.eventstate.CreateBlogEventState.None
+import com.mi.mvi.events.CreateBlogEventState
+import com.mi.mvi.events.CreateBlogEventState.CreateNewBlogEvent
+import com.mi.mvi.events.CreateBlogEventState.None
 import com.mi.mvi.features.common.SessionManager
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.viewstate.CreateBlogViewState

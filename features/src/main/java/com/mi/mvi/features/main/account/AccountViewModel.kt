@@ -6,8 +6,8 @@ import com.mi.mvi.domain.usecase.account.ChangePasswordUseCase
 import com.mi.mvi.domain.usecase.account.GetAccountUseCase
 import com.mi.mvi.domain.usecase.account.UpdateAccountUseCase
 import com.mi.mvi.domain.viewstate.AccountViewState
-import com.mi.mvi.eventstate.AccountEventState
-import com.mi.mvi.eventstate.AccountEventState.*
+import com.mi.mvi.events.AccountEventState
+import com.mi.mvi.events.AccountEventState.*
 import com.mi.mvi.features.base.BaseViewModel
 import com.mi.mvi.features.common.SessionManager
 import com.mi.mvi.mapper.TokenMapper
@@ -16,6 +16,7 @@ import com.mi.mvi.model.UserView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 
 @FlowPreview
@@ -34,21 +35,25 @@ class AccountViewModel(
             when (eventState) {
                 is GetAccountEvent -> {
                     sessionManager.cachedTokenViewEntity.value?.let {
-                        accountUseCase.invoke(
-                            tokenMapper.mapFromView(it)
+                        emitAll(
+                            accountUseCase.invoke(
+                                tokenMapper.mapFromView(it)
+                            )
                         )
                     }
                 }
                 is UpdateAccountEvent -> {
                     sessionManager.cachedTokenViewEntity.value?.let { authToken ->
                         authToken.account_pk?.let { pk ->
-                            updateAccountUseCase.invoke(
-                                tokenMapper.mapFromView(authToken),
-                                User(
-                                    pk,
-                                    eventState.email,
-                                    eventState.username,
-                                    null
+                            emitAll(
+                                updateAccountUseCase.invoke(
+                                    tokenMapper.mapFromView(authToken),
+                                    User(
+                                        pk,
+                                        eventState.email,
+                                        eventState.username,
+                                        null
+                                    )
                                 )
                             )
                         }
@@ -56,11 +61,13 @@ class AccountViewModel(
                 }
                 is ChangePasswordEvent -> {
                     sessionManager.cachedTokenViewEntity.value?.let { authToken ->
-                        changePasswordUseCase.invoke(
-                            tokenMapper.mapFromView(authToken),
-                            eventState.currentPassword,
-                            eventState.newPassword,
-                            eventState.confirmNewPassword
+                        emitAll(
+                            changePasswordUseCase.invoke(
+                                tokenMapper.mapFromView(authToken),
+                                eventState.currentPassword,
+                                eventState.newPassword,
+                                eventState.confirmNewPassword
+                            )
                         )
                     }
 

@@ -2,11 +2,9 @@ package com.mi.mvi.features.auth
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
-import com.mi.mvi.domain.viewstate.LoginFields
-import com.mi.mvi.eventstate.AuthEventState
+import com.mi.mvi.events.AuthEventState
 import com.mi.mvi.features.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi

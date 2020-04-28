@@ -18,7 +18,6 @@ import com.mi.mvi.domain.datastate.AreYouSureCallBack
 import com.mi.mvi.domain.datastate.MessageType
 import com.mi.mvi.domain.datastate.StateMessage
 import com.mi.mvi.domain.datastate.UIComponentType
-import com.mi.mvi.domain.viewstate.CreateBlogViewState
 import com.mi.mvi.domain.viewstate.NewBlogFields
 import com.mi.mvi.features.base.BaseFragment
 import com.mi.mvi.utils.Constants.Companion.GALLERY_REQUEST_CODE
@@ -163,7 +162,7 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
 
         multipartBody?.let { image ->
             viewModel.setEventState(
-                com.mi.mvi.eventstate.CreateBlogEventState.CreateNewBlogEvent(
+                com.mi.mvi.events.CreateBlogEventState.CreateNewBlogEvent(
                     blog_title.text.toString(),
                     blog_body.text.toString(),
                     image

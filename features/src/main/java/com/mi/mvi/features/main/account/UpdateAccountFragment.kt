@@ -7,7 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
 import com.mi.mvi.R
-import com.mi.mvi.mapper.UserMapper
+import com.mi.mvi.events.AccountEventState
 import com.mi.mvi.model.UserView
 import kotlinx.android.synthetic.main.fragment_update_account.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,7 +17,6 @@ import kotlinx.coroutines.FlowPreview
 @ExperimentalCoroutinesApi
 class UpdateAccountFragment : BaseAccountFragment(R.layout.fragment_update_account) {
 
-    val userMapper = UserMapper()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
@@ -48,7 +47,7 @@ class UpdateAccountFragment : BaseAccountFragment(R.layout.fragment_update_accou
 
     private fun saveChanges() {
         viewModel.setEventState(
-            com.mi.mvi.eventstate.AccountEventState.UpdateAccountEvent(
+            AccountEventState.UpdateAccountEvent(
                 input_email.text.toString(),
                 input_username.text.toString()
             )

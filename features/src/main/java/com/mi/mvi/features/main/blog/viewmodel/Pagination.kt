@@ -1,7 +1,7 @@
 package com.mi.mvi.features.main.blog.viewmodel
 
 import com.mi.mvi.domain.viewstate.BlogViewState
-import com.mi.mvi.eventstate.BlogEventState.BlogSearchEvent
+import com.mi.mvi.events.BlogEventState.BlogSearchEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 

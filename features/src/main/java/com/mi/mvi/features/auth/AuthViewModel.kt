@@ -1,17 +1,13 @@
 package com.mi.mvi.features.auth
 
 import com.mi.mvi.domain.datastate.DataState
-import com.mi.mvi.domain.model.Token
 import com.mi.mvi.domain.usecase.auth.CheckTokenUseCase
 import com.mi.mvi.domain.usecase.auth.LoginUseCase
 import com.mi.mvi.domain.usecase.auth.RegisterUseCase
 import com.mi.mvi.domain.viewstate.AuthViewState
-import com.mi.mvi.domain.viewstate.LoginFields
-import com.mi.mvi.domain.viewstate.RegistrationFields
-import com.mi.mvi.eventstate.AuthEventState
-import com.mi.mvi.eventstate.AuthEventState.*
+import com.mi.mvi.events.AuthEventState
+import com.mi.mvi.events.AuthEventState.*
 import com.mi.mvi.features.base.BaseViewModel
-import com.mi.mvi.mapper.TokenMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow

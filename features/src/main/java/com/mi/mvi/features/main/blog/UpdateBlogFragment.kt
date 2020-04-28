@@ -89,7 +89,7 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
 
         multipartBody?.let { image ->
             viewModel.setEventState(
-                com.mi.mvi.eventstate.BlogEventState.UpdateBlogPostEvent(
+                com.mi.mvi.events.BlogEventState.UpdateBlogPostEvent(
                     blog_title.text.toString(),
                     blog_body.text.toString(),
                     image

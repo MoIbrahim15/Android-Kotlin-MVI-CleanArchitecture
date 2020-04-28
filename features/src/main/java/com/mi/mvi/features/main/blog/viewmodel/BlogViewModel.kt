@@ -9,7 +9,7 @@ import com.mi.mvi.domain.usecase.blogs.IsAuthorBlogPostUseCase
 import com.mi.mvi.domain.usecase.blogs.SearchBlogUseCase
 import com.mi.mvi.domain.usecase.blogs.UpdateBlogPostUseCase
 import com.mi.mvi.domain.viewstate.BlogViewState
-import com.mi.mvi.eventstate.BlogEventState
+import com.mi.mvi.events.BlogEventState
 import com.mi.mvi.features.base.BaseViewModel
 import com.mi.mvi.features.common.SessionManager
 import com.mi.mvi.mapper.BlogPostMapper

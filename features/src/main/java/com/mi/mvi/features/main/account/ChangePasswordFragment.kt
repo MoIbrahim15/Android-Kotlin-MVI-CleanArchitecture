@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
 import com.mi.mvi.domain.Constants.Companion.SUCCESS
-import com.mi.mvi.eventstate.AccountEventState
+import com.mi.mvi.events.AccountEventState
 import kotlinx.android.synthetic.main.fragment_change_password.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

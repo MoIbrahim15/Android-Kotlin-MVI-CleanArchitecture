@@ -17,7 +17,7 @@ import com.mi.mvi.domain.datastate.MessageType
 import com.mi.mvi.domain.datastate.StateMessage
 import com.mi.mvi.domain.datastate.UIComponentType
 import com.mi.mvi.domain.model.BlogPostView
-import com.mi.mvi.eventstate.BlogEventState
+import com.mi.mvi.events.BlogEventState
 import com.mi.mvi.features.main.blog.viewmodel.*
 import com.mi.mvi.mapper.BlogPostMapper
 import kotlinx.android.synthetic.main.fragment_view_blog.*
@@ -56,7 +56,7 @@ class ViewBlogFragment : BaseBlogFragment(R.layout.fragment_view_blog) {
     }
 
     private fun checkIsAuthor() {
-        viewModel.setEventState(com.mi.mvi.eventstate.BlogEventState.CheckAuthorBlogPostEvent)
+        viewModel.setEventState(com.mi.mvi.events.BlogEventState.CheckAuthorBlogPostEvent)
     }
 
     private fun subscribeObservers() {
