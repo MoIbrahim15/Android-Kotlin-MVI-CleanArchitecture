@@ -50,7 +50,7 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
             dataStateChangeListener?.onDataStateChangeListener(dataState)
             when (dataState) {
                 is DataState.SUCCESS -> {
-                    dataState.data?.viewBlogFields?.blogPostEntity?.let { blogPost ->
+                    dataState.data?.viewBlogFields?.blogPostEntity?.let {
                         viewModel.updateListItem()
                         findNavController().popBackStack()
                     }

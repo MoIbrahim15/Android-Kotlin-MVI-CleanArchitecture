@@ -24,7 +24,7 @@ class BlogCacheDataSourceImpl(
     }
 
     override suspend fun deleteBlogPost(blogPostEntity: BlogPostEntity) {
-        return blogPostDao.deleteBlogPost(blogPostEntityMapper.mapToCached(blogPostEntity))
+        return blogPostDao.deleteBlogPost(blogPostEntity.pk)
     }
 
     override suspend fun updateBlogPost(pk: Int, title: String?, body: String?, image: String?) {

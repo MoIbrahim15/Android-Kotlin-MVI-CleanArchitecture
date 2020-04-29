@@ -14,7 +14,7 @@ open class BlogPostEntityMapper : EntityMapper<RemoteBlogPost, BlogPostEntity> {
      * Map an instance of a [RemoteBlogPost] to a [BlogPostEntity] model
      */
     override fun mapFromRemote(type: RemoteBlogPost): BlogPostEntity {
-        return BlogPostEntity(
+        val blogPostEntity = BlogPostEntity(
             type.pk,
             type.title,
             type.slug,
@@ -23,6 +23,8 @@ open class BlogPostEntityMapper : EntityMapper<RemoteBlogPost, BlogPostEntity> {
             type.date_updated,
             type.username
         )
+        blogPostEntity.response = type.response
+        return blogPostEntity
     }
 
 }

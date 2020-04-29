@@ -21,7 +21,7 @@ open class BlogPostMapper : Mapper<BlogPostEntity, BlogPost> {
     }
 
     override fun mapToEntity(type: BlogPost): BlogPostEntity {
-        return BlogPostEntity(
+        val blogPostEntity = BlogPostEntity(
             type.pk,
             type.title,
             type.slug,
@@ -30,6 +30,8 @@ open class BlogPostMapper : Mapper<BlogPostEntity, BlogPost> {
             type.date_updated,
             type.username
         )
+        blogPostEntity.response = type.response
+        return blogPostEntity
     }
 
 }

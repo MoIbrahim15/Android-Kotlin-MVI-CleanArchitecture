@@ -12,25 +12,22 @@ import android.view.View
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.mi.mvi.R
-import com.mi.mvi.domain.Constants.Companion.SUCCESS
-
-import com.mi.mvi.domain.datastate.AreYouSureCallBack
-import com.mi.mvi.domain.datastate.MessageType
-import com.mi.mvi.domain.datastate.StateMessage
-import com.mi.mvi.domain.datastate.UIComponentType
-import com.mi.mvi.domain.viewstate.NewBlogFields
 import com.mi.mvi.base.BaseFragment
+import com.mi.mvi.domain.Constants
+import com.mi.mvi.domain.datastate.*
+import com.mi.mvi.domain.viewstate.NewBlogFields
+import com.mi.mvi.events.CreateBlogEventState
 import com.mi.mvi.utils.Constants.Companion.GALLERY_REQUEST_CODE
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.fragment_create_blog.*
-import java.io.File
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.io.File
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -63,17 +60,28 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
             dataState?.let {
                 dataStateChangeListener?.onDataStateChangeListener(dataState = dataState)
-                dataState.stateMessage?.let { stateMessage ->
-                    stateMessage.message.let { message ->
-                        if (message == SUCCESS) {
-                            viewModel.clearNewBlogFields()
+                when (dataState) {
+                    is DataState.SUCCESS, is DataState.ERROR -> {
+                        dataState.stateMessage?.let { stateMessage ->
+                            stateMessage.message.let { message ->
+                                if (message == Constants.SUCCESS_BLOG_CREATED) {
+                                    viewModel.clearNewBlogFields()
+                                }
+                                dataStateChangeListener?.onDataStateChangeListener(dataState = dataState)
+
+                            }
                         }
                     }
+
+                    is DataState.LOADING -> {
+                        dataStateChangeListener?.onDataStateChangeListener(dataState = dataState)
+                    }
                 }
+
             }
         })
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
-            viewState.newBlogField?.let {
+            viewState.newBlogField.let {
                 setBlogProperties(it)
             }
         })
@@ -162,7 +170,7 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
 
         multipartBody?.let { image ->
             viewModel.setEventState(
-                com.mi.mvi.events.CreateBlogEventState.CreateNewBlogEvent(
+                CreateBlogEventState.CreateNewBlogEvent(
                     blog_title.text.toString(),
                     blog_body.text.toString(),
                     image
@@ -191,12 +199,12 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
                     }
                 }
                 uiCommunicationListener?.onUIMessageReceived(
-                     StateMessage(
+                    StateMessage(
                         getString(R.string.are_you_sure_publish),
-                         UIComponentType.AreYouSureDialog(
+                        UIComponentType.AreYouSureDialog(
                             callback
                         ),
-                         MessageType.INFO
+                        MessageType.INFO
                     )
                 )
             }

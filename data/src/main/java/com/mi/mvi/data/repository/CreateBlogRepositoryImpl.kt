@@ -5,6 +5,7 @@ import com.mi.mvi.data.datasource.cache.BlogCacheDataSource
 import com.mi.mvi.data.datasource.remote.BlogRemoteDataSource
 import com.mi.mvi.data.entity.BlogPostEntity
 import com.mi.mvi.domain.Constants.Companion.RESPONSE_MUST_BECOME_CODINGWITHMITCH_MEMBER
+import com.mi.mvi.domain.Constants.Companion.SUCCESS_BLOG_CREATED
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.datastate.MessageType
 import com.mi.mvi.domain.datastate.StateMessage
@@ -44,7 +45,7 @@ class CreateBlogRepositoryImpl(
                 }) {
 
             override suspend fun updateCache(networkObject: BlogPostEntity) {
-                if (networkObject.response == RESPONSE_MUST_BECOME_CODINGWITHMITCH_MEMBER) {
+                if (networkObject.response == SUCCESS_BLOG_CREATED) {
                     val updateBlogPost =
                         BlogPostEntity(
                             networkObject.pk,
@@ -60,10 +61,10 @@ class CreateBlogRepositoryImpl(
             }
 
             override suspend fun handleNetworkSuccess(response: BlogPostEntity): DataState<CreateBlogViewState>? {
-                return if (response.response == RESPONSE_MUST_BECOME_CODINGWITHMITCH_MEMBER) {
+                return if (response.response == SUCCESS_BLOG_CREATED) {
                     DataState.ERROR(
                         StateMessage(
-                            "SUCCESS",
+                            SUCCESS_BLOG_CREATED,
                             UIComponentType.DIALOG,
                             MessageType.SUCCESS
                         )

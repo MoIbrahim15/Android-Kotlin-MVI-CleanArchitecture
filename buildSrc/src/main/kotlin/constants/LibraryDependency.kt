@@ -14,7 +14,7 @@ object LibraryDependency {
         const val RETROFIT_CONVERTER = "4.2.2"
         const val COROUTINES = "1.3.5"
         const val LIFECYCLE = "2.2.0"
-        const val MATERIAL_DIALOG = "3.1.0"
+        const val MATERIAL_DIALOG = "3.3.0"
         const val GLIDE = "4.11.0"
 
     }
@@ -43,19 +43,6 @@ object LibraryDependency {
     const val KOIN_VIEWMODEL = "org.koin:koin-androidx-viewmodel:${Version.KOIN}"
     const val KOIN_SCOPE = "org.koin:koin-androidx-scope:${Version.KOIN}"
 
-
-
-
-//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-//    testImplementation 'junit:junit:4.13'
-//    androidTestImplementation 'androidx.test:runner:1.2.0'
-//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-
-
-//    // Leak Canary
-//    def leak_canary_version = "2.2"
-//    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
-//
 
     //CACHE
     const val ROOM_RUNTIME = "androidx.room:room-runtime:${Version.ROOM}"

@@ -16,7 +16,7 @@ open class TokenMapper : Mapper<TokenView, Token> {
     }
 
     override fun mapToView(type: Token): TokenView {
-        return TokenView(type?.account_pk, type?.token)
+        return TokenView(type.account_pk, type.token)
     }
 
 }
