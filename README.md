@@ -1,4 +1,8 @@
 # Android Kotlin MVI Clean Architecture APP
+- Modularization
+- Gradle Depedency managment
+- Gradle written in Kotlin DSL
+- Custom Plugin(dependencies with no duplication)
 - Kotlin
 - Navigation Components
 - [Coroutines](https://developer.android.com/kotlin/coroutines) and flows
@@ -7,7 +11,8 @@
 - Model View Intent Architecture - MVI.
 - Repository pattern (NetworkBoundResource)
 - Clean Architecture approach.
-- [Ktlint](https://github.com/jlleitschuh/ktlint-gradle "Ktlint") This plugin creates convenient tasks in your Gradle project that run ktlint checks or do code auto format.
+- Static Code Analytics[Ktlint](https://github.com/jlleitschuh/ktlint-gradle "Ktlint") This plugin creates convenient tasks in your Gradle project that run ktlint checks or do code auto format.
+
 
 
 
