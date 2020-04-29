@@ -23,20 +23,20 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.mi.mvi.R
-import com.mi.mvi.domain.Constants.Companion.BLOG_FILTER_DATE_UPDATED
-import com.mi.mvi.domain.Constants.Companion.BLOG_FILTER_USERNAME
-import com.mi.mvi.domain.Constants.Companion.BLOG_ORDER_ASC
-import com.mi.mvi.domain.Constants.Companion.INVALID_PAGE_NUMBER
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.model.BlogPostView
-import com.mi.mvi.domain.viewstate.BlogViewState
-import com.mi.mvi.features.common.TopSpacingItemDecoration
+import com.mi.mvi.common.TopSpacingItemDecoration
 import com.mi.mvi.features.main.blog.viewmodel.*
-import com.mi.mvi.mapper.BlogPostMapper
 import com.mi.mvi.utils.Constants.Companion.isPaginationDone
 import kotlinx.android.synthetic.main.fragment_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
+
+
+const val BLOG_FILTER_USERNAME = "username"
+const val BLOG_FILTER_DATE_UPDATED = "date_updated"
+const val BLOG_ORDER_ASC: String = ""
+const val BLOG_ORDER_DESC: String = "-"
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -46,7 +46,6 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
 
     private lateinit var recyclerAdapter: BlogListAdapter
     private lateinit var searchView: SearchView
-    private val blogPostMapper = BlogPostMapper()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,13 +74,23 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
 
     private fun subscribeObservers() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            dataState?.let {
-                dataStateChangeListener?.onDataStateChangeListener(dataState)
 
-                if (isPaginationDone(dataState.stateMessage?.message)) {
-                    viewModel.setQueryExhausted(true)
-                } else {
-                    handlePagination(dataState)
+            when (dataState) {
+                is DataState.SUCCESS -> {
+                    dataState.data?.let {
+                        viewModel.handleIncomingBlogListData(it)
+                    }
+                }
+                is DataState.ERROR -> {
+                    if (isPaginationDone(dataState.stateMessage?.message)) {
+                        viewModel.setQueryExhausted(true)
+                    } else {
+                        dataStateChangeListener?.onDataStateChangeListener(dataState)
+                    }
+                }
+                is DataState.LOADING -> {
+                    dataStateChangeListener?.onDataStateChangeListener(dataState)
+
                 }
             }
         })
@@ -90,7 +99,8 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
             viewState?.let {
                 recyclerAdapter.apply {
                     submitList(
-                        list = viewState.blogFields.blogList?.map { blogPostMapper.mapToView(it) }?.toMutableList(),
+                        list = viewState.blogFields.blogList?.map { blogPostMapper.mapToView(it) }
+                            ?.toMutableList(),
                         isQueryExhausted = viewState.blogFields.isQueryExhausted ?: false
                     )
                 }
@@ -128,21 +138,6 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
         }
     }
 
-    private fun handlePagination(dataState: DataState<BlogViewState>?) {
-        // handle incomming data from data state
-        dataState?.data?.let { viewState ->
-            viewModel.handleIncomingBlogListData(viewState)
-        }
-
-        // check for pagination end
-        dataState?.stateMessage?.let { stateMessage ->
-            if (stateMessage.message == INVALID_PAGE_NUMBER) {
-                // set query exhausted to update RecyclerView with
-                // "No more results..." list item
-                viewModel.setQueryExhausted(true)
-            }
-        }
-    }
 
     private fun initRecyclerView() {
         blog_post_recyclerview.apply {
@@ -203,7 +198,6 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
     }
 
     private fun showFilterOptions() {
-
         activity?.let {
             val dialog = MaterialDialog(it)
                 .noAutoDismiss()
@@ -235,18 +229,20 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
                     view.findViewById<RadioGroup>(R.id.order_group).checkedRadioButtonId
                 )
 
-                var filter = BLOG_FILTER_DATE_UPDATED
-                if (selectedFilter.text.toString() == getString(R.string.filter_author)) {
-                    filter = BLOG_FILTER_USERNAME
-                }
+                val blogListFilter =
+                    if (selectedFilter.text.toString() == getString(R.string.filter_author)) {
+                        BLOG_FILTER_USERNAME
+                    } else BLOG_FILTER_DATE_UPDATED
 
-                var order = ""
-                if (selectedOrder.text.toString() == getString(R.string.filter_desc)) {
-                    order = "-"
-                }
-                viewModel.saveFilterOptions(filter, order)
-                viewModel.setBlogFilter(filter)
-                viewModel.setBlogOrder(order)
+                val blogListOrder =
+                    if (selectedOrder.text.toString() == getString(R.string.filter_desc)) {
+                        BLOG_ORDER_DESC
+                    } else BLOG_ORDER_ASC
+
+                viewModel.saveFilterOptions(blogListFilter, blogListOrder)
+                viewModel.setBlogFilter(blogListFilter)
+                viewModel.setBlogOrder(blogListOrder)
+
                 onBlogSearchOrFilter()
                 dialog.dismiss()
             }

@@ -3,11 +3,11 @@ package com.mi.mvi.features.main.create_blog
 import android.net.Uri
 import androidx.core.net.toUri
 import com.mi.mvi.domain.usecase.blogs.CreateBlogUseCase
-import com.mi.mvi.features.base.BaseViewModel
+import com.mi.mvi.base.BaseViewModel
 import com.mi.mvi.events.CreateBlogEventState
 import com.mi.mvi.events.CreateBlogEventState.CreateNewBlogEvent
 import com.mi.mvi.events.CreateBlogEventState.None
-import com.mi.mvi.features.common.SessionManager
+import com.mi.mvi.common.SessionManager
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.viewstate.CreateBlogViewState
 import com.mi.mvi.domain.viewstate.NewBlogFields

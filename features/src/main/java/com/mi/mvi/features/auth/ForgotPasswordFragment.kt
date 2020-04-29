@@ -14,7 +14,7 @@ import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.datastate.MessageType
 import com.mi.mvi.domain.datastate.StateMessage
 import com.mi.mvi.domain.datastate.UIComponentType
-import com.mi.mvi.features.base.BaseFragment
+import com.mi.mvi.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_forget_password.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.ExperimentalCoroutinesApi

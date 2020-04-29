@@ -1,4 +1,4 @@
-package com.mi.mvi.features.common
+package com.mi.mvi.common
 
 import android.graphics.Rect
 import android.view.View

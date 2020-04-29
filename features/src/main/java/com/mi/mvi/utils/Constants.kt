@@ -7,8 +7,6 @@ class Constants {
     companion object {
 
         // Shared Preference Keys
-        const val BLOG_FILTER: String = "com.mi.mvi.BLOG_FILTER"
-        const val BLOG_ORDER: String = "com.mi.mvi.BLOG_ORDER"
 
         // -----------------------------UI-----------------------
         const val GALLERY_REQUEST_CODE = 201

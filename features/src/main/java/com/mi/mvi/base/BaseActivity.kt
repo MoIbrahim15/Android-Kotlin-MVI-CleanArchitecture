@@ -1,4 +1,4 @@
-package com.mi.mvi.features.base
+package com.mi.mvi.base
 
 import android.Manifest
 import android.content.Context
@@ -11,9 +11,9 @@ import androidx.core.content.ContextCompat
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.datastate.StateMessage
 import com.mi.mvi.domain.datastate.UIComponentType
-import com.mi.mvi.features.common.*
+import com.mi.mvi.common.*
 import com.mi.mvi.utils.Constants.Companion.PERMISSION_REQUEST_READ_STORAGE
-import com.mi.mvi.features.common.SessionManager
+import com.mi.mvi.common.SessionManager
 import org.koin.android.ext.android.inject
 
 abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity(contentLayoutId),

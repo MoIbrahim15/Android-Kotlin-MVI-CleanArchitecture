@@ -4,9 +4,7 @@ import okhttp3.MultipartBody
 
 sealed class BlogEventState {
 
-    class BlogSearchEvent(
-        val clearLayoutManagerState: Boolean = true
-    ) : BlogEventState()
+    object BlogSearchEvent : BlogEventState()
 
     object CheckAuthorBlogPostEvent : BlogEventState()
 

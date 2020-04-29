@@ -48,6 +48,8 @@ val databaseModule = module {
     factory<BlogCacheDataSource> {
         BlogCacheDataSourceImpl(
             get(),
+            get(),
+            get(),
             get()
         )
     }

@@ -63,8 +63,7 @@ class BlogListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
-        return when (viewType) {
+        when (viewType) {
             NO_MORE_RESULTS -> {
                 return GenericViewHolder(
                     itemView = LayoutInflater.from(parent.context).inflate(

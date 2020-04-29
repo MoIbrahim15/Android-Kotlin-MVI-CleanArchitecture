@@ -8,8 +8,8 @@ import com.mi.mvi.domain.usecase.account.UpdateAccountUseCase
 import com.mi.mvi.domain.viewstate.AccountViewState
 import com.mi.mvi.events.AccountEventState
 import com.mi.mvi.events.AccountEventState.*
-import com.mi.mvi.features.base.BaseViewModel
-import com.mi.mvi.features.common.SessionManager
+import com.mi.mvi.base.BaseViewModel
+import com.mi.mvi.common.SessionManager
 import com.mi.mvi.mapper.TokenMapper
 import com.mi.mvi.mapper.UserMapper
 import com.mi.mvi.model.UserView

@@ -7,7 +7,7 @@ import com.mi.mvi.domain.usecase.auth.RegisterUseCase
 import com.mi.mvi.domain.viewstate.AuthViewState
 import com.mi.mvi.events.AuthEventState
 import com.mi.mvi.events.AuthEventState.*
-import com.mi.mvi.features.base.BaseViewModel
+import com.mi.mvi.base.BaseViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow

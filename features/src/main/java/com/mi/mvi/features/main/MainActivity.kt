@@ -10,11 +10,11 @@ import androidx.navigation.NavController
 import com.mi.mvi.R
 import com.mi.mvi.model.TokenView
 import com.mi.mvi.features.auth.AuthActivity
-import com.mi.mvi.features.base.BaseActivity
-import com.mi.mvi.features.common.BOTTOM_NAV_BACKSTACK_KEY
-import com.mi.mvi.features.common.BottomNavController
-import com.mi.mvi.features.common.BottomNavController.*
-import com.mi.mvi.features.common.setUpNavigation
+import com.mi.mvi.base.BaseActivity
+import com.mi.mvi.common.BOTTOM_NAV_BACKSTACK_KEY
+import com.mi.mvi.common.BottomNavController
+import com.mi.mvi.common.BottomNavController.*
+import com.mi.mvi.common.setUpNavigation
 import com.mi.mvi.features.main.account.AccountViewModel
 import com.mi.mvi.features.main.account.ChangePasswordFragment
 import com.mi.mvi.features.main.account.UpdateAccountFragment
@@ -25,7 +25,6 @@ import com.mi.mvi.features.main.create_blog.CreateBlogViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import org.koin.androidx.scope.currentScope
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 const val AUTH_TOKEN_BUNDLE_KEY = "AUTH_TOKEN_BUNDLE_KEY"

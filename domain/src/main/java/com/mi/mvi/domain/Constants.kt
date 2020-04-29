@@ -56,10 +56,5 @@ class Constants {
 
 
 
-        const val BLOG_FILTER_USERNAME = "username"
-        const val BLOG_FILTER_DATE_UPDATED = "date_updated"
-        const val BLOG_ORDER_ASC: String = ""
-        const val BLOG_ORDER_DESC: String = "-"
-
     }
 }

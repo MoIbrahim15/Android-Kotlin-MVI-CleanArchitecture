@@ -7,6 +7,7 @@ import com.mi.mvi.data.entity.BaseEntity
 import com.mi.mvi.data.entity.BlogPostEntity
 import com.mi.mvi.data.entity.BlogPostListEntity
 import com.mi.mvi.data.mapper.BlogPostMapper
+import com.mi.mvi.domain.Constants
 import com.mi.mvi.domain.Constants.Companion.RESPONSE_HAS_PERMISSION_TO_EDIT
 import com.mi.mvi.domain.Constants.Companion.SUCCESS_BLOG_DELETED
 import com.mi.mvi.domain.Constants.Companion.UNKNOWN_ERROR
@@ -25,14 +26,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import java.awt.TrayIcon
 
 
 @ExperimentalCoroutinesApi
 class BlogRepositoryImpl(
     private val blogRemoteDataSource: BlogRemoteDataSource,
     private val blogCacheDataSource: BlogCacheDataSource,
-    private val blogPostMapper: BlogPostMapper) : BlogRepository {
+    private val blogPostMapper: BlogPostMapper
+) : BlogRepository {
 
     override fun searchBlogPosts(
         token: Token,
@@ -221,5 +222,17 @@ class BlogRepositoryImpl(
                 )
             }
         }.result
+    }
+
+    override fun saveFilterOptions(filter: String, order: String) {
+        blogCacheDataSource.saveFilterOptions(filter, order)
+    }
+
+    override fun getFilter(): String? {
+       return blogCacheDataSource.getFilter()
+    }
+
+    override fun getOrder(): String? {
+        return blogCacheDataSource.getOrder()
     }
 }

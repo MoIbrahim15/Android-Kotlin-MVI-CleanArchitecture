@@ -9,7 +9,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 
-interface BlogRepository :BaseRepository{
+interface BlogRepository : BaseRepository {
 
     fun searchBlogPosts(
         token: Token,
@@ -36,4 +36,10 @@ interface BlogRepository :BaseRepository{
         body: RequestBody,
         image: MultipartBody.Part?
     ): Flow<DataState<BlogViewState>>
+
+    fun saveFilterOptions(filter: String, order: String)
+
+    fun getFilter(): String?
+
+    fun getOrder(): String?
 }

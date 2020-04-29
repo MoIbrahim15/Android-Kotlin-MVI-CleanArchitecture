@@ -17,7 +17,7 @@ fun BlogViewModel.resetPage() {
 @ExperimentalCoroutinesApi
 fun BlogViewModel.refreshFromCache() {
     setQueryExhausted(false)
-    setEventState(BlogSearchEvent(false))
+    setEventState(BlogSearchEvent)
 }
 
 @FlowPreview
@@ -25,7 +25,7 @@ fun BlogViewModel.refreshFromCache() {
 fun BlogViewModel.loadFirstPage() {
     setQueryExhausted(false)
     resetPage()
-    setEventState(BlogSearchEvent())
+    setEventState(BlogSearchEvent)
 }
 
 @FlowPreview
@@ -42,7 +42,7 @@ private fun BlogViewModel.incrementPageNumber() {
 fun BlogViewModel.nextPage() {
     if (!getIsQueryExhausted()) {
         incrementPageNumber()
-        setEventState(BlogSearchEvent())
+        setEventState(BlogSearchEvent)
     }
 }
 

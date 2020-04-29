@@ -1,7 +1,7 @@
 package com.mi.mvi.koin
 
 
-import com.mi.mvi.features.common.SessionManager
+import com.mi.mvi.common.SessionManager
 import com.mi.mvi.features.main.account.AccountViewModel
 import com.mi.mvi.features.main.blog.viewmodel.BlogViewModel
 import com.mi.mvi.features.main.create_blog.CreateBlogViewModel
@@ -26,7 +26,6 @@ val mainModule = module {
 
     viewModel {
         BlogViewModel(
-            get(),
             get(),
             get(),
             get(),

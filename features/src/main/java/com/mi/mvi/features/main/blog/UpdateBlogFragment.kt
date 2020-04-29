@@ -14,17 +14,19 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.mi.mvi.R
+import com.mi.mvi.domain.datastate.DataState
+import com.mi.mvi.events.BlogEventState
 import com.mi.mvi.features.main.blog.viewmodel.*
 import com.mi.mvi.utils.Constants
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import java.io.File
 import kotlinx.android.synthetic.main.fragment_update_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -43,13 +45,12 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
         }
     }
 
-    fun subscribeObservers() {
+    private fun subscribeObservers() {
         viewModel.dataState.observe(viewLifecycleOwner, Observer { dataState ->
-            dataState?.let {
-                dataStateChangeListener?.onDataStateChangeListener(dataState)
-                dataState.data?.let { viewState ->
-                    // if this is not null, the blogpost was updated
-                    viewState.viewBlogFields?.blogPostEntity?.let { blogPost ->
+            dataStateChangeListener?.onDataStateChangeListener(dataState)
+            when (dataState) {
+                is DataState.SUCCESS -> {
+                    dataState.data?.viewBlogFields?.blogPostEntity?.let { blogPost ->
                         viewModel.updateListItem()
                         findNavController().popBackStack()
                     }
@@ -60,9 +61,9 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             viewState.updatedBlogFields.let { updatedBlogFields ->
                 setBlogProperties(
-                    updatedBlogFields?.updatedBlogTitle,
-                    updatedBlogFields?.updatedBlogBody,
-                    updatedBlogFields?.updatedImageUri.toString()
+                    updatedBlogFields.updatedBlogTitle,
+                    updatedBlogFields.updatedBlogBody,
+                    updatedBlogFields.updatedImageUri.toString()
                 )
             }
         })
@@ -89,7 +90,7 @@ class UpdateBlogFragment : BaseBlogFragment(R.layout.fragment_update_blog) {
 
         multipartBody?.let { image ->
             viewModel.setEventState(
-                com.mi.mvi.events.BlogEventState.UpdateBlogPostEvent(
+                BlogEventState.UpdateBlogPostEvent(
                     blog_title.text.toString(),
                     blog_body.text.toString(),
                     image

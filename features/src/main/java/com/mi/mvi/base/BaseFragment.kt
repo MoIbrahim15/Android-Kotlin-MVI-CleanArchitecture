@@ -1,4 +1,4 @@
-package com.mi.mvi.features.base
+package com.mi.mvi.base
 
 import android.content.Context
 import android.os.Bundle
@@ -13,8 +13,8 @@ import com.mi.mvi.domain.datastate.MessageType
 import com.mi.mvi.domain.datastate.StateMessage
 import com.mi.mvi.domain.datastate.UIComponentType
 import com.mi.mvi.domain.viewstate.CreateBlogViewState
-import com.mi.mvi.features.common.DataStateChangeListener
-import com.mi.mvi.features.common.UICommunicationListener
+import com.mi.mvi.common.DataStateChangeListener
+import com.mi.mvi.common.UICommunicationListener
 import com.mi.mvi.features.main.MainActivity
 import com.mi.mvi.features.main.blog.BlogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi

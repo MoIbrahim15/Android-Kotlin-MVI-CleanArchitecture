@@ -1,4 +1,4 @@
-package com.mi.mvi.features.base
+package com.mi.mvi.base
 
 import androidx.lifecycle.*
 import com.mi.mvi.domain.datastate.DataState

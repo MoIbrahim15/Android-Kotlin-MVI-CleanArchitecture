@@ -12,7 +12,6 @@ import org.koin.dsl.module
 
 @ExperimentalCoroutinesApi
 val useCaseModule = module {
-
     factory { LoginUseCase(get()) }
     factory { RegisterUseCase(get()) }
     factory { CheckTokenUseCase(get()) }
@@ -24,4 +23,5 @@ val useCaseModule = module {
     factory { DeleteBlogPostUseCase(get()) }
     factory { UpdateBlogPostUseCase(get()) }
     factory { CreateBlogUseCase(get()) }
+    factory { FiltrationUseCase(get()) }
 }

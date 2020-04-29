@@ -1,4 +1,4 @@
-package com.mi.mvi.features.common
+package com.mi.mvi.common
 
 import android.annotation.SuppressLint
 import android.app.Activity

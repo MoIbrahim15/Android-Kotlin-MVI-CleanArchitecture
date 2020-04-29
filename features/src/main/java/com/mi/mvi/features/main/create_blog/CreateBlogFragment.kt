@@ -19,7 +19,7 @@ import com.mi.mvi.domain.datastate.MessageType
 import com.mi.mvi.domain.datastate.StateMessage
 import com.mi.mvi.domain.datastate.UIComponentType
 import com.mi.mvi.domain.viewstate.NewBlogFields
-import com.mi.mvi.features.base.BaseFragment
+import com.mi.mvi.base.BaseFragment
 import com.mi.mvi.utils.Constants.Companion.GALLERY_REQUEST_CODE
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
