@@ -3,7 +3,6 @@
 - Gradle Depedency managment
 - Gradle written in Kotlin DSL
 - Custom Plugin(dependencies with no duplication)
-- Kotlin
 - Navigation Components
 - [Coroutines](https://developer.android.com/kotlin/coroutines) and flows
 - [Room Persistence Library](https://developer.android.com/training/data-storage/room "Room Persistence Library")
@@ -11,7 +10,7 @@
 - Model View Intent Architecture - MVI.
 - Repository pattern (NetworkBoundResource)
 - Clean Architecture approach.
-- Static Code Analytics[Ktlint](https://github.com/jlleitschuh/ktlint-gradle "Ktlint") This plugin creates convenient tasks in your Gradle project that run ktlint checks or do code auto format.
+- Static Code Analytics [Ktlint](https://github.com/jlleitschuh/ktlint-gradle "Ktlint") This plugin creates convenient tasks in your Gradle project that run ktlint checks or do code auto format.
 
 
 
