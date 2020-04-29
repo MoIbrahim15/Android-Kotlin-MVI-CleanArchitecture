@@ -2,6 +2,7 @@ object LibraryDependency {
     object Version {
         const val RECYCLER_LIB = "1.2.0-alpha02"
         const val CARD_VIEW = "1.0.0"
+        const val SWIPE_TO_REFERESH = "1.0.0"
         const val CORE_KTX = "1.2.0"
         const val COLLECTION_KTX = "1.1.0"
         const val APPCOMPAT_LIB = "1.1.0"
@@ -16,21 +17,22 @@ object LibraryDependency {
         const val LIFECYCLE = "2.2.0"
         const val MATERIAL_DIALOG = "3.3.0"
         const val GLIDE = "4.11.0"
-
+        const val OKHTTP = "4.2.2"
     }
 
     const val KOTLIN_STD = "org.jetbrains.kotlin:kotlin-stdlib:${CoreVersion.KOTLIN}"
     const val CORE_KTX = "androidx.core:core-ktx:${Version.CORE_KTX}"
     const val COLLECTION_KTX = "androidx.collection:collection-ktx:${Version.COLLECTION_KTX}"
+    const val OKHTTP = "com.squareup.okhttp3:okhttp:${Version.OKHTTP}"
 
     //UI
     const val APPCOMPAT = "androidx.appcompat:appcompat:${Version.APPCOMPAT_LIB}"
     const val MATERIAL = "com.google.android.material:material:${Version.MATERIAL_LIB}"
     const val RECYCYLER_VIEW = "androidx.recyclerview:recyclerview:${Version.RECYCLER_LIB}"
     const val CARD_VIEW = "androidx.cardview:cardview:${Version.CARD_VIEW}"
+    const val SWIPE_TO_REFERESH = "androidx.swiperefreshlayout:swiperefreshlayout:${Version.SWIPE_TO_REFERESH}"
     const val CONSTRAINT = "androidx.constraintlayout:constraintlayout:${Version.CONSTRAINT}"
-    const val NAVIGATION_FRAGMENT =
-        "androidx.navigation:navigation-fragment-ktx:${CoreVersion.NAVIGATION}"
+    const val NAVIGATION_FRAGMENT = "androidx.navigation:navigation-fragment-ktx:${CoreVersion.NAVIGATION}"
     const val NAVIGATION_UI = "androidx.navigation:navigation-ui-ktx:${CoreVersion.NAVIGATION}"
     const val NAVIGATION_RUNTIME = "androidx.navigation:navigation-runtime:${CoreVersion.NAVIGATION}"
     const val CROP = "com.theartofdev.edmodo:android-image-cropper:${Version.CROP}"
