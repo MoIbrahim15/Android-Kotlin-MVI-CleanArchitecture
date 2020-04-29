@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
-import com.mi.mvi.events.AuthEventState
 import com.mi.mvi.base.BaseFragment
+import com.mi.mvi.events.AuthEventState
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -44,5 +44,4 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
     private fun navForgetPassword() {
         findNavController().navigate(R.id.action_loginFragment_to_forgetPasswordFragment)
     }
-
 }

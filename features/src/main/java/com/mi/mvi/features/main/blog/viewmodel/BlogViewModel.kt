@@ -1,11 +1,11 @@
 package com.mi.mvi.features.main.blog.viewmodel
 
+import com.mi.mvi.base.BaseViewModel
+import com.mi.mvi.common.SessionManager
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.usecase.blogs.*
 import com.mi.mvi.domain.viewstate.BlogViewState
 import com.mi.mvi.events.BlogEventState
-import com.mi.mvi.base.BaseViewModel
-import com.mi.mvi.common.SessionManager
 import com.mi.mvi.mapper.BlogPostMapper
 import com.mi.mvi.mapper.TokenMapper
 import kotlinx.coroutines.ExperimentalCoroutinesApi

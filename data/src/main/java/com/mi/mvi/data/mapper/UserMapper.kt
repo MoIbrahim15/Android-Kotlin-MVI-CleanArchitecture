@@ -27,5 +27,4 @@ open class UserMapper : Mapper<UserEntity, User> {
             type.token
         )
     }
-
 }

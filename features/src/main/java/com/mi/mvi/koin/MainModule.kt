@@ -1,6 +1,5 @@
 package com.mi.mvi.koin
 
-
 import com.mi.mvi.common.SessionManager
 import com.mi.mvi.features.main.account.AccountViewModel
 import com.mi.mvi.features.main.blog.viewmodel.BlogViewModel
@@ -22,7 +21,7 @@ val mainModule = module {
     factory { TokenMapper() }
     factory { UserMapper() }
     factory { BlogPostMapper() }
-    viewModel { AccountViewModel(get(), get(), get(), get(),get(),get()) }
+    viewModel { AccountViewModel(get(), get(), get(), get(), get(), get()) }
 
     viewModel {
         BlogViewModel(

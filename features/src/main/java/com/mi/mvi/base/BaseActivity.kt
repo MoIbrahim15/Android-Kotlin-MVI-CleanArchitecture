@@ -8,12 +8,12 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.mi.mvi.common.*
+import com.mi.mvi.common.SessionManager
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.datastate.StateMessage
 import com.mi.mvi.domain.datastate.UIComponentType
-import com.mi.mvi.common.*
 import com.mi.mvi.utils.Constants.Companion.PERMISSION_REQUEST_READ_STORAGE
-import com.mi.mvi.common.SessionManager
 import org.koin.android.ext.android.inject
 
 abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity(contentLayoutId),
@@ -50,10 +50,10 @@ abstract class BaseActivity(@LayoutRes contentLayoutId: Int) : AppCompatActivity
     private fun handleResponseState(stateMessage: StateMessage?) {
         stateMessage?.message?.let { message ->
             when (stateMessage.uiComponentType) {
-                is  UIComponentType.DIALOG -> {
+                is UIComponentType.DIALOG -> {
                     displayErrorDialog(message)
                 }
-                is  UIComponentType.TOAST -> {
+                is UIComponentType.TOAST -> {
                     displayToast(message)
                 }
             }

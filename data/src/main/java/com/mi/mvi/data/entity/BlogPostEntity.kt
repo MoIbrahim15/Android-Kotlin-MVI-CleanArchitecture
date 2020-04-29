@@ -3,7 +3,6 @@ package com.mi.mvi.data.entity
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 data class BlogPostEntity(
     var pk: Int,
     var title: String? = null,
@@ -12,7 +11,7 @@ data class BlogPostEntity(
     var image: String? = null,
     var date_updated: String? = null,
     var username: String? = null
-) : BaseEntity(){
+) : BaseEntity() {
     // dates from server look like this: "2019-07-23T03:28:01.406944Z"
     fun getDateAsLong(): Long {
 

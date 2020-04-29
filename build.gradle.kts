@@ -16,8 +16,6 @@ buildscript {
 
         // Ktlint Gradle
         maven(GradlePluginId.KTLINT_MAVEN)
-
-
     }
     dependencies {
         classpath(GradleClasspath.ANDROID_GRADLE)

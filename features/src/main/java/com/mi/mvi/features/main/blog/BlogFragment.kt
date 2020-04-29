@@ -23,15 +23,14 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.mi.mvi.R
+import com.mi.mvi.common.TopSpacingItemDecoration
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.model.BlogPostView
-import com.mi.mvi.common.TopSpacingItemDecoration
 import com.mi.mvi.features.main.blog.viewmodel.*
 import com.mi.mvi.utils.Constants.Companion.isPaginationDone
 import kotlinx.android.synthetic.main.fragment_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-
 
 const val BLOG_FILTER_USERNAME = "username"
 const val BLOG_FILTER_DATE_UPDATED = "date_updated"
@@ -90,7 +89,6 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
                 }
                 is DataState.LOADING -> {
                     dataStateChangeListener?.onDataStateChangeListener(dataState)
-
                 }
             }
         })
@@ -137,7 +135,6 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
             onBlogSearchOrFilter()
         }
     }
-
 
     private fun initRecyclerView() {
         blog_post_recyclerview.apply {

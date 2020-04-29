@@ -11,8 +11,8 @@ data class CachedUser(
     var pk: Int,
 
     @ColumnInfo(name = "email")
-    var email: String?=null,
+    var email: String? = null,
 
     @ColumnInfo(name = "username")
-    var username: String?=null
+    var username: String? = null
 )

@@ -11,7 +11,6 @@ import com.mi.mvi.data.entity.BlogPostEntity
 const val BLOG_FILTER: String = "com.mi.mvi.BLOG_FILTER"
 const val BLOG_ORDER: String = "com.mi.mvi.BLOG_ORDER"
 
-
 class BlogCacheDataSourceImpl(
     private val blogPostDao: BlogPostDao,
     private val blogPostEntityMapper: BlogPostEntityMapper,
@@ -85,7 +84,6 @@ class BlogCacheDataSourceImpl(
                 blogPostEntityMapper.mapFromCached(cachedBlogPost)
             }.toMutableList()
     }
-
 
     override fun saveFilterOptions(filter: String, order: String) {
         editor.putString(BLOG_FILTER, filter)

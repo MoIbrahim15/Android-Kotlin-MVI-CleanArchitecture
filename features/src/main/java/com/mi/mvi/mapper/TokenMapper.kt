@@ -1,6 +1,5 @@
 package com.mi.mvi.mapper
 
-
 import com.mi.mvi.domain.model.Token
 import com.mi.mvi.model.TokenView
 import com.mi.mvi.model.UserView
@@ -18,5 +17,4 @@ open class TokenMapper : Mapper<TokenView, Token> {
     override fun mapToView(type: Token): TokenView {
         return TokenView(type.account_pk, type.token)
     }
-
 }

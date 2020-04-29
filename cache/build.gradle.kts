@@ -1,6 +1,6 @@
 
 plugins {
-    id(GradlePluginId.ANDROID_LIB)                   // cache must be android lib for RoomDatabase
+    id(GradlePluginId.ANDROID_LIB) // cache must be android lib for RoomDatabase
     id(GradlePluginId.BASE_GRADLE_PLUGIN)
     `kotlin-kapt`
 }

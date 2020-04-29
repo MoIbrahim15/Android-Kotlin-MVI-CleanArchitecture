@@ -33,5 +33,4 @@ open class BlogPostMapper : Mapper<BlogPostEntity, BlogPost> {
         blogPostEntity.response = type.response
         return blogPostEntity
     }
-
 }

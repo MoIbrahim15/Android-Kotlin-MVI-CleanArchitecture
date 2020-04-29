@@ -12,5 +12,4 @@ interface Mapper<Entity, Model> {
     fun mapFromView(type: Entity): Model
 
     fun mapToView(type: Model): Entity
-
 }

@@ -4,7 +4,6 @@ import com.mi.mvi.data.entity.BlogPostEntity
 import com.mi.mvi.data.entity.BlogPostListEntity
 import com.mi.mvi.remote.model.RemoteBlogPostList
 
-
 /**
  * Map a [RemoteBlogPostList] to and from a [BlogPostListEntity] instance when data is moving between
  * this later and the Data layer
@@ -29,5 +28,4 @@ open class BlogPostListEntityMapper : EntityMapper<RemoteBlogPostList, BlogPostL
 
         return BlogPostListEntity(itemsEntity, type.detail)
     }
-
 }

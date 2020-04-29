@@ -20,6 +20,7 @@ import com.mi.mvi.events.CreateBlogEventState
 import com.mi.mvi.utils.Constants.Companion.GALLERY_REQUEST_CODE
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import java.io.File
 import kotlinx.android.synthetic.main.fragment_create_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -27,7 +28,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import java.io.File
 
 @FlowPreview
 @ExperimentalCoroutinesApi
@@ -68,7 +68,6 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
                                     viewModel.clearNewBlogFields()
                                 }
                                 dataStateChangeListener?.onDataStateChangeListener(dataState = dataState)
-
                             }
                         }
                     }
@@ -77,7 +76,6 @@ class CreateBlogFragment : BaseFragment(R.layout.fragment_create_blog) {
                         dataStateChangeListener?.onDataStateChangeListener(dataState = dataState)
                     }
                 }
-
             }
         })
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->

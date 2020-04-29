@@ -2,7 +2,6 @@ package com.mi.mvi.domain.model
 
 import com.mi.mvi.model.BaseModelView
 
-
 data class BlogPostView(
     var pk: Int,
     var title: String? = null,

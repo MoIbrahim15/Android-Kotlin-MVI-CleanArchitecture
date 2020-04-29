@@ -3,7 +3,6 @@ package com.mi.mvi.remote.mapper
 import com.mi.mvi.data.entity.BlogPostEntity
 import com.mi.mvi.remote.model.RemoteBlogPost
 
-
 /**
  * Map a [RemoteBlogPost] to and from a [BlogPostEntity] instance when data is moving between
  * this later and the Data layer
@@ -26,5 +25,4 @@ open class BlogPostEntityMapper : EntityMapper<RemoteBlogPost, BlogPostEntity> {
         blogPostEntity.response = type.response
         return blogPostEntity
     }
-
 }

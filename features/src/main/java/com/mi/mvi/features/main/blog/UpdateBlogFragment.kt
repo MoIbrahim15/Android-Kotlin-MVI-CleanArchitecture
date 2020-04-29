@@ -20,13 +20,13 @@ import com.mi.mvi.features.main.blog.viewmodel.*
 import com.mi.mvi.utils.Constants
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import java.io.File
 import kotlinx.android.synthetic.main.fragment_update_blog.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 
 @FlowPreview
 @ExperimentalCoroutinesApi

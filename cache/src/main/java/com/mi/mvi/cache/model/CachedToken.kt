@@ -6,7 +6,6 @@ import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 
-
 @Entity(
     tableName = "auth_token",
     foreignKeys = [ForeignKey(

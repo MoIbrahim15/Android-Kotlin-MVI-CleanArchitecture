@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-
 interface BlogRepository : BaseRepository {
 
     fun searchBlogPosts(
@@ -17,7 +16,6 @@ interface BlogRepository : BaseRepository {
         filterAndOrder: String,
         page: Int
     ): Flow<DataState<BlogViewState>>
-
 
     fun isAuthorOfBlogPosts(
         token: Token,

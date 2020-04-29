@@ -18,5 +18,4 @@ open class TokenMapper : Mapper<TokenEntity, Token> {
     override fun mapToEntity(type: Token): TokenEntity {
         return TokenEntity(type.account_pk, type.token)
     }
-
 }

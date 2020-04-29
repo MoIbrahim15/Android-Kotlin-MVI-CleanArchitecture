@@ -40,5 +40,4 @@ data class CachedBlogPost(
             throw Exception(e)
         }
     }
-
 }

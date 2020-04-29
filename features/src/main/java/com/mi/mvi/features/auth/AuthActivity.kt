@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.mi.mvi.R
-import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.base.BaseActivity
+import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.features.main.MainActivity
 import com.mi.mvi.mapper.TokenMapper
 import kotlinx.android.synthetic.main.activity_auth.*

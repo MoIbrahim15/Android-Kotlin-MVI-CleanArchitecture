@@ -1,5 +1,7 @@
 package com.mi.mvi.features.main.account
 
+import com.mi.mvi.base.BaseViewModel
+import com.mi.mvi.common.SessionManager
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.model.User
 import com.mi.mvi.domain.usecase.account.ChangePasswordUseCase
@@ -8,8 +10,6 @@ import com.mi.mvi.domain.usecase.account.UpdateAccountUseCase
 import com.mi.mvi.domain.viewstate.AccountViewState
 import com.mi.mvi.events.AccountEventState
 import com.mi.mvi.events.AccountEventState.*
-import com.mi.mvi.base.BaseViewModel
-import com.mi.mvi.common.SessionManager
 import com.mi.mvi.mapper.TokenMapper
 import com.mi.mvi.mapper.UserMapper
 import com.mi.mvi.model.UserView
@@ -70,7 +70,6 @@ class AccountViewModel(
                             )
                         )
                     }
-
                 }
             }
         }

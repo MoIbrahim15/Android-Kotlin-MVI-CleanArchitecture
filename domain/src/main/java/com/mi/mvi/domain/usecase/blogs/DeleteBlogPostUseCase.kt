@@ -1,6 +1,5 @@
 package com.mi.mvi.domain.usecase.blogs
 
-
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.model.BlogPost
 import com.mi.mvi.domain.model.Token

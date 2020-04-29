@@ -1,11 +1,9 @@
 package com.mi.mvi.domain.viewstate
 
-
 import com.mi.mvi.domain.Constants.Companion.ERROR_ALL_FIELDS_ARE_REQUIRED
 import com.mi.mvi.domain.Constants.Companion.ERROR_PASSWORD_DOESNOT_MATCH
 import com.mi.mvi.domain.Constants.Companion.SUCCESS
 import com.mi.mvi.domain.model.Token
-
 
 data class AuthViewState(
     var registrationFields: RegistrationFields? = null,

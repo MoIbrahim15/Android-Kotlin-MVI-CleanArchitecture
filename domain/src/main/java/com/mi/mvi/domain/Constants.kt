@@ -5,12 +5,10 @@ class Constants {
 
         // Shared Preference Keys
 
-
         // -----------------------------NETWORK-----------------------
         const val PASSWORD_RESET_URL: String = "https://open-api.xyz/password_reset/"
         const val NETWORK_TIMEOUT = 6000L
         const val CACHE_TIMEOUT = 2000L
-
 
         // -----------------------------SUCCESS-----------------------
         const val SUCCESS = "success"
@@ -53,8 +51,5 @@ class Constants {
         const val ERROR_ALL_FIELDS_ARE_REQUIRED = "All fields are required"
         const val ERROR_PASSWORD_DOESNOT_MATCH = "Password and confirm password must be same"
         const val INVALID_PAGE_NUMBER = "invalid page number"
-
-
-
     }
 }

@@ -10,5 +10,4 @@ dependencies {
     implementation(LibraryDependency.KOIN)
 
     implementation(project(ModulesDependency.DATA))
-
 }

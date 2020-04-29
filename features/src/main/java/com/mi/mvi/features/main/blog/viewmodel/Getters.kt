@@ -2,7 +2,6 @@ package com.mi.mvi.features.main.blog.viewmodel
 
 import android.net.Uri
 import androidx.core.net.toUri
-
 import com.mi.mvi.domain.model.BlogPost
 import com.mi.mvi.features.main.blog.BLOG_FILTER_DATE_UPDATED
 import com.mi.mvi.features.main.blog.BLOG_ORDER_DESC

@@ -1,6 +1,5 @@
 package com.mi.mvi.remote.service
 
-
 import com.mi.mvi.remote.model.BaseRemote
 import com.mi.mvi.remote.model.RemoteUser
 import retrofit2.http.*

@@ -8,13 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.mi.mvi.R
-import com.mi.mvi.model.TokenView
-import com.mi.mvi.features.auth.AuthActivity
 import com.mi.mvi.base.BaseActivity
 import com.mi.mvi.common.BOTTOM_NAV_BACKSTACK_KEY
 import com.mi.mvi.common.BottomNavController
 import com.mi.mvi.common.BottomNavController.*
 import com.mi.mvi.common.setUpNavigation
+import com.mi.mvi.features.auth.AuthActivity
 import com.mi.mvi.features.main.account.AccountViewModel
 import com.mi.mvi.features.main.account.ChangePasswordFragment
 import com.mi.mvi.features.main.account.UpdateAccountFragment
@@ -22,6 +21,7 @@ import com.mi.mvi.features.main.blog.UpdateBlogFragment
 import com.mi.mvi.features.main.blog.ViewBlogFragment
 import com.mi.mvi.features.main.blog.viewmodel.BlogViewModel
 import com.mi.mvi.features.main.create_blog.CreateBlogViewModel
+import com.mi.mvi.model.TokenView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview

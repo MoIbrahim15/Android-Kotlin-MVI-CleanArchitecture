@@ -3,7 +3,6 @@ package com.mi.mvi.cache.mapper
 import com.mi.mvi.cache.model.CachedBlogPost
 import com.mi.mvi.data.entity.BlogPostEntity
 
-
 /**
  * Map a [CachedBlogPost] instance to and from a [BlogPostEntity] instance when data is moving between
  * this later and the Data layer
@@ -39,5 +38,4 @@ class BlogPostEntityMapper : EntityMapper<CachedBlogPost, BlogPostEntity> {
             type.username
         )
     }
-
 }

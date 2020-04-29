@@ -1,7 +1,5 @@
 package com.mi.mvi.domain.datastate
 
-
-
 data class StateMessage(
     val message: String?,
     val uiComponentType: UIComponentType,

@@ -26,5 +26,4 @@ open class UserMapper : Mapper<UserView, User> {
             type.token
         )
     }
-
 }

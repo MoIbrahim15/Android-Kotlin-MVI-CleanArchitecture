@@ -9,12 +9,12 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.navigation.fragment.findNavController
 import com.mi.mvi.R
+import com.mi.mvi.base.BaseFragment
 import com.mi.mvi.domain.Constants.Companion.PASSWORD_RESET_URL
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.datastate.MessageType
 import com.mi.mvi.domain.datastate.StateMessage
 import com.mi.mvi.domain.datastate.UIComponentType
-import com.mi.mvi.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_forget_password.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,8 +37,8 @@ class ForgetPasswordFragment : BaseFragment(R.layout.fragment_forget_password) {
             override fun onError(errorMessage: String) {
                 GlobalScope.launch(Main) {
                     dataStateChangeListener?.onDataStateChangeListener(
-                        dataState =  DataState.ERROR<Any>(
-                            stateMessage =  StateMessage(
+                        dataState = DataState.ERROR<Any>(
+                            stateMessage = StateMessage(
                                 errorMessage,
                                  UIComponentType.DIALOG,
                                  MessageType.ERROR

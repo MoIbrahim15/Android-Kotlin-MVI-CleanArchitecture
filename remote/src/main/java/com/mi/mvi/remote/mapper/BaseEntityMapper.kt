@@ -3,7 +3,6 @@ package com.mi.mvi.remote.mapper
 import com.mi.mvi.data.entity.BaseEntity
 import com.mi.mvi.remote.model.BaseRemote
 
-
 /**
  * Map a [BaseRemote] to and from a [BaseEntity] instance when data is moving between
  * this later and the Data layer
@@ -19,5 +18,4 @@ open class BaseEntityMapper : EntityMapper<BaseRemote, BaseEntity> {
         baseEntity.errorMessage = type.errorMessage
         return baseEntity
     }
-
 }

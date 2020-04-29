@@ -1,6 +1,5 @@
 package com.mi.mvi.domain.repository
 
-
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.viewstate.AuthViewState
 import kotlinx.coroutines.flow.Flow

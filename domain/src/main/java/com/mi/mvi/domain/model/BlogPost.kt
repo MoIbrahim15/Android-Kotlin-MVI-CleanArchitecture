@@ -1,6 +1,5 @@
 package com.mi.mvi.domain.model
 
-
 data class BlogPost(
     var pk: Int,
     var title: String? = null,

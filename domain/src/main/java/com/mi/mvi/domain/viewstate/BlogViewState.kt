@@ -1,6 +1,5 @@
 package com.mi.mvi.domain.viewstate
 
-
 import com.mi.mvi.domain.model.BlogPost
 
 const val BLOG_VIEW_STATE_BUNDLE_KEY = "BLOG_VIEW_STATE_BUNDLE_KEY"

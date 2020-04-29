@@ -3,7 +3,6 @@ package com.mi.mvi.data.mapper
 import com.mi.mvi.data.entity.BaseEntity
 import com.mi.mvi.domain.model.BaseModel
 
-
 /**
  * Map a [BaseEntity] to and from a [BaseModel] instance when data is moving between
  * this later and the Data layer

@@ -2,7 +2,6 @@ package com.mi.mvi.mapper
 
 import com.mi.mvi.domain.model.BlogPost
 import com.mi.mvi.domain.model.BlogPostView
-import com.mi.mvi.mapper.Mapper
 
 /**
  * Map a [BlogPostView] to and from a [BlogPostEntity] instance when data is moving between
@@ -21,7 +20,7 @@ open class BlogPostMapper : Mapper<BlogPostView, BlogPost> {
         )
     }
 
-    override fun mapToView(type: BlogPost):  BlogPostView{
+    override fun mapToView(type: BlogPost): BlogPostView {
         return BlogPostView(
             type.pk,
             type.title,
@@ -32,5 +31,4 @@ open class BlogPostMapper : Mapper<BlogPostView, BlogPost> {
             type.username
         )
     }
-
 }

@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import com.mi.mvi.common.DataStateChangeListener
+import com.mi.mvi.common.UICommunicationListener
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.datastate.MessageType
 import com.mi.mvi.domain.datastate.StateMessage
 import com.mi.mvi.domain.datastate.UIComponentType
 import com.mi.mvi.domain.viewstate.CreateBlogViewState
-import com.mi.mvi.common.DataStateChangeListener
-import com.mi.mvi.common.UICommunicationListener
 import com.mi.mvi.features.main.MainActivity
 import com.mi.mvi.features.main.blog.BlogFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi

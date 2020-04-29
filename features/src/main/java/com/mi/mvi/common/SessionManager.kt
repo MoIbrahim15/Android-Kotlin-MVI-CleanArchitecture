@@ -3,8 +3,8 @@ package com.mi.mvi.common
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.mi.mvi.model.TokenView
 import com.mi.mvi.domain.repository.AuthRepository
+import com.mi.mvi.model.TokenView
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
