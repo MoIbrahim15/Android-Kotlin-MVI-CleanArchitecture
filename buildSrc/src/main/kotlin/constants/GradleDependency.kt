@@ -1,7 +1,7 @@
 object CoreVersion{
     const val KOTLIN = "1.3.72"
     const val NAVIGATION = "2.3.0-alpha04"
-    const val ANDROID_GRADLE = "4.0.0-beta05"
+    const val ANDROID_GRADLE = "4.1.0-alpha08"
     const val KTLINT_GRADLE = "9.2.1"
     const val KTLINT = "0.34.2"
     const val DETEKT = "1.0.0"

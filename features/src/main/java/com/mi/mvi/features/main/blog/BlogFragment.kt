@@ -23,7 +23,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.mi.mvi.R
-import com.mi.mvi.common.TopSpacingItemDecoration
 import com.mi.mvi.domain.datastate.DataState
 import com.mi.mvi.domain.model.BlogPostView
 import com.mi.mvi.features.main.blog.viewmodel.*
@@ -139,11 +138,6 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
     private fun initRecyclerView() {
         blog_post_recyclerview.apply {
             layoutManager = LinearLayoutManager(this@BlogFragment.context)
-            val topSpacingItemDecoration =
-                TopSpacingItemDecoration(30)
-            removeItemDecoration(topSpacingItemDecoration)
-            addItemDecoration(topSpacingItemDecoration)
-
             recyclerAdapter = BlogListAdapter(
                 interaction = this@BlogFragment
             )

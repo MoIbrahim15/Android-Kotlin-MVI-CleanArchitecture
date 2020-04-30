@@ -3,11 +3,6 @@ plugins {
     id(GradlePluginId.BASE_GRADLE_PLUGIN)
 }
 
-android {
-    defaultConfig {
-        applicationId = AndroidConfig.ID
-    }
-}
 
 dependencies {
     implementation(project(ModulesDependency.CACHE))
