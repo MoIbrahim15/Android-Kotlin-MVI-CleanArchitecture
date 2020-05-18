@@ -36,8 +36,8 @@ class AccountFragment : BaseAccountFragment(R.layout.fragment_account) {
             when (dataState) {
                 is DataState.SUCCESS -> {
                     dataState.data?.let { viewState ->
-                        viewState.userEntity?.let { account ->
-                            viewModel.setAccountData(userMapper.mapToView(account))
+                        viewState.user?.let { account ->
+                            viewModel.setAccountData(account)
                         }
                     }
                 }
@@ -45,7 +45,7 @@ class AccountFragment : BaseAccountFragment(R.layout.fragment_account) {
         })
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer {
-            it.userEntity?.let { account ->
+            it.user?.let { account ->
                 setAccountAccount(userMapper.mapToView(account))
             }
         })

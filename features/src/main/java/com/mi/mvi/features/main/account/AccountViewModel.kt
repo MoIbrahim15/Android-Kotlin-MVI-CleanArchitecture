@@ -12,7 +12,6 @@ import com.mi.mvi.events.AccountEventState
 import com.mi.mvi.events.AccountEventState.*
 import com.mi.mvi.mapper.TokenMapper
 import com.mi.mvi.mapper.UserMapper
-import com.mi.mvi.model.UserView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -78,10 +77,10 @@ class AccountViewModel(
         return AccountViewState()
     }
 
-    fun setAccountData(userEntity: UserView) {
+    fun setAccountData(user: User) {
         val update = getCurrentViewStateOrNew()
-        if (update.userEntity != userMapper.mapFromView(userEntity)) {
-            update.userEntity = userMapper.mapFromView(userEntity)
+        if (update.user != user) {
+            update.user = user
             _viewState.value = update
         }
     }

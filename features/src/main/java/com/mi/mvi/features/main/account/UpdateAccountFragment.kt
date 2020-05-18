@@ -32,7 +32,7 @@ class UpdateAccountFragment : BaseAccountFragment(R.layout.fragment_update_accou
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             if (viewState != null) {
-                viewState.userEntity?.let { accountProperties ->
+                viewState.user?.let { accountProperties ->
                     setAccountProperties(userEntity = userMapper.mapToView(accountProperties))
                 }
             }
