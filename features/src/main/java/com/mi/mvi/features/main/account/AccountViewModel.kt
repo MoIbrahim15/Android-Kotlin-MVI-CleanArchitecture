@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.flow
 
 @FlowPreview
 @ExperimentalCoroutinesApi
-class AccountViewModel(
+class  AccountViewModel(
     private val sessionManager: SessionManager,
     private val accountUseCase: GetAccountUseCase,
     private val updateAccountUseCase: UpdateAccountUseCase,

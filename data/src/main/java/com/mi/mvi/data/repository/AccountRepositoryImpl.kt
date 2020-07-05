@@ -123,7 +123,7 @@ class AccountRepositoryImpl(
                     DataState.ERROR(
                         StateMessage(
                             SOMETHING_WRONG_WITH_IMAGE,
-                            UIComponentType.TOAST,
+                            UIComponentType.DIALOG,
                             MessageType.ERROR
                         )
                     )
