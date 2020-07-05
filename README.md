@@ -1,4 +1,8 @@
 # Android Kotlin MVI Clean Architecture APP
+
+[![kotlin](https://img.shields.io/badge/Kotlin-1.3.xxx-blue)](https://kotlinlang.org/) [![MVI ](https://img.shields.io/badge/Architecture-MVI-brightgreen)](https://www.youtube.com/watch?v=tIPxSWx5qpk) [![coroutines](https://img.shields.io/badge/Coroutines-Asynchronous-red)](https://developer.android.com/kotlin/coroutines) [![Kotlin-Android-Extensions ](https://img.shields.io/badge/Kotlin--Android--Extensions-plugin-red.svg)](https://kotlinlang.org/docs/tutorials/android-plugin.html) 
+
+
 - Modularization
 - Gradle Depedency managment
 - Gradle written in Kotlin DSL
