@@ -18,6 +18,7 @@ object LibraryDependency {
         const val MATERIAL_DIALOG = "3.3.0"
         const val GLIDE = "4.11.0"
         const val OKHTTP = "4.2.2"
+        const val KIEL = "1.2.0"
     }
 
     const val KOTLIN_STD = "org.jetbrains.kotlin:kotlin-stdlib:${CoreVersion.KOTLIN}"
@@ -67,5 +68,8 @@ object LibraryDependency {
     const val LIVE_DATA_RUNTIME = "androidx.lifecycle:lifecycle-runtime:${Version.LIFECYCLE}"
     const val LIVE_DATA_COMPILER = "androidx.lifecycle:lifecycle-compiler:${Version.LIFECYCLE}"
     const val LIVE_DATA_KTX = "androidx.lifecycle:lifecycle-livedata-ktx:${Version.LIFECYCLE}"
+
+    //kiel
+    const val KIEL = "me.ibrahimyilmaz:kiel:${Version.KIEL}"
 
 }
