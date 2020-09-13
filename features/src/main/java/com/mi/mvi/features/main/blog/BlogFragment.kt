@@ -24,7 +24,6 @@ import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.mi.mvi.R
 import com.mi.mvi.domain.datastate.DataState
-import com.mi.mvi.domain.model.BlogPostView
 import com.mi.mvi.features.main.blog.viewmodel.*
 import com.mi.mvi.utils.Constants.Companion.isPaginationDone
 import kotlinx.android.synthetic.main.fragment_blog.*
@@ -39,11 +38,14 @@ const val BLOG_ORDER_DESC: String = "-"
 @FlowPreview
 @ExperimentalCoroutinesApi
 class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
-    BlogListAdapter.Interaction,
     SwipeRefreshLayout.OnRefreshListener {
 
-    private lateinit var recyclerAdapter: BlogListAdapter
     private lateinit var searchView: SearchView
+
+    private val recyclerAdapter = createBlogListAdapter {
+        viewModel.setBlogPost(it)
+        findNavController().navigate(R.id.action_blogFragment_to_viewBlogFragment)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -94,13 +96,14 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
 
         viewModel.viewState.observe(viewLifecycleOwner, Observer { viewState ->
             viewState?.let {
-                recyclerAdapter.apply {
-                    submitList(
-                        list = viewState.blogFields.blogList?.map { blogPostMapper.mapToView(it) }
-                            ?.toMutableList(),
-                        isQueryExhausted = viewState.blogFields.isQueryExhausted ?: false
-                    )
+                val blogList = mutableListOf<BlogListItem>()
+                blogList += viewState.blogFields.blogList?.map(blogPostMapper::mapToView)
+                    ?.map { BlogListItem.Item(it) }.orEmpty()
+                if (viewState.blogFields.isQueryExhausted == true) {
+                    blogList += BlogListItem.NoMoreResult
                 }
+
+                recyclerAdapter.submitList(blogList)
             }
         })
     }
@@ -138,10 +141,6 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
     private fun initRecyclerView() {
         blog_post_recyclerview.apply {
             layoutManager = LinearLayoutManager(this@BlogFragment.context)
-            recyclerAdapter = BlogListAdapter(
-                interaction = this@BlogFragment
-            )
-
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
@@ -160,11 +159,6 @@ class BlogFragment : BaseBlogFragment(R.layout.fragment_blog),
     override fun onDestroyView() {
         super.onDestroyView()
         blog_post_recyclerview.adapter = null // clean references for memory leaks
-    }
-
-    override fun onItemSelected(item: BlogPostView) {
-        viewModel.setBlogPost(item)
-        findNavController().navigate(R.id.action_blogFragment_to_viewBlogFragment)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

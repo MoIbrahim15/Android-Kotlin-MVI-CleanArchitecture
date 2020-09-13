@@ -1,8 +1,9 @@
 package com.mi.mvi.features.main.blog
 
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
+import com.mi.mvi.features.main.blog.viewmodel.BlogListItem.NoMoreResult
+import me.ibrahimyilmaz.kiel.core.RecyclerViewHolder
 
 class GenericViewHolder(
     itemView: View
-) : RecyclerView.ViewHolder(itemView)
+) : RecyclerViewHolder<NoMoreResult>(itemView)

@@ -25,6 +25,7 @@ dependencies {
     kapt(LibraryDependency.LIVE_DATA_COMPILER)
     implementation(LibraryDependency.LIVE_DATA_KTX)
     implementation(LibraryDependency.OKHTTP)
+    implementation(LibraryDependency.KIEL)
 
     implementation(project(ModulesDependency.DOMAIN))
 
