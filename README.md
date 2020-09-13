@@ -4,9 +4,9 @@
 
 
 - Modularization
-- Gradle Depedency managment
+- Gradle Dependency management
 - Gradle written in Kotlin DSL
-- Custom Plugin(dependencies with no duplication)
+- Custom Plugin (dependencies with no duplication)
 - Navigation Components
 - [Coroutines](https://developer.android.com/kotlin/coroutines) and flows
 - [Room Persistence Library](https://developer.android.com/training/data-storage/room "Room Persistence Library")
