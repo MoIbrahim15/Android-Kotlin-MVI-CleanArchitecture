@@ -45,7 +45,7 @@ class SessionManager(
     fun setValue(newValue: TokenView?) {
         GlobalScope.launch(Main) {
             if (_cachedToken.value != newValue) {
-                _cachedToken.value = newValue
+                _cachedToken.value = newValue!!
             }
         }
     }

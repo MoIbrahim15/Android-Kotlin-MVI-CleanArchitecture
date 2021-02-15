@@ -24,7 +24,7 @@ internal fun createBlogListAdapter(onItemSelected: (BlogPostView) -> Unit) =
         register(
             layoutResource = R.layout.layout_blog_list_item,
             viewHolder = ::BlogViewHolder,
-            onBindBindViewHolder = { viewHolder, _, item ->
+            onBindViewHolder = { viewHolder, _, item ->
                 viewHolder.itemView.setOnClickListener {
                     onItemSelected(item.blogPostView)
                 }

@@ -4,6 +4,7 @@ import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 plugins {
     id(GradlePluginId.KTLINT_GRADLE) version CoreVersion.KTLINT_GRADLE
     id(GradlePluginId.DETEKT) version CoreVersion.DETEKT
+    id(GradlePluginId.VERSIONS_PLUGIN) version CoreVersion.VERSIONS_PLUGIN
 }
 
 buildscript {
