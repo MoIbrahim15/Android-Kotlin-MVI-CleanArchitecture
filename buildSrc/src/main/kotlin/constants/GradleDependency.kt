@@ -1,10 +1,11 @@
 object CoreVersion{
-    const val KOTLIN = "1.3.72"
-    const val NAVIGATION = "2.3.0-alpha04"
-    const val ANDROID_GRADLE = "4.2.0-alpha07"
-    const val KTLINT_GRADLE = "9.2.1"
-    const val KTLINT = "0.34.2"
-    const val DETEKT = "1.0.0"
+    const val KOTLIN = "1.4.30"
+    const val NAVIGATION = "2.3.3"
+    const val ANDROID_GRADLE = "7.0.0-alpha06"
+    const val KTLINT_GRADLE = "10.0.0"
+    const val KTLINT = "0.40.0"
+    const val DETEKT = "1.16.0-RC1"
+    const val VERSIONS_PLUGIN = "0.36.0"
 }
 
 object GradlePluginId {
@@ -17,6 +18,7 @@ object GradlePluginId {
     const val KTLINT_GRADLE = "org.jlleitschuh.gradle.ktlint"
     const val KTLINT_MAVEN =  "https://plugins.gradle.org/m2/"
     const val DETEKT = "io.gitlab.arturbosch.detekt"
+    const val VERSIONS_PLUGIN = "com.github.ben-manes.versions"
 }
 
 object GradleClasspath {

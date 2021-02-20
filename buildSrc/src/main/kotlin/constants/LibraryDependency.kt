@@ -1,24 +1,24 @@
 object LibraryDependency {
     object Version {
-        const val RECYCLER_LIB = "1.2.0-alpha02"
+        const val RECYCLER_LIB = "1.2.0-beta01"
         const val CARD_VIEW = "1.0.0"
-        const val SWIPE_TO_REFERESH = "1.0.0"
-        const val CORE_KTX = "1.2.0"
-        const val COLLECTION_KTX = "1.1.0"
-        const val APPCOMPAT_LIB = "1.1.0"
-        const val MATERIAL_LIB = "1.2.0-alpha06"
-        const val CONSTRAINT = "1.1.3"
+        const val SWIPE_TO_REFERESH = "1.2.0-alpha01"
+        const val CORE_KTX = "1.5.0-beta01"
+        const val COLLECTION_KTX = "1.2.0-alpha01"
+        const val APPCOMPAT_LIB = "1.3.0-beta01"
+        const val MATERIAL_LIB = "1.3.0"
+        const val CONSTRAINT = "2.1.0-alpha2"
         const val CROP = "2.8.0"
-        const val KOIN = "2.0.1"
-        const val ROOM = "2.2.5"
-        const val RETROFIT = "2.8.1"
-        const val RETROFIT_CONVERTER = "4.2.2"
-        const val COROUTINES = "1.3.5"
-        const val LIFECYCLE = "2.2.0"
+        const val KOIN = "2.2.2"
+        const val ROOM = "2.3.0-beta01"
+        const val RETROFIT = "2.9.0"
+        const val RETROFIT_INTERCEPTOR = "4.9.1"
+        const val COROUTINES = "1.4.2"
+        const val LIFECYCLE = "2.3.0"
         const val MATERIAL_DIALOG = "3.3.0"
-        const val GLIDE = "4.11.0"
-        const val OKHTTP = "4.2.2"
-        const val KIEL = "1.2.0"
+        const val GLIDE = "4.12.0"
+        const val OKHTTP = "4.9.0"
+        const val KIEL = "1.2.1"
     }
 
     const val KOTLIN_STD = "org.jetbrains.kotlin:kotlin-stdlib:${CoreVersion.KOTLIN}"
@@ -56,13 +56,12 @@ object LibraryDependency {
     //Remote
     const val RETROFIT = "com.squareup.retrofit2:retrofit:${Version.RETROFIT}"
     const val RETROFIT_CONVERTER = "com.squareup.retrofit2:converter-gson:${Version.RETROFIT}"
-    const val RETROFIT_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${Version.RETROFIT_CONVERTER}"
+    const val RETROFIT_INTERCEPTOR = "com.squareup.okhttp3:logging-interceptor:${Version.RETROFIT_INTERCEPTOR}"
 
     //coroutines
     const val COROUTINES_CORE =
         "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Version.COROUTINES}"
-    const val COROUTINES_ANDROID =
-        "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Version.COROUTINES}"
+    const val COROUTINES_ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Version.COROUTINES}"
 
     //lifeCycle
     const val LIVE_DATA_RUNTIME = "androidx.lifecycle:lifecycle-runtime:${Version.LIFECYCLE}"

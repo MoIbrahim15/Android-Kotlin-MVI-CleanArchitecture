@@ -39,7 +39,7 @@ internal fun Project.configureAndroidApp() =  this.extensions.getByType<AndroidB
 
     project.tasks.withType(KotlinCompile::class.java).configureEach {
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
         }
     }
 }
