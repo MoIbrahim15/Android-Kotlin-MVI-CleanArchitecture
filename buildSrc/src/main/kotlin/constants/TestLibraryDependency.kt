@@ -1,6 +1,6 @@
 object TestLibraryDependency{
     object Version{
-        const val JUNIT = "4.13.1"
+        const val JUNIT = "4.13.2"
         const val JUNIT_ANDROID = "1.1.1"
         const val ESPRESSO = "3.3.0"
     }
