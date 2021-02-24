@@ -10,7 +10,7 @@ object LibraryDependency {
         const val CONSTRAINT = "2.1.0-alpha2"
         const val CROP = "2.8.0"
         const val KOIN = "2.2.2"
-        const val ROOM = "2.3.0-beta01"
+        const val ROOM = "2.3.0-beta02"
         const val RETROFIT = "2.9.0"
         const val RETROFIT_INTERCEPTOR = "4.9.1"
         const val COROUTINES = "1.4.2"
